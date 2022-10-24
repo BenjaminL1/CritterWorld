@@ -27,12 +27,19 @@ class ParserImpl implements Parser {
      * @throws SyntaxError if there the input tokens have invalid syntax
      */
     public static ProgramImpl parseProgram(Tokenizer t) throws SyntaxError {
-        // TODO
+        while(t.peek().getType() != TokenType.EOF) {
+            if(t.peek().getType() != TokenType.SEMICOLON){
+                parseRule(t);
+            }
+            else consume(t, TokenType.SEMICOLON);
+        }
         throw new UnsupportedOperationException();
     }
 
     public static Rule parseRule(Tokenizer t) throws SyntaxError {
-        // TODO
+        while(t.peek().getType() != TokenType.ARR){
+            if(t.next().getType().category() = TokenType.CON)
+        }
         throw new UnsupportedOperationException();
     }
 

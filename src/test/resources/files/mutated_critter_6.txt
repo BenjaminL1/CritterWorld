@@ -10,7 +10,9 @@ ahead[4] < -20 and ahead[1] = 0 --> forward;
 nearby[0] > 0 and nearby[3] = 0 --> backward;
 ahead[1] < -1 and { ENERGY > 2500 or SIZE > 7 } --> serve[ENERGY - 42];
 //below, nearby was added as a parent of 3 (which was the mutated node)
+//insert
 random[nearby[3]] = 1 --> left;
 1 = 1 --> wait;
 //the root node was mutated by appending a copy of a randomly selected rule
+//isn't this also insert?
 ahead[0] < -1 and ENERGY < 500 * SIZE --> eat;
