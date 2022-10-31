@@ -50,19 +50,41 @@ class ParserImpl implements Parser {
     }
 
     public static Condition parseCondition(Tokenizer t) throws SyntaxError {
-        //create new condition orCondtion
-        while(t.peek().getType() != TokenType.ARR){
-            //create new condition andCondition
-            while(t.peek().getType() != TokenType.OR){
 
-                if(t.peek().getType() != TokenType.AND){
-                    parseExpression(t); //add this to andCondition node
-                }
-                else; //add this.next() (should be "and") as child of andCondition
+        while(t.peek().getType() != TokenType.ARR){
+            if( t.peek().getType() != TokenType.OR){
+                parseConjunction(t);
             }
-            //put andCondition as child in orCondition
-            //put this.next() (should be "or") as a child in orCondtion
         }
+        throw new UnsupportedOperationException();
+    }
+
+    public static Conjunction parseConjunction(Tokenizer t) throws SyntaxError {
+
+        while(t.peek().getType() != TokenType.OR){
+            if(t.peek().getType() != TokenType.AND){
+                parseRelation(t);
+            }
+        }
+        throw new UnsupportedOperationException();
+    }
+
+    public static Relation parseRelation(Tokenizer t) throws SyntaxError {
+
+            Relation relation = new Relation(); //can we store these in condition nodes?
+            while(t.peek().getType() != TokenType.AND){
+                if(t.peek().getType() == TokenType.LBRACE){
+                    // add the LBRACE into its children
+                    parseCondition(t);
+                    // add the RBRACE into its children
+                }
+                else if(t.peek().getType().category() != TokenCategory.RELOP){
+                    parseExpression(t);
+                }
+                else {
+                    //add RELOP into its children
+                }
+            }
         throw new UnsupportedOperationException();
     }
 
