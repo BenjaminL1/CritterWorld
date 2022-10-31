@@ -36,15 +36,13 @@ class ParserImpl implements Parser {
 
     public static Rule parseRule(Tokenizer t) throws SyntaxError {
 
-        //create new rule node
-        while(t.peek().getType() != TokenType.SEMICOLON){
-            if(t.peek().getType() != TokenType.ARR){
-                parseCondition(t);
-            }
-            else{
-                //add t.next() to rule node children, t.next() should be "-->"
-            }
+        Rule rule = new Rule();
+        while(t.peek().getType() != TokenType.ARR){
+            rule.getChildren().add(parseCondition(t));
         }
+        rule.getChildren().add( new Data(t.next().getType()));
+
+
         //create a new
         throw new UnsupportedOperationException();
     }
@@ -184,6 +182,14 @@ class ParserImpl implements Parser {
         }
     }
 
+    public static Sensor parseSensor(Tokenizer t) throws SyntaxError{
+        Token curr = t.next();
+        if(!curr.isSensor()) throw new UnsupportedOperationException;
+
+        if(curr.getType() == TokenType.)
+
+    }
+
     // TODO
     // add more as necessary...
 
@@ -193,7 +199,9 @@ class ParserImpl implements Parser {
      * @throws SyntaxError if the wrong kind of token is encountered.
      */
     public static void consume(Tokenizer t, TokenType tt) throws SyntaxError {
-        // TODO
-        throw new UnsupportedOperationException();
+        Token temp = t.next();
+        if(temp.getType() != tt) {
+            throw new UnsupportedOperationException();
+        }
     }
 }
