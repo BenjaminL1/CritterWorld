@@ -1,17 +1,15 @@
 package ast;
 
-import java.util.LinkedList;
-import java.util.List;
+import parse.TokenType;
 
-public class Command extends AbstractNode
-{
+public class Update extends AbstractNode{
 
-    private LinkedList<Node> children = new LinkedList<>();
+    Expr memType;
+    Expr updateValue;
 
-    public Command(){
-    }
-    public List<Node> getChildren(){
-        return children;
+    public Update(Expr memType, Expr updateValue){
+        this.memType = memType;
+        this.updateValue = updateValue;
     }
 
     @Override

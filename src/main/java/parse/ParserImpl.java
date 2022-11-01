@@ -46,9 +46,40 @@ class ParserImpl implements Parser {
         return new Rule (condition, command);
     }
 
-    public static Command parseCommand(Tokenizer t)
-    {
+    public static Command parseCommand(Tokenizer t) throws SyntaxError {
 
+        Command command = new Command();
+        while(t.hasNext()){
+            if(t.peek().getType().category() == TokenCategory.MEMSUGAR){
+                command.getChildren().add(parseUpdate(t));
+            }
+            else if(t.peek().getType().category() == TokenCategory.ACTION){
+                command.getChildren().add(parseAction(t));
+            }
+        }
+        return command;
+    }
+
+    public static Update parseUpdate(Tokenizer t) throws SyntaxError {
+        consume(t, TokenType.MEM);
+        consume(t, TokenType.LBRACE);
+        Expr memNumber = parseExpression(t);
+        consume(t, TokenType.RBRACE);
+        consume(t, TokenType.ASSIGN);
+        Expr memValue = parseExpression(t);
+        return new Update(memNumber, memValue);
+    }
+
+    public static Action parseAction(Tokenizer t) throws SyntaxError{
+        if(t.peek().getType().category() != TokenCategory.ACTION) throw new UnsupportedOperationException();
+        TokenType actionName = t.next().getType();
+        if(actionName == TokenType.SERVE){
+            consume(t, TokenType.LBRACE);
+            Expr deezN = parseExpression(t);
+            consume(t, TokenType.RBRACE);
+            return new Action(actionName, deezN);
+        }
+        return new Action(actionName);
     }
 
     public static Condition parseCondition(Tokenizer t) throws SyntaxError
