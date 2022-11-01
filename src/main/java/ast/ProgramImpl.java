@@ -2,11 +2,31 @@ package ast;
 
 import cms.util.maybe.Maybe;
 
+import java.util.ArrayList;
+
 /** A data structure representing a critter program. */
-public class ProgramImpl extends AbstractNode implements Program {
+public class ProgramImpl extends AbstractNode implements Program
+{
+    private ArrayList<Rule> rules;
+
+    public ProgramImpl()
+    {
+        rules = new ArrayList<Rule>();
+    }
+
+    public ArrayList<Rule> getRules()
+    {
+        return rules;
+    }
+
+    public void addRule(Rule rule)
+    {
+        rules.add(rule);
+    }
 
     @Override
-    public Program mutate() {
+    public Program mutate()
+    {
         // TODO Auto-generated method stub
         return null;
     }

@@ -9,7 +9,8 @@ import java.io.Reader;
 class ParserImpl implements Parser {
 
     @Override
-    public Program parse(Reader r) throws SyntaxError {
+    public Program parse(Reader r) throws SyntaxError
+    {
         // TODO
         throw new UnsupportedOperationException();
     }
@@ -25,114 +26,96 @@ class ParserImpl implements Parser {
      */
     public static ProgramImpl parseProgram(Tokenizer t) throws SyntaxError {
         //create programImpl class
-        while(t.peek().getType() != TokenType.EOF) {
-            if(t.peek().getType() != TokenType.SEMICOLON){
-                parseRule(t); //add this to programImpl class children
+        ProgramImpl ret = new ProgramImpl();
+        while(t.peek().getType() != TokenType.EOF)
+        {
+            if(t.peek().getType() != TokenType.SEMICOLON)
+            {
+                ret.addRule(parseRule(t)); //add this to programImpl class children
             }
             else consume(t, TokenType.SEMICOLON); //and add this to the programImpl class children
         }
         throw new UnsupportedOperationException();
     }
 
-    public static Rule parseRule(Tokenizer t) throws SyntaxError {
-
-        Rule rule = new Rule();
-        while(t.peek().getType() != TokenType.ARR){
-            rule.getChildren().add(parseCondition(t));
-        }
-        rule.getChildren().add( new Data(t.next().getType()));
-
-
-        //create a new
-        throw new UnsupportedOperationException();
+    public static Rule parseRule(Tokenizer t) throws SyntaxError
+    {
+        Condition condition = parseCondition(t);
+        consume(t, TokenType.ARR);
+        Command command= parseCommand(t);
+        return new Rule (condition, command);
     }
 
-    public static Condition parseCondition(Tokenizer t) throws SyntaxError {
+    public static Command parseCommand(Tokenizer t)
+    {
 
-        while(t.peek().getType() != TokenType.ARR){
-            if( t.peek().getType() != TokenType.OR){
-                parseConjunction(t);
-            }
-        }
-        throw new UnsupportedOperationException();
     }
 
-    public static Conjunction parseConjunction(Tokenizer t) throws SyntaxError {
-
-        while(t.peek().getType() != TokenType.OR){
-            if(t.peek().getType() != TokenType.AND){
-                parseRelation(t);
-            }
-        }
-        throw new UnsupportedOperationException();
-    }
-
-    public static Relation parseRelation(Tokenizer t) throws SyntaxError {
-
-            Relation relation = new Relation(); //can we store these in condition nodes?
-            while(t.peek().getType() != TokenType.AND){
-                if(t.peek().getType() == TokenType.LBRACE){
-                    // add the LBRACE into its children
-                    parseCondition(t);
-                    // add the RBRACE into its children
-                }
-                else if(t.peek().getType().category() != TokenCategory.RELOP){
-                    parseExpression(t);
-                }
-                else {
-                    //add RELOP into its children
-                }
-            }
-        throw new UnsupportedOperationException();
-    }
-
-    public static Expr parseExpression(Tokenizer t) throws SyntaxError {
-        Expr ret = parseTerm(t);
-        while (t.next().isAddOp())
+    public static Condition parseCondition(Tokenizer t) throws SyntaxError
+    {
+        Condition left = parseConjunction(t);
+        while(t.peek().getType() == TokenType.OR)
         {
-            if (t.peek().getType() == TokenType.PLUS)
-            {
-                t.next();
-                ((Number) ret).add((Number) parseFactor(t));
-            }
-            else if (t.peek().getType() == TokenType.MINUS)
-            {
-                t.next();
-                ((Number) ret).subtract((Number) parseFactor(t));
-            }
+            t.next();
+            left = new BinaryCondition(left, BinaryCondition.Operator.OR, parseConjunction(t));
         }
-        return ret;
+        return left;
+    }
+
+    public static Condition parseConjunction(Tokenizer t) throws SyntaxError
+    {
+        Condition left = parseRelation(t);
+        while (t.peek().getType() == TokenType.AND)
+        {
+            t.next();
+            left = new BinaryCondition(left, BinaryCondition.Operator.AND, parseConjunction(t));
+        }
+        return left;
+    }
+
+    public static Condition parseRelation(Tokenizer t) throws SyntaxError
+    {
+        if (t.peek().getType() == TokenType.LBRACE)
+        {
+            t.next();
+            Condition ret = parseCondition(t);
+            consume(t, TokenType.LBRACE);
+            return ret;
+        }
+        else
+        {
+            Expr left = parseExpression(t);
+            if(t.peek().getType().category() != TokenCategory.RELOP) throw new UnsupportedOperationException( );
+            TokenType rel = t.next().getType();
+            return new Relation(left, rel, parseExpression(t));
+        }
+    }
+
+    public static Expr parseExpression(Tokenizer t) throws SyntaxError
+    {
+        Expr left = parseTerm(t);
+        while (t.peek().getType().category() == TokenCategory.ADDOP)
+        {
+            left = new BinaryOp(left, t.next().getType(), parseTerm(t));
+        }
+        return left;
     }
 
     public static Expr parseTerm(Tokenizer t) throws SyntaxError
     {
-        Expr ret = parseFactor(t);
-        while (t.peek().isMulOp())
+        Expr left = parseFactor(t);
+        while(t.peek().getType().category() == TokenCategory.MULOP)
         {
-            if (t.peek().getType() == TokenType.MUL)
-            {
-                t.next();
-                ((Number) ret).multiply((Number) parseFactor(t));
-            }
-            else if (t.peek().getType() == TokenType.DIV)
-            {
-                t.next();
-                ((Number) ret).divide((Number) parseFactor(t));
-            }
-            else if (t.peek().getType() == TokenType.MOD)
-            {
-                t.next();
-                ((Number) ret).mod((Number) parseFactor(t));
-            }
+            left = new BinaryOp(left, t.next().getType(), parseFactor(t));
         }
-        return ret;
+        return left;
     }
 
     public static Expr parseFactor(Tokenizer t) throws SyntaxError
     {
         if (t.peek().isNum())
         {
-            return new Number(Integer.parseInt(t.next().toString()));
+
         }
         else if (t.peek().isMemSugar())
         {
@@ -152,18 +135,12 @@ class ParserImpl implements Parser {
             }
             else
             {
-                // throw new ;
+                throw new UnsupportedOperationException();
             }
         }
         else if (t.peek().isAddOp())
         {
-            if (t.next().getType() != TokenType.MINUS)
-            {
-                // throw new ;
-            }
-            Expr factor = parseFactor(t);
-            ((Number) factor).changeSign();
-            return factor;
+
         }
         else if (t.peek().isSensor())
         {
