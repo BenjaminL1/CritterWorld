@@ -146,56 +146,79 @@ class ParserImpl implements Parser {
     {
         if (t.peek().isNum())
         {
-
+            return new Number(Integer.parseInt(t.next().toString()));
         }
         else if (t.peek().isMemSugar())
         {
-
+            return new Mem(t.next().getType());
         }
         else if (t.peek().getType() == TokenType.MEM)
         {
-
+            t.next();
+            consume(t, TokenType.LBRACKET);
+            Expr ret = new Mem(parseExpression(t));
+            consume(t, TokenType.RBRACKET);
+            return ret;
         }
         else if (t.peek().getType() == TokenType.LPAREN)
         {
             t.next();
             Expr ret = parseExpression(t);
-            if (t.next().getType() == TokenType.RPAREN)
-            {
-                return ret;
-            }
-            else
-            {
-                throw new UnsupportedOperationException();
-            }
+            consume(t, TokenType.RPAREN);
+            return ret;
         }
-        else if (t.peek().isAddOp())
+        else if (t.peek().getType() == TokenType.MINUS)
         {
-
+            t.next();
+            Expr ret = parseFactor(t);
+            ret.changeSign();
+            return ret;
         }
         else if (t.peek().isSensor())
         {
-            if (t.next().getType() == TokenType.NEARBY)
-            {
-
-            }
-            else if (t.next().getType() == TokenType.AHEAD)
-            {
-
-            }
-            else if (t.next().getType() == TokenType.RANDOM)
-            {
-
-            }
+            return parseSensor(t);
+        }
+        else
+        {
+            throw new UnsupportedOperationException();
         }
     }
 
-    public static Sensor parseSensor(Tokenizer t) throws SyntaxError{
-        Token curr = t.next();
-        if(!curr.isSensor()) throw new UnsupportedOperationException;
-
-        if(curr.getType() == TokenType.)
-
+    public static Expr parseSensor(Tokenizer t) throws SyntaxError
+    {
+        if (t.peek().getType() == TokenType.NEARBY)
+        {
+            t.next();
+            consume(t, TokenType.LBRACKET);
+            Expr ret = new NearbySensor(parseExpression(t));
+            consume(t, TokenType.RBRACKET);
+            return ret;
+        }
+        else if (t.peek().getType() == TokenType.AHEAD)
+        {
+            t.next();
+            consume(t, TokenType.LBRACKET);
+            Expr ret = new AheadSensor(parseExpression(t));
+            consume(t, TokenType.RBRACKET);
+            return ret;
+        }
+        else if (t.peek().getType() == TokenType.RANDOM)
+        {
+            t.next();
+            consume(t, TokenType.LBRACKET);
+            Expr ret = new RandomSensor(parseExpression(t));
+            consume(t, TokenType.RBRACKET);
+            return ret;
+        }
+        else if (t.peek().getType() == TokenType.SMELL)
+        {
+            t.next();
+            return new SmellSensor();
+        }
+        else
+        {
+            throw new UnsupportedOperationException();
+        }
     }
 
     // TODO

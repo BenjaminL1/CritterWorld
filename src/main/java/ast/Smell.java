@@ -1,12 +1,7 @@
 package ast;
 
-public class RandomSensor extends Sensor
+public class Smell extends Sensor
 {
-    Expr e;
-    public RandomSensor(Expr e)
-    {
-        this.e = e;
-    }
 
     @Override
     public String toString() {
