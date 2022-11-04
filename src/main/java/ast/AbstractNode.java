@@ -18,7 +18,8 @@ public abstract class AbstractNode implements Node {
     }
 
     @Override
-    public StringBuilder prettyPrint(StringBuilder sb) {
+    public StringBuilder prettyPrint(StringBuilder sb)
+    {
         // TODO Auto-generated method stub
         return null;
     }
