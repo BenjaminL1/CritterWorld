@@ -29,6 +29,21 @@ public class BinaryCondition extends Condition
         AND;
     }
 
+    public Condition getLeft()
+    {
+        return l;
+    }
+
+    public Operator getOp()
+    {
+        return op;
+    }
+
+    public Condition getRight()
+    {
+        return r;
+    }
+
     @Override
     public String toString(){
         // TODO

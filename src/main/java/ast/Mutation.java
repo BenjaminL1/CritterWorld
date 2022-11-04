@@ -3,7 +3,8 @@ package ast;
 import cms.util.maybe.Maybe;
 
 /** A mutation to the AST */
-public interface Mutation {
+public interface Mutation
+{
     /**
      * Compares the type of this mutation to {@code m}
      *

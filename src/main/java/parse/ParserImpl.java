@@ -46,8 +46,9 @@ class ParserImpl implements Parser {
         return new Rule (condition, command);
     }
 
-    public static Command parseCommand(Tokenizer t) throws SyntaxError {
-
+    public static Command parseCommand(Tokenizer t) throws SyntaxError
+    {
+        // TODO: fix for update-or-action
         Command command = new Command();
         while(t.hasNext()){
             if(t.peek().getType().category() == TokenCategory.MEMSUGAR){
@@ -227,9 +228,11 @@ class ParserImpl implements Parser {
      *
      * @throws SyntaxError if the wrong kind of token is encountered.
      */
-    public static void consume(Tokenizer t, TokenType tt) throws SyntaxError {
+    public static void consume(Tokenizer t, TokenType tt) throws SyntaxError
+    {
         Token temp = t.next();
-        if(temp.getType() != tt) {
+        if(temp.getType() != tt)
+        {
             throw new UnsupportedOperationException();
         }
     }
