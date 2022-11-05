@@ -3,16 +3,31 @@ package ast;
 import java.util.List;
 import cms.util.maybe.Maybe;
 
-public abstract class AbstractNode implements Node {
+public abstract class AbstractNode implements Node
+{
+    private Node parent;
+
+    public void addParentPointer(Node parent)
+    {
+        this.parent = parent;
+    }
+
+    public Node getParent()
+    {
+        return parent;
+    }
+
 
     @Override
-    public int size() {
+    public int size()
+    {
         // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public Node nodeAt(int index) {
+    public Node nodeAt(int index)
+    {
         // TODO Auto-generated method stub
         return null;
     }
@@ -25,30 +40,17 @@ public abstract class AbstractNode implements Node {
     }
 
     @Override
-    public Node clone() {
+    public Node clone()
+    {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Node> getChildren() {
+    public List<Node> getChildren()
+    {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    /**
-     * Returns the parent of this {@code Node}, or {@Maybe.none} if this {@code
-     * Node} is the root.
-     *
-     * @return the parent of this {@code Node}, or {@Maybe.none} if this {@code
-     * Node} is the root.
-     *
-     * This method does not need to be implemented and may be removed from the
-     * interface.
-     */
-    public Maybe<Node> getParent() {
-        // TODO Auto-generated method stub
-        return Maybe.none();
     }
 
     /**
@@ -58,7 +60,8 @@ public abstract class AbstractNode implements Node {
      *
      * @param p the node to set as this {@code Node}'s parent.
      */
-    public void setParent(Node p) {
+    public void setParent(Node p)
+    {
         // TODO Auto-generated method stub
     }
 

@@ -1,6 +1,6 @@
 package ast;
 
-public class Transform extends CreateMutation
+public class Transform extends AbstractMutation
 {
 
 }

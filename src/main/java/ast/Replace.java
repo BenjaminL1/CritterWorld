@@ -1,6 +1,6 @@
 package ast;
 
-public class Replace extends SearchMutation
+public class Replace extends AbstractMutation
 {
 
 }

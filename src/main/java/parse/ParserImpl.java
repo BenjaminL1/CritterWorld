@@ -6,13 +6,13 @@ import cms.util.maybe.Maybe;
 import exceptions.SyntaxError;
 import java.io.Reader;
 
-class ParserImpl implements Parser {
+class ParserImpl implements Parser
+{
 
     @Override
     public Program parse(Reader r) throws SyntaxError
     {
-        // TODO
-        throw new UnsupportedOperationException();
+        return parseProgram(new Tokenizer(r));
     }
 
     /**
@@ -24,51 +24,67 @@ class ParserImpl implements Parser {
      * @return the created AST
      * @throws SyntaxError if the input tokens have invalid syntax
      */
-    public static ProgramImpl parseProgram(Tokenizer t) throws SyntaxError {
+    public static ProgramImpl parseProgram(Tokenizer t) throws SyntaxError
+    {
         //create programImpl class
         ProgramImpl ret = new ProgramImpl();
         while(t.peek().getType() != TokenType.EOF)
         {
-            if(t.peek().getType() != TokenType.SEMICOLON)
-            {
-                ret.addRule(parseRule(t)); //add this to programImpl class children
-            }
-            else consume(t, TokenType.SEMICOLON); //and add this to the programImpl class children
+            Rule rule = parseRule(t);
+            rule.addParentPointer(ret);
+            ret.addRule(rule); //add this to programImpl class children
         }
-        throw new UnsupportedOperationException();
+        return ret;
     }
 
     public static Rule parseRule(Tokenizer t) throws SyntaxError
     {
         Condition condition = parseCondition(t);
         consume(t, TokenType.ARR);
-        Command command= parseCommand(t);
-        return new Rule (condition, command);
+        Command command = parseCommand(t);
+        consume(t, TokenType.SEMICOLON);
+        Rule ret = new Rule (condition, command);
+        condition.addParentPointer(ret);
+        command.addParentPointer(ret);
+        return ret;
     }
 
     public static Command parseCommand(Tokenizer t) throws SyntaxError
     {
         // TODO: fix for update-or-action
         Command command = new Command();
-        while(t.hasNext()){
-            if(t.peek().getType().category() == TokenCategory.MEMSUGAR){
-                command.getChildren().add(parseUpdate(t));
+        while(t.hasNext())
+        {
+            // TODO: fix mem
+            if(t.peek().getType().category() == TokenCategory.MEMSUGAR || t.peek().getType() == TokenType.MEM)
+            {
+                Update update = parseUpdate(t);
+                update.addParentPointer(command);
+                command.add(update);
             }
-            else if(t.peek().getType().category() == TokenCategory.ACTION){
-                command.getChildren().add(parseAction(t));
+            else if(t.peek().getType().category() == TokenCategory.ACTION)
+            {
+                Action action = parseAction(t);
+                action.addParentPointer(command);
+                command.add(action);
+                break;
             }
         }
         return command;
     }
 
-    public static Update parseUpdate(Tokenizer t) throws SyntaxError {
+    public static Update parseUpdate(Tokenizer t) throws SyntaxError
+    {
         consume(t, TokenType.MEM);
-        consume(t, TokenType.LBRACE);
+        consume(t, TokenType.LBRACKET);
         Expr memNumber = parseExpression(t);
-        consume(t, TokenType.RBRACE);
+        consume(t, TokenType.RBRACKET);
         consume(t, TokenType.ASSIGN);
         Expr memValue = parseExpression(t);
-        return new Update(memNumber, memValue);
+        Update ret = new Update(memNumber, memValue);
+        memNumber.addParentPointer(ret);
+        memValue.addParentPointer(ret);
+        return ret;
     }
 
     public static Action parseAction(Tokenizer t) throws SyntaxError{
@@ -78,7 +94,9 @@ class ParserImpl implements Parser {
             consume(t, TokenType.LBRACE);
             Expr deezN = parseExpression(t);
             consume(t, TokenType.RBRACE);
-            return new Action(actionName, deezN);
+            Action ret = new Action(actionName, deezN);
+            deezN.addParentPointer(ret);
+            return ret;
         }
         return new Action(actionName);
     }
@@ -89,7 +107,11 @@ class ParserImpl implements Parser {
         while(t.peek().getType() == TokenType.OR)
         {
             t.next();
-            left = new BinaryCondition(left, BinaryCondition.Operator.OR, parseConjunction(t));
+            Condition right = parseConjunction(t);
+            Condition temp = new BinaryCondition(left, BinaryCondition.Operator.OR, right);
+            left.addParentPointer(temp);
+            right.addParentPointer(temp);
+            left = temp;
         }
         return left;
     }
@@ -100,7 +122,11 @@ class ParserImpl implements Parser {
         while (t.peek().getType() == TokenType.AND)
         {
             t.next();
-            left = new BinaryCondition(left, BinaryCondition.Operator.AND, parseConjunction(t));
+            Condition right = parseRelation(t);
+            Condition temp = new BinaryCondition(left, BinaryCondition.Operator.AND, right);
+            left.addParentPointer(temp);
+            right.addParentPointer(temp);
+            left = temp;
         }
         return left;
     }
@@ -119,7 +145,11 @@ class ParserImpl implements Parser {
             Expr left = parseExpression(t);
             if(t.peek().getType().category() != TokenCategory.RELOP) throw new UnsupportedOperationException( );
             TokenType rel = t.next().getType();
-            return new Relation(left, rel, parseExpression(t));
+            Expr right = parseExpression(t)
+            Condition ret = new Relation(left, rel, right);
+            left.addParentPointer(ret);
+            right.addParentPointer(ret);
+            return ret;
         }
     }
 
@@ -128,7 +158,11 @@ class ParserImpl implements Parser {
         Expr left = parseTerm(t);
         while (t.peek().getType().category() == TokenCategory.ADDOP)
         {
-            left = new BinaryOp(left, t.next().getType(), parseTerm(t));
+            Expr right = parseTerm(t);
+            Expr temp = new BinaryOp(left, t.next().getType(), right);
+            left.addParentPointer(temp);
+            right.addParentPointer(temp);
+            left = temp;
         }
         return left;
     }
@@ -138,7 +172,11 @@ class ParserImpl implements Parser {
         Expr left = parseFactor(t);
         while(t.peek().getType().category() == TokenCategory.MULOP)
         {
-            left = new BinaryOp(left, t.next().getType(), parseFactor(t));
+            Expr right = parseFactor(t);
+            Expr temp = new BinaryOp(left, t.next().getType(), right);
+            left.addParentPointer(temp);
+            right.addParentPointer(temp);
+            left = temp;
         }
         return left;
     }

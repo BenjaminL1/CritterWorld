@@ -6,26 +6,37 @@ import java.util.List;
 public class Command extends AbstractNode
 {
 
-    private LinkedList<Node> children = new LinkedList<>();
+    private LinkedList<Node> children;
 
-    public Command(){
+    public Command()
+    {
+        children = new LinkedList<>();
     }
-    public List<Node> getChildren(){
+    public List<Node> getChildren()
+    {
         return children;
     }
 
+    public void add(Node node)
+    {
+        children.add(node);
+    }
+
     @Override
-    public String toString() {
+    public String toString()
+    {
         return null;
     }
 
     @Override
-    public NodeCategory getCategory() {
+    public NodeCategory getCategory()
+    {
         return null;
     }
 
     @Override
-    public boolean classInv() {
+    public boolean classInv()
+    {
         return false;
     }
 }
