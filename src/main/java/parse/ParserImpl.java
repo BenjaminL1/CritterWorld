@@ -145,7 +145,7 @@ class ParserImpl implements Parser
             Expr left = parseExpression(t);
             if(t.peek().getType().category() != TokenCategory.RELOP) throw new UnsupportedOperationException( );
             TokenType rel = t.next().getType();
-            Expr right = parseExpression(t)
+            Expr right = parseExpression(t);
             Condition ret = new Relation(left, rel, right);
             left.addParentPointer(ret);
             right.addParentPointer(ret);
