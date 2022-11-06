@@ -7,11 +7,6 @@ public abstract class AbstractNode implements Node
 {
     private Node parent;
 
-    public void addParentPointer(Node parent)
-    {
-        this.parent = parent;
-    }
-
     public Node getParent()
     {
         return parent;
@@ -21,8 +16,13 @@ public abstract class AbstractNode implements Node
     @Override
     public int size()
     {
-        // TODO Auto-generated method stub
-        return 0;
+        int size = 1;
+        if(this.getChildren() == null) return size;
+
+        for(Node node : this.getChildren()){
+            size += node.size();
+        }
+        return size;
     }
 
     @Override
@@ -52,7 +52,7 @@ public abstract class AbstractNode implements Node
     @Override
     public Node clone()
     {
-        // TODO Auto-generated method stub
+//        Node cloned =
         return null;
     }
 
@@ -70,7 +70,7 @@ public abstract class AbstractNode implements Node
      */
     public void setParent(Node p)
     {
-        // TODO Auto-generated method stub
+        parent = p;
     }
 
     /**

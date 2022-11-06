@@ -17,6 +17,22 @@ public class Update extends AbstractNode
         this.updateValue = updateValue;
     }
 
+    @Override
+    public Node clone(){
+        Update cloned = new Update((Mem)this.memType.clone(), (Expr)this.updateValue.clone());
+        return cloned;
+    }
+
+    public Mem getMemType()
+    {
+        return memType;
+    }
+
+    public Expr getExpr()
+    {
+        return updateValue;
+    }
+
     public void changeExpr(Expr e)
     {
         updateValue = e;

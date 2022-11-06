@@ -33,7 +33,7 @@ class ParserImpl implements Parser
         while(t.peek().getType() != TokenType.EOF)
         {
             Rule rule = parseRule(t);
-            rule.addParentPointer(ret);
+            rule.setParent(ret);
             ret.addRule(rule);
         }
         return ret;
@@ -47,8 +47,8 @@ class ParserImpl implements Parser
         Command command = parseCommand(t);
         consume(t, TokenType.SEMICOLON);
         Rule ret = new Rule (condition, command);
-        condition.addParentPointer(ret);
-        command.addParentPointer(ret);
+        condition.setParent(ret);
+        command.setParent(ret);
         return ret;
     }
 
@@ -64,13 +64,13 @@ class ParserImpl implements Parser
             if(t.peek().getType().category() == TokenCategory.MEMSUGAR || t.peek().getType() == TokenType.MEM)
             {
                 Update update = parseUpdate(t);
-                update.addParentPointer(command);
+                update.setParent(command);
                 command.add(update);
             }
             else if(t.peek().getType().category() == TokenCategory.ACTION)
             {
                 Action action = parseAction(t);
-                action.addParentPointer(command);
+                action.setParent(command);
                 command.add(action);
                 break;
             }
@@ -97,8 +97,8 @@ class ParserImpl implements Parser
         consume(t, TokenType.ASSIGN);
         Expr memValue = parseExpression(t);
         Update ret = new Update(memNumber, memValue);
-        memNumber.addParentPointer(ret);
-        memValue.addParentPointer(ret);
+        memNumber.setParent(ret);
+        memValue.setParent(ret);
         return ret;
     }
 
@@ -113,7 +113,7 @@ class ParserImpl implements Parser
             Expr deezN = parseExpression(t);
             consume(t, TokenType.RBRACE);
             Action ret = new Action(actionName, deezN);
-            deezN.addParentPointer(ret);
+            deezN.setParent(ret);
             return ret;
         }
         return new Action(actionName);
@@ -128,8 +128,8 @@ class ParserImpl implements Parser
             t.next();
             Condition right = parseConjunction(t);
             Condition temp = new BinaryCondition(left, BinaryCondition.Operator.OR, right);
-            left.addParentPointer(temp);
-            right.addParentPointer(temp);
+            left.setParent(temp);
+            right.setParent(temp);
             left = temp;
         }
         return left;
@@ -144,8 +144,8 @@ class ParserImpl implements Parser
             t.next();
             Condition right = parseRelation(t);
             Condition temp = new BinaryCondition(left, BinaryCondition.Operator.AND, right);
-            left.addParentPointer(temp);
-            right.addParentPointer(temp);
+            left.setParent(temp);
+            right.setParent(temp);
             left = temp;
         }
         return left;
@@ -168,8 +168,8 @@ class ParserImpl implements Parser
             TokenType rel = t.next().getType();
             Expr right = parseExpression(t);
             Condition ret = new Relation(left, rel, right);
-            left.addParentPointer(ret);
-            right.addParentPointer(ret);
+            left.setParent(ret);
+            right.setParent(ret);
             return ret;
         }
     }
@@ -183,8 +183,8 @@ class ParserImpl implements Parser
             TokenType addOp = t.next().getType();
             Expr right = parseTerm(t);
             Expr temp = new BinaryOp(left, addOp, right);
-            left.addParentPointer(temp);
-            right.addParentPointer(temp);
+            left.setParent(temp);
+            right.setParent(temp);
             left = temp;
         }
         return left;
@@ -199,8 +199,8 @@ class ParserImpl implements Parser
             TokenType addOp = t.next().getType();
             Expr right = parseFactor(t);
             Expr temp = new BinaryOp(left, addOp, right);
-            left.addParentPointer(temp);
-            right.addParentPointer(temp);
+            left.setParent(temp);
+            right.setParent(temp);
             left = temp;
         }
         return left;
@@ -209,7 +209,7 @@ class ParserImpl implements Parser
     public static Expr parseFactor(Tokenizer t) throws SyntaxError
     {
 //        System.out.println("parseFactor");
-        System.out.println(t.peek());
+//        System.out.println(t.peek());
         if (t.peek().isNum())
         {
             return new Number(Integer.parseInt(t.next().toString()));

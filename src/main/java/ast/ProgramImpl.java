@@ -14,6 +14,15 @@ public class ProgramImpl extends AbstractNode implements Program
         rules = new ArrayList<Rule>();
     }
 
+    @Override
+    public Node clone() {
+        ProgramImpl cloned = new ProgramImpl();
+        for(Node rule : rules){
+            cloned.getChildren().add(rule.clone());
+        }
+        return cloned;
+    }
+
     public ArrayList<Rule> getRules()
     {
         return rules;

@@ -11,6 +11,11 @@ public class NegativeExpr extends Expr
         this.factor = factor;
     }
 
+    @Override
+    public Node clone(){
+        return new NegativeExpr((Negative) this.negativeNode.clone(), (Expr) this.factor.clone());
+    }
+
     public Negative getLeft()
     {
         return negativeNode;

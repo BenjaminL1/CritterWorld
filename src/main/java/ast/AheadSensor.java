@@ -2,6 +2,8 @@ package ast;
 
 public class AheadSensor extends Sensor
 {
+
+
     Expr e;
     public AheadSensor(Expr e)
     {
@@ -16,6 +18,11 @@ public class AheadSensor extends Sensor
     public void changeExpr(Expr e)
     {
         this.e = e;
+    }
+
+    @Override
+    public Node clone(){
+        return new AheadSensor((Expr) this.e.clone());
     }
 
     @Override

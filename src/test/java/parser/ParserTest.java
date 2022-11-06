@@ -16,8 +16,8 @@ import parse.ParserFactory;
 import static org.junit.jupiter.api.Assertions.*;
 
 /** This class contains tests for the Critter parser. */
-public class ParserTest {
-
+public class ParserTest
+{
     /** Checks that a valid critter program is not {@code null} when parsed. */
     @Test
     public void testProgramIsNotNone() {

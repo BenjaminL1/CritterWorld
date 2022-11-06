@@ -19,6 +19,12 @@ public class NearbySensor extends Sensor
     }
 
     @Override
+    public Node clone(){
+        return new NearbySensor((Expr) this.e.clone());
+    }
+
+
+    @Override
     public void accept(Visitor v)
     {
         v.visit(this);

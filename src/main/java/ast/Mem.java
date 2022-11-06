@@ -5,7 +5,6 @@ import parse.TokenType;
 public class Mem extends Expr
 {
     Expr e;
-    TokenType sugar;
 
     public Mem(Expr e)
     {
@@ -14,8 +13,37 @@ public class Mem extends Expr
 
     public Mem(TokenType sugar)
     {
-        this.sugar = sugar;
+        if (sugar == TokenType.ABV_MEMSIZE)
+        {
+            e = new Number(0);
+        }
+        else if (sugar == TokenType.ABV_DEFENSE)
+        {
+            e = new Number(1);
+        }
+        else if (sugar == TokenType.ABV_OFFENSE)
+        {
+            e = new Number(2);
+        }
+        else if (sugar == TokenType.ABV_SIZE)
+        {
+            e = new Number(3);
+        }
+        else if (sugar == TokenType.ABV_ENERGY)
+        {
+            e = new Number(4);
+        }
+        else if (sugar == TokenType.ABV_PASS)
+        {
+            e = new Number(5);
+        }
+        // (sugar == TokenType.ABV_POSTURE)
+        else
+        {
+            e = new Number(6);
+        }
     }
+
     public enum Sugar
     {
         MEMSIZE,
@@ -25,6 +53,17 @@ public class Mem extends Expr
         ENERGY,
         PASS,
         POSTURE;
+    }
+
+    @Override
+    public Node clone(){
+        Mem cloned = new Mem((Expr)this.e.clone());
+    }
+
+
+    public Expr getExpr()
+    {
+        return e;
     }
 
     public void changeExpr(Expr e)

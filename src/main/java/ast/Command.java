@@ -12,6 +12,15 @@ public class Command extends AbstractNode
     {
         children = new LinkedList<>();
     }
+
+    public Node cloned(){
+        Command cloned = new Command();
+        for(Node child : this.children){
+            cloned.getChildren().add(child.clone());
+        }
+        return cloned;
+    }
+
     public List<Node> getChildren()
     {
         return children;

@@ -19,6 +19,12 @@ public class RandomSensor extends Sensor
     }
 
     @Override
+    public Node clone(){
+        return new RandomSensor((Expr) this.e.clone());
+    }
+
+
+    @Override
     public void accept(Visitor v)
     {
         v.visit(this);

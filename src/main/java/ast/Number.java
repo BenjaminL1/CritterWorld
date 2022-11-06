@@ -9,6 +9,10 @@ public class Number extends Expr
         this.num = num;
     }
 
+    public Node clone(){
+        return new Number(this.getNum());
+    }
+
     public int getNum()
     {
         return num;
