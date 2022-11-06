@@ -22,6 +22,11 @@ public class Command extends AbstractNode
         children.add(node);
     }
 
+    public void remove(Node node)
+    {
+        children.remove(node);
+    }
+
     @Override
     public String toString()
     {
@@ -38,5 +43,10 @@ public class Command extends AbstractNode
     public boolean classInv()
     {
         return false;
+    }
+
+    public void accept(Visitor v)
+    {
+        v.visit(this);
     }
 }

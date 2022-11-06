@@ -11,23 +11,31 @@ public class NegativeExpr extends Expr
         this.factor = factor;
     }
 
-    public Negative getNegativeNode()
+    public Negative getLeft()
     {
         return negativeNode;
     }
 
-    public Expr getFactor()
+    public Expr getRight()
     {
         return factor;
     }
 
     @Override
-    public String toString() {
+    public void accept(Visitor v)
+    {
+        v.visit(this);
+    }
+
+    @Override
+    public String toString()
+    {
         return null;
     }
 
     @Override
-    public boolean classInv() {
+    public boolean classInv()
+    {
         return false;
     }
 }

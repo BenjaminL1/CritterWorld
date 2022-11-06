@@ -4,6 +4,8 @@ import ast.*;
 import ast.Number;
 import cms.util.maybe.Maybe;
 import exceptions.SyntaxError;
+
+import javax.xml.transform.Source;
 import java.io.Reader;
 
 class ParserImpl implements Parser
@@ -26,19 +28,20 @@ class ParserImpl implements Parser
      */
     public static ProgramImpl parseProgram(Tokenizer t) throws SyntaxError
     {
-        //create programImpl class
+//        System.out.println("parseProgram");
         ProgramImpl ret = new ProgramImpl();
         while(t.peek().getType() != TokenType.EOF)
         {
             Rule rule = parseRule(t);
             rule.addParentPointer(ret);
-            ret.addRule(rule); //add this to programImpl class children
+            ret.addRule(rule);
         }
         return ret;
     }
 
     public static Rule parseRule(Tokenizer t) throws SyntaxError
     {
+//        System.out.println("parseRule");
         Condition condition = parseCondition(t);
         consume(t, TokenType.ARR);
         Command command = parseCommand(t);
@@ -51,9 +54,11 @@ class ParserImpl implements Parser
 
     public static Command parseCommand(Tokenizer t) throws SyntaxError
     {
+//        System.out.println("parseCommand");
         // TODO: fix for update-or-action
         Command command = new Command();
-        while(t.hasNext())
+        while(t.peek().getType().category() == TokenCategory.MEMSUGAR || t.peek().getType() == TokenType.MEM
+                || t.peek().getType().category() == TokenCategory.ACTION)
         {
             // TODO: fix mem
             if(t.peek().getType().category() == TokenCategory.MEMSUGAR || t.peek().getType() == TokenType.MEM)
@@ -73,12 +78,22 @@ class ParserImpl implements Parser
         return command;
     }
 
+    // TODO: fix to account for memsugars
     public static Update parseUpdate(Tokenizer t) throws SyntaxError
     {
-        consume(t, TokenType.MEM);
-        consume(t, TokenType.LBRACKET);
-        Expr memNumber = parseExpression(t);
-        consume(t, TokenType.RBRACKET);
+//        System.out.println("parseUpdate");
+        Mem memNumber;
+        if (t.peek().getType().category() == TokenCategory.MEMSUGAR)
+        {
+            memNumber = new Mem(t.next().getType());
+        }
+        else
+        {
+            consume(t, TokenType.MEM);
+            consume(t, TokenType.LBRACKET);
+            memNumber = new Mem(parseExpression(t));
+            consume(t, TokenType.RBRACKET);
+        }
         consume(t, TokenType.ASSIGN);
         Expr memValue = parseExpression(t);
         Update ret = new Update(memNumber, memValue);
@@ -87,10 +102,13 @@ class ParserImpl implements Parser
         return ret;
     }
 
-    public static Action parseAction(Tokenizer t) throws SyntaxError{
+    public static Action parseAction(Tokenizer t) throws SyntaxError
+    {
+//        System.out.println("parseAction");
         if(t.peek().getType().category() != TokenCategory.ACTION) throw new UnsupportedOperationException();
         TokenType actionName = t.next().getType();
-        if(actionName == TokenType.SERVE){
+        if(actionName == TokenType.SERVE)
+        {
             consume(t, TokenType.LBRACE);
             Expr deezN = parseExpression(t);
             consume(t, TokenType.RBRACE);
@@ -103,6 +121,7 @@ class ParserImpl implements Parser
 
     public static Condition parseCondition(Tokenizer t) throws SyntaxError
     {
+//        System.out.println("parseCondition");
         Condition left = parseConjunction(t);
         while(t.peek().getType() == TokenType.OR)
         {
@@ -118,6 +137,7 @@ class ParserImpl implements Parser
 
     public static Condition parseConjunction(Tokenizer t) throws SyntaxError
     {
+//        System.out.println("parseConjunction");
         Condition left = parseRelation(t);
         while (t.peek().getType() == TokenType.AND)
         {
@@ -133,11 +153,12 @@ class ParserImpl implements Parser
 
     public static Condition parseRelation(Tokenizer t) throws SyntaxError
     {
+//        System.out.println("parseRelation");
         if (t.peek().getType() == TokenType.LBRACE)
         {
             t.next();
             Condition ret = parseCondition(t);
-            consume(t, TokenType.LBRACE);
+            consume(t, TokenType.RBRACE);
             return ret;
         }
         else
@@ -155,11 +176,13 @@ class ParserImpl implements Parser
 
     public static Expr parseExpression(Tokenizer t) throws SyntaxError
     {
+//        System.out.println("parseExpression");
         Expr left = parseTerm(t);
         while (t.peek().getType().category() == TokenCategory.ADDOP)
         {
+            TokenType addOp = t.next().getType();
             Expr right = parseTerm(t);
-            Expr temp = new BinaryOp(left, t.next().getType(), right);
+            Expr temp = new BinaryOp(left, addOp, right);
             left.addParentPointer(temp);
             right.addParentPointer(temp);
             left = temp;
@@ -169,11 +192,13 @@ class ParserImpl implements Parser
 
     public static Expr parseTerm(Tokenizer t) throws SyntaxError
     {
+//        System.out.println("parseTerm");
         Expr left = parseFactor(t);
         while(t.peek().getType().category() == TokenCategory.MULOP)
         {
+            TokenType addOp = t.next().getType();
             Expr right = parseFactor(t);
-            Expr temp = new BinaryOp(left, t.next().getType(), right);
+            Expr temp = new BinaryOp(left, addOp, right);
             left.addParentPointer(temp);
             right.addParentPointer(temp);
             left = temp;
@@ -183,6 +208,8 @@ class ParserImpl implements Parser
 
     public static Expr parseFactor(Tokenizer t) throws SyntaxError
     {
+//        System.out.println("parseFactor");
+        System.out.println(t.peek());
         if (t.peek().isNum())
         {
             return new Number(Integer.parseInt(t.next().toString()));
@@ -223,6 +250,7 @@ class ParserImpl implements Parser
 
     public static Expr parseSensor(Tokenizer t) throws SyntaxError
     {
+//        System.out.println("parseSensor");
         if (t.peek().getType() == TokenType.NEARBY)
         {
             t.next();

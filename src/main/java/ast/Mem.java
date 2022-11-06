@@ -27,13 +27,26 @@ public class Mem extends Expr
         POSTURE;
     }
 
+    public void changeExpr(Expr e)
+    {
+        this.e = e;
+    }
+
     @Override
-    public String toString() {
+    public void accept(Visitor v)
+    {
+        v.visit(this);
+    }
+
+    @Override
+    public String toString()
+    {
         return null;
     }
 
     @Override
-    public boolean classInv() {
+    public boolean classInv()
+    {
         return false;
     }
 }

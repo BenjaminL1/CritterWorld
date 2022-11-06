@@ -25,6 +25,22 @@ public class ProgramImpl extends AbstractNode implements Program
     }
 
     @Override
+    public void accept(Visitor v)
+    {
+        v.visit(this);
+    }
+
+    public int size()
+    {
+        return rules.size();
+    }
+
+    public void remove(Rule rule)
+    {
+        rules.remove(rule);
+    }
+
+    @Override
     public Program mutate()
     {
         // TODO Auto-generated method stub

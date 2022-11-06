@@ -1,6 +1,8 @@
 package ast;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /** A representation of a critter rule. */
 public class Rule extends AbstractNode {
@@ -24,6 +26,23 @@ public class Rule extends AbstractNode {
         return command;
     }
 
+    public List<Node> getChildren(){
+        List<Node> list = new ArrayList<Node>();
+        list.add(condition);
+        list.add(command);
+        return list;
+    }
+
+    public void changeCondition(Condition c)
+    {
+        condition = c;
+    }
+
+    public void changeCommand(Command c)
+    {
+        command = c;
+    }
+
     @Override
     public NodeCategory getCategory() {
         return NodeCategory.RULE;
@@ -38,5 +57,10 @@ public class Rule extends AbstractNode {
     public boolean classInv() {
         // TODO implement/override
         return false;
+    }
+
+    public void accept(Visitor v)
+    {
+        v.visit(this);
     }
 }

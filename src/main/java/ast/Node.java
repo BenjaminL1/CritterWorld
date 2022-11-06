@@ -4,7 +4,10 @@ import java.util.List;
 import cms.util.maybe.Maybe;
 
 /** A node in the abstract syntax tree of a program. */
-public interface Node extends Cloneable {
+public interface Node extends Cloneable
+{
+
+    void accept(Visitor v);
 
     /**
      * The number of nodes in the AST rooted at this node, including this node

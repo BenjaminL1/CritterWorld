@@ -2,6 +2,10 @@ package ast;
 
 import parse.TokenType;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a Binary Operation
  * @author Richard Lin
@@ -10,8 +14,7 @@ import parse.TokenType;
  * @version
  * Class invariant: The global variable op must be of TokenCategory ADDOP or MULOP
  */
-public class BinaryOp extends Expr
-{
+public class BinaryOp extends Expr {
     private Expr left;
     private TokenType op;
     private Expr right;
@@ -38,6 +41,27 @@ public class BinaryOp extends Expr
         return right;
     }
 
+    public void changeLeft(Expr l)
+    {
+        left = l;
+    }
+
+    public void changeRight(Expr r)
+    {
+        right = r;
+    }
+
+    public void accept(Visitor v)
+    {
+        v.visit(this);
+    }
+
+    public List<Node> getChildren(){
+        List<Node> list = new ArrayList<Node>();
+        list.add(left);
+        list.add(right);
+        return list;
+    }
 
     @Override
     public String toString() {

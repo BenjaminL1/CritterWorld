@@ -2,6 +2,9 @@ package ast;
 
 import parse.TokenType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Relation extends Condition
 {
     private Expr left;
@@ -30,10 +33,32 @@ public class Relation extends Condition
         return right;
     }
 
+    public void changeLeft(Expr l)
+    {
+        left = l;
+    }
+
+    public void changeRight(Expr r)
+    {
+        right = r;
+    }
+
     @Override
     public String toString()
     {
         return null;
+    }
+
+    public List<Node> getChildren(){
+        List<Node> list = new ArrayList<Node>();
+        list.add(left);
+        list.add(right);
+        return list;
+    }
+
+    public void accept(Visitor v)
+    {
+        v.visit(this);
     }
 
     @Override

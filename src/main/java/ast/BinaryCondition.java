@@ -1,5 +1,8 @@
 package ast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** A representation of a binary Boolean condition: 'and' or 'or' */
 public class BinaryCondition extends Condition
 {
@@ -43,6 +46,30 @@ public class BinaryCondition extends Condition
     {
         return r;
     }
+
+    public void changeLeft(Condition left)
+    {
+        l = left;
+    }
+
+    public void changeRight(Condition right)
+    {
+        r = right;
+    }
+
+    @Override
+    public void accept(Visitor v)
+    {
+        v.visit(this);
+    }
+
+    public List<Node> getChildren(){
+        List<Node> list = new ArrayList<Node>();
+        list.add(l);
+        list.add(r);
+        return list;
+    }
+
 
     @Override
     public String toString(){

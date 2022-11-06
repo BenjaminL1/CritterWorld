@@ -28,7 +28,17 @@ public abstract class AbstractNode implements Node
     @Override
     public Node nodeAt(int index)
     {
-        // TODO Auto-generated method stub
+        if(index > this.size()) throw new IndexOutOfBoundsException();
+
+        if(index == 0) return this;
+
+        if(this.getChildren() == null) return null;
+
+        for(Node node : this.getChildren()){
+            index--;
+            Node curr = node.nodeAt(index);
+            if(index == 0) return curr;
+        }
         return null;
     }
 
@@ -47,9 +57,7 @@ public abstract class AbstractNode implements Node
     }
 
     @Override
-    public List<Node> getChildren()
-    {
-        // TODO Auto-generated method stub
+    public List<Node> getChildren(){
         return null;
     }
 
