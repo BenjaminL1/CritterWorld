@@ -27,8 +27,14 @@ public class BinaryOp extends Expr {
     }
 
     @Override
-    public Node clone(){
-        return new BinaryOp((Expr) left.clone(), op, (Expr) right.clone());
+    public Node clone()
+    {
+        Expr clonedLeft = (Expr) left.clone();
+        Expr clonedRight = (Expr) right.clone();
+        BinaryOp cloned =  new BinaryOp(clonedLeft, op, clonedRight);
+        clonedLeft.setParent(cloned);
+        clonedRight.setParent(cloned);
+        return cloned;
     }
 
     public Expr getLeft()

@@ -6,22 +6,31 @@ public class Transform extends AbstractMutation
 {
 
     @Override
-    public boolean equals(Mutation m) {
+    public boolean equals(Mutation m)
+    {
+        return m instanceof Transform;
+    }
+
+    @Override
+    public Maybe<Program> apply(Program program, Node node)
+    {
+        if (canApply(node))
+        {
+            node.accept(this);
+            return Maybe.from(program);
+        }
+        return Maybe.none();
+    }
+
+    @Override
+    public boolean canApply(Node n)
+    {
         return false;
     }
 
     @Override
-    public Maybe<Program> apply(Program program, Node node) {
-        return null;
-    }
-
-    @Override
-    public boolean canApply(Node n) {
-        return false;
-    }
-
-    @Override
-    public void visit(ProgramImpl node) {
+    public void visit(ProgramImpl node)
+    {
 
     }
 

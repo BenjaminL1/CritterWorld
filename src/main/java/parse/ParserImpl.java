@@ -36,6 +36,10 @@ class ParserImpl implements Parser
             rule.setParent(ret);
             ret.addRule(rule);
         }
+        if (ret.getChildren().size() < 1)
+        {
+            throw new UnsupportedOperationException();
+        }
         return ret;
     }
 
@@ -74,6 +78,10 @@ class ParserImpl implements Parser
                 command.add(action);
                 break;
             }
+        }
+        if (command.getChildren().size() < 1)
+        {
+            throw new UnsupportedOperationException();
         }
         return command;
     }

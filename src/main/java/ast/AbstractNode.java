@@ -12,16 +12,14 @@ public abstract class AbstractNode implements Node
         return parent;
     }
 
-
-    public abstract StringBuilder prettyPrint(Stringbuilder sb);
-
     @Override
     public int size()
     {
         int size = 1;
-        if(this.getChildren() == null) return size;
+        if (this.getChildren() == null) return size;
 
-        for(Node node : this.getChildren()){
+        for(Node node : this.getChildren())
+        {
             size += node.size();
         }
         return size;
@@ -52,15 +50,10 @@ public abstract class AbstractNode implements Node
     }
 
     @Override
-    public Node clone()
-    {
-        return null;
-    }
+    public abstract Node clone();
 
     @Override
-    public List<Node> getChildren(){
-        return null;
-    }
+    public abstract List<Node> getChildren();
 
     /**
      * You can remove this method if you don't like it.

@@ -3,39 +3,52 @@ package ast;
 import cms.util.maybe.Maybe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /** A data structure representing a critter program. */
 public class ProgramImpl extends AbstractNode implements Program
 {
-    private ArrayList<Rule> rules;
+    private List<Node> rules;
 
     public ProgramImpl()
     {
-        rules = new ArrayList<Rule>();
+        rules = new ArrayList<Node>();
     }
 
     @Override
-    public Node clone() {
+    public Node clone()
+    {
         ProgramImpl cloned = new ProgramImpl();
-        for(Node rule : rules){
-            cloned.getChildren().add(rule.clone());
+        for(Node rule : rules)
+        {
+            Rule clonedRule = (Rule) rule.clone();
+            clonedRule.setParent(cloned);
+            cloned.getChildren().add(clonedRule);
         }
         return cloned;
     }
 
     @Override
-    public StringBuilder prettyPrint(StringBuilder sb){
-        
-    }
-
-    public ArrayList<Rule> getRules()
+    public StringBuilder prettyPrint(StringBuilder sb)
     {
-        return rules;
+        return new StringBuilder();
     }
 
     public void addRule(Rule rule)
     {
         rules.add(rule);
+    }
+
+    public void replace(Rule rule, Rule newRule)
+    {
+        for (int i = 0; i < rules.size(); i++)
+        {
+            if (rules.get(i) == rule)
+            {
+                rules.set(i, newRule);
+                break;
+            }
+        }
     }
 
     @Override
@@ -52,6 +65,11 @@ public class ProgramImpl extends AbstractNode implements Program
     public void remove(Rule rule)
     {
         rules.remove(rule);
+    }
+
+    public List<Node> getChildren()
+    {
+        return rules;
     }
 
     @Override

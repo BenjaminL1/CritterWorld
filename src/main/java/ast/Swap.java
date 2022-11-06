@@ -39,11 +39,7 @@ public class Swap extends AbstractMutation
             {
                 return false;
             }
-            if (n instanceof Command && n.getChildren().get(size - 1) instanceof Action && size == 2)
-            {
-                return false;
-            }
-            return true;
+            return !(n instanceof Command && n.getChildren().get(size - 1) instanceof Action && size == 2);
         }
         return false;
     }

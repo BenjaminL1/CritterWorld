@@ -17,7 +17,11 @@ public class Rule extends AbstractNode {
     }
     @Override
     public Node clone(){
-        Rule cloned = new Rule((Condition)this.condition.clone(), (Command) this.command.clone());
+        Condition clonedCondition = (Condition)this.condition.clone();
+        Command clonedCommand = (Command) this.command.clone();
+        Rule cloned = new Rule(clonedCondition, clonedCommand);
+        clonedCondition.setParent(cloned);
+        clonedCommand.setParent(cloned);
         return cloned;
     }
 

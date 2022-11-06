@@ -15,9 +15,27 @@ public class Action extends AbstractNode
         this.name = name;
     }
 
-    public Action(TokenType name, Expr value){
+    public Action(TokenType name, Expr value)
+    {
         this.name = name;
         this.value = value;
+    }
+
+    @Override
+    public Node clone()
+    {
+        Action ret;
+        if (value != null)
+        {
+            Expr clonedValue = (Expr) (value.clone());
+            ret = new Action(name, clonedValue);
+            clonedValue.setParent(ret);
+        }
+        else
+        {
+            ret = new Action(name);
+        }
+        return ret;
     }
 
     public List<Node> getChildren()

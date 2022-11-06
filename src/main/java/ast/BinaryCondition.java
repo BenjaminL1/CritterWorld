@@ -25,13 +25,6 @@ public class BinaryCondition extends Condition
 
     }
 
-    @Override
-    public Node clone()
-    {
-        BinaryCondition cloned = new BinaryCondition((Condition)this.l.clone(), this.op, (Condition)this.r.clone());
-        return cloned;
-    }
-
     /** An enumeration of all possible binary condition operators. */
     public enum Operator
     {
@@ -77,6 +70,16 @@ public class BinaryCondition extends Condition
         return list;
     }
 
+    @Override
+    public Node clone()
+    {
+        Condition clonedLeft = (Condition) this.l.clone();
+        Condition clonedRight = (Condition)this.r.clone();
+        BinaryCondition cloned = new BinaryCondition(clonedLeft, this.op, clonedRight);
+        clonedLeft.setParent(cloned);
+        clonedRight.setParent(cloned);
+        return cloned;
+    }
 
     @Override
     public String toString(){

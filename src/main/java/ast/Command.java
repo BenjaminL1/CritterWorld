@@ -13,9 +13,11 @@ public class Command extends AbstractNode
         children = new LinkedList<>();
     }
 
-    public Node cloned(){
+    public Node clone()
+    {
         Command cloned = new Command();
-        for(Node child : this.children){
+        for(Node child : this.children)
+        {
             cloned.getChildren().add(child.clone());
         }
         return cloned;
@@ -34,6 +36,26 @@ public class Command extends AbstractNode
     public void remove(Node node)
     {
         children.remove(node);
+    }
+
+    public void replace(Update update, Update newUpdate)
+    {
+        for (int i = 0; i < children.size(); i++)
+        {
+            if (children.get(i) == update)
+            {
+                children.set(i, newUpdate);
+                break;
+            }
+        }
+    }
+    public void replace(Action action, Action newAction)
+    {
+        int size = children.size();
+        if (children.get(size - 1) == action)
+        {
+            children.set(size - 1, newAction);
+        }
     }
 
     @Override

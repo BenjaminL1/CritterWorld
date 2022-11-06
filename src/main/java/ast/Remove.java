@@ -35,24 +35,14 @@ public class Remove extends AbstractMutation
         }
         else if (n instanceof Rule)
         {
-            if (((Rule) n).getParent().size() > 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return ((Rule) n).getParent().size() > 1;
         }
         else if (n instanceof Update || n instanceof Action)
         {
             Node parent = ((AbstractNode) n).getParent();
-            return ((Command) parent).getChildren().size() > 1 ? true : false;
+            return ((Command) parent).getChildren().size() > 1;
         }
-        else
-        {
-            return true;
-        }
+        return true;
     }
 
     @Override
@@ -199,10 +189,10 @@ public class Remove extends AbstractMutation
                     ((Action) parent).changeExpr(node.getRight());
                 }
             }
-            else
-            {
-                throw new UnsupportedOperationException();
-            }
+//            else
+//            {
+//                throw new UnsupportedOperationException();
+//            }
         }
         else if (parent instanceof Mem)
         {

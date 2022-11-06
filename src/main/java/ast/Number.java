@@ -9,7 +9,8 @@ public class Number extends Expr
         this.num = num;
     }
 
-    public Node clone(){
+    public Node clone()
+    {
         return new Number(this.getNum());
     }
 
@@ -21,37 +22,6 @@ public class Number extends Expr
     public void changeNum(int newNum)
     {
         num = newNum;
-    }
-
-    public void changeSign()
-    {
-        num *= -1;
-    }
-
-    public void add(Number term)
-    {
-        num += term.getNum();
-    }
-
-    public void subtract(Number term)
-    {
-        num -= term.getNum();
-    }
-
-
-    public void multiply(Number factor)
-    {
-        num *= factor.getNum();
-    }
-
-    public void divide(Number factor)
-    {
-        num /= factor.getNum();
-    }
-
-    public void mod(Number factor)
-    {
-        num %= factor.getNum();
     }
 
     @Override

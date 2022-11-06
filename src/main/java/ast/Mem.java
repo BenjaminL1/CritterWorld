@@ -2,6 +2,9 @@ package ast;
 
 import parse.TokenType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Mem extends Expr
 {
     Expr e;
@@ -59,7 +62,16 @@ public class Mem extends Expr
     public Node clone()
     {
         Mem cloned = new Mem((Expr)this.e.clone());
+        cloned.setParent(this.getParent());
         return cloned;
+    }
+
+    @Override
+    public List<Node> getChildren()
+    {
+        List<Node> children = new ArrayList<Node>();
+        children.add(e);
+        return children;
     }
 
 
