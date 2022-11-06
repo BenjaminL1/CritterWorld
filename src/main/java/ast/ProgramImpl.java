@@ -23,6 +23,11 @@ public class ProgramImpl extends AbstractNode implements Program
         return cloned;
     }
 
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb){
+        
+    }
+
     public ArrayList<Rule> getRules()
     {
         return rules;

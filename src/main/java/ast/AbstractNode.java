@@ -13,6 +13,8 @@ public abstract class AbstractNode implements Node
     }
 
 
+    public abstract StringBuilder prettyPrint(Stringbuilder sb);
+
     @Override
     public int size()
     {
@@ -52,7 +54,6 @@ public abstract class AbstractNode implements Node
     @Override
     public Node clone()
     {
-//        Node cloned =
         return null;
     }
 
