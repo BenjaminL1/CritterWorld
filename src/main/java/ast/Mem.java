@@ -56,8 +56,10 @@ public class Mem extends Expr
     }
 
     @Override
-    public Node clone(){
+    public Node clone()
+    {
         Mem cloned = new Mem((Expr)this.e.clone());
+        return cloned;
     }
 
 
