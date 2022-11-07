@@ -78,7 +78,7 @@ public class Mem extends Expr
     @Override
     public StringBuilder prettyPrint(StringBuilder sb) {
         sb.append("mem[");
-        sb.append(this.e.prettyPrint(sb));
+        this.e.prettyPrint(sb);
         sb.append("]");
         return sb;
     }

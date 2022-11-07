@@ -36,7 +36,7 @@ public class NearbySensor extends Sensor
     @Override
     public StringBuilder prettyPrint(StringBuilder sb) {
         sb.append("nearby[");
-        sb.append(e.prettyPrint(sb));
+        e.prettyPrint(sb);
         sb.append("]");
         return sb;
     }

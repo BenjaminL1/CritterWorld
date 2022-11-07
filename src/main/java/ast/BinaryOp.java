@@ -46,20 +46,20 @@ public class BinaryOp extends Expr
             BinaryOp temp = (BinaryOp) this.getParent();
             if(temp.getOp().equals(TokenCategory.MULOP) && this.op.equals(TokenCategory.ADDOP)){
                 sb.append("{");
-                sb.append(getLeft().prettyPrint(sb));
+                getLeft().prettyPrint(sb);
                 sb.append(" ");
                 sb.append(op.toString());
                 sb.append(" ");
-                sb.append(getRight().prettyPrint(sb));
+                getRight().prettyPrint(sb);
                 sb.append("}");
                 return sb;
             }
         }
-        sb.append(getLeft().prettyPrint(sb));
+        getLeft().prettyPrint(sb);
         sb.append(" ");
         sb.append(op.toString());
         sb.append(" ");
-        sb.append(getRight().prettyPrint(sb));
+        getRight().prettyPrint(sb);
         return sb;
     }
 

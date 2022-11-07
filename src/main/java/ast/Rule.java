@@ -27,9 +27,9 @@ public class Rule extends AbstractNode {
 
     @Override
     public StringBuilder prettyPrint(StringBuilder sb) {
-        sb.append(condition.prettyPrint(sb));
+        condition.prettyPrint(sb);
         sb.append((" --> "));
-        sb.append(command.prettyPrint(sb));
+        command.prettyPrint(sb);
 
         return sb;
     }

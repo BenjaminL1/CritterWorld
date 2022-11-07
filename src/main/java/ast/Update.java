@@ -26,6 +26,14 @@ public class Update extends AbstractNode
         return cloned;
     }
 
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb) {
+        memType.prettyPrint(sb);
+        sb.append(" := ");
+        updateValue.prettyPrint(sb);
+        return sb;
+    }
+
     public Mem getMemType()
     {
         return memType;

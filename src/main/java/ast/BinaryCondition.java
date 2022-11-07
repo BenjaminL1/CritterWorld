@@ -94,20 +94,20 @@ public class BinaryCondition extends Condition
             BinaryCondition temp = (BinaryCondition) this.getParent();
             if(temp.getOp() == Operator.AND && this.op == Operator.OR){
                 sb.append("{");
-                sb.append(getLeft().prettyPrint(sb));
+                getLeft().prettyPrint(sb);
                 sb.append(" ");
                 sb.append(op.toString());
                 sb.append(" ");
-                sb.append(getRight().prettyPrint(sb));
+                getRight().prettyPrint(sb);
                 sb.append("}");
                 return sb;
             }
         }
-        sb.append(getLeft().prettyPrint(sb));
+        getLeft().prettyPrint(sb);
         sb.append(" ");
         sb.append(op.toString());
         sb.append(" ");
-        sb.append(getRight().prettyPrint(sb));
+        getRight().prettyPrint(sb);
         return sb;
     }
 

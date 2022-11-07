@@ -32,7 +32,7 @@ public class ProgramImpl extends AbstractNode implements Program
     public StringBuilder prettyPrint(StringBuilder sb)
     {
         for(Node child : getChildren()){
-            sb.append(child.prettyPrint(sb));
+            child.prettyPrint(sb);
             sb.append(";");
             sb.append(System.lineSeparator());
         }

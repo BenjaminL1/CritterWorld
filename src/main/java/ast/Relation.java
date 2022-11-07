@@ -74,11 +74,11 @@ public class Relation extends Condition
 
     @Override
     public StringBuilder prettyPrint(StringBuilder sb) {
-        sb.append(left.prettyPrint(sb));
+        left.prettyPrint(sb);
         sb.append(" ");
         sb.append(rel.toString());
         sb.append(" ");
-        sb.append(right.prettyPrint(sb));
+        right.prettyPrint(sb);
         return sb;
     }
 

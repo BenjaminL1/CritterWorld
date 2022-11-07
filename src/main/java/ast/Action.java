@@ -54,7 +54,7 @@ public class Action extends AbstractNode
         }
         sb.append(name.toString());
         sb.append("[");
-        sb.append(value.prettyPrint(sb));
+        value.prettyPrint(sb);
         sb.append("]");
         return sb;
     }

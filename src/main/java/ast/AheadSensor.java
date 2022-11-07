@@ -38,7 +38,7 @@ public class AheadSensor extends Sensor
     @Override
     public StringBuilder prettyPrint(StringBuilder sb) {
         sb.append("ahead[");
-        sb.append(e.prettyPrint(sb));
+        e.prettyPrint(sb);
         sb.append("]");
         return sb;
     }

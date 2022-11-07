@@ -34,9 +34,9 @@ public class NegativeExpr extends Expr
 
     @Override
     public StringBuilder prettyPrint(StringBuilder sb) {
-        sb.append(negativeNode.prettyPrint(sb));
+        negativeNode.prettyPrint(sb);
         sb.append(" ");
-        sb.append(factor.prettyPrint(sb));
+        factor.prettyPrint(sb);
         return sb;
     }
 
