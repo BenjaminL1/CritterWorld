@@ -14,7 +14,8 @@ import java.util.List;
  * @version
  * Class invariant: The global variable op must be of TokenCategory ADDOP or MULOP
  */
-public class BinaryOp extends Expr {
+public class BinaryOp extends Expr
+{
     private Expr left;
     private TokenType op;
     private Expr right;
@@ -37,6 +38,8 @@ public class BinaryOp extends Expr {
         return cloned;
     }
 
+
+
     public Expr getLeft()
     {
         return left;
@@ -55,6 +58,11 @@ public class BinaryOp extends Expr {
     public void changeLeft(Expr l)
     {
         left = l;
+    }
+
+    public void changeOp(TokenType newOp)
+    {
+        op = newOp;
     }
 
     public void changeRight(Expr r)

@@ -52,6 +52,11 @@ public class BinaryCondition extends Condition
         l = left;
     }
 
+    public void changeOp(Operator newOp)
+    {
+        op = newOp;
+    }
+
     public void changeRight(Condition right)
     {
         r = right;
@@ -82,12 +87,38 @@ public class BinaryCondition extends Condition
     }
 
     @Override
-    public String toString(){
-        // TODO
-        return null;
+    public StringBuilder prettyPrint(StringBuilder sb)
+    {
+        if(this.getParent() instanceof BinaryCondition)
+        {
+            BinaryCondition temp = (BinaryCondition) this.getParent();
+            if(temp.getOp() == Operator.AND && this.op == Operator.OR){
+                sb.append("{");
+                sb.append(getLeft().prettyPrint(sb));
+                sb.append(" ");
+                sb.append(op.toString());
+                sb.append(" ");
+                sb.append(getRight().prettyPrint(sb));
+                sb.append("}");
+                return sb;
+            }
+        }
+        sb.append(getLeft().prettyPrint(sb));
+        sb.append(" ");
+        sb.append(op.toString());
+        sb.append(" ");
+        sb.append(getRight().prettyPrint(sb));
+        return sb;
     }
 
-    public boolean classInv() {
+    @Override
+    public String toString()
+    {
+        return this.prettyPrint(new StringBuilder()).toString();
+    }
+
+    public boolean classInv()
+    {
         // TODO
         return false;
     }

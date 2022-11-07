@@ -1,5 +1,7 @@
 package ast;
 
+import java.util.List;
+
 public class NearbySensor extends Sensor
 {
     Expr e;
@@ -20,9 +22,16 @@ public class NearbySensor extends Sensor
 
     @Override
     public Node clone(){
-        return new NearbySensor((Expr) this.e.clone());
+        Expr clonedExpr = (Expr) this.e.clone();
+        NearbySensor cloned = new NearbySensor(clonedExpr);
+        clonedExpr.setParent(cloned);
+        return cloned;
     }
 
+    @Override
+    public List<Node> getChildren() {
+        return null;
+    }
 
     @Override
     public void accept(Visitor v)

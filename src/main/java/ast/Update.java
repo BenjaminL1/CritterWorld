@@ -19,7 +19,10 @@ public class Update extends AbstractNode
 
     @Override
     public Node clone(){
-        Update cloned = new Update((Mem)this.memType.clone(), (Expr)this.updateValue.clone());
+        Mem clonedMem = (Mem)this.memType.clone();
+        Expr clonedExpr = (Expr)this.updateValue.clone();
+        Update cloned = new Update(clonedMem, clonedExpr);
+
         return cloned;
     }
 
@@ -31,6 +34,11 @@ public class Update extends AbstractNode
     public Expr getExpr()
     {
         return updateValue;
+    }
+
+    public void changeMemType(Mem newMem)
+    {
+        memType = newMem;
     }
 
     public void changeExpr(Expr e)
@@ -45,12 +53,14 @@ public class Update extends AbstractNode
     }
 
     @Override
-    public NodeCategory getCategory() {
+    public NodeCategory getCategory()
+    {
         return null;
     }
 
     @Override
-    public boolean classInv() {
+    public boolean classInv()
+    {
         return false;
     }
 

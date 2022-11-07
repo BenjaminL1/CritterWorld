@@ -1,5 +1,7 @@
 package ast;
 
+import java.util.List;
+
 public class AheadSensor extends Sensor
 {
 
@@ -22,7 +24,21 @@ public class AheadSensor extends Sensor
 
     @Override
     public Node clone(){
-        return new AheadSensor((Expr) this.e.clone());
+        Expr clonedExpr = (Expr) this.e.clone();
+        AheadSensor cloned = new AheadSensor(clonedExpr);
+        clonedExpr.setParent(cloned);
+        return cloned;
+    }
+
+    @Override
+    public List<Node> getChildren() {
+        return null;
+    }
+
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb) {
+        sb.append("ahead[" + e.prettyPrint(sb) + "]");
+        return sb;
     }
 
     @Override

@@ -25,6 +25,12 @@ public class Rule extends AbstractNode {
         return cloned;
     }
 
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb) {
+        sb.append(condition.prettyPrint(sb) + " --> " + command.prettyPrint(sb) + ";");
+        return sb;
+    }
+
     public Condition getCondition()
     {
         return condition;

@@ -1,5 +1,8 @@
 package ast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NegativeExpr extends Expr
 {
     private Negative negativeNode;
@@ -13,7 +16,26 @@ public class NegativeExpr extends Expr
 
     @Override
     public Node clone(){
-        return new NegativeExpr((Negative) this.negativeNode.clone(), (Expr) this.factor.clone());
+        Negative clonedNegativeNode =  (Negative) this.negativeNode.clone();
+        Expr clonedFactor =  (Expr) this.factor.clone();
+        NegativeExpr cloned = new NegativeExpr(clonedNegativeNode, clonedFactor);
+        clonedNegativeNode.setParent(cloned);
+        clonedFactor.setParent(cloned);
+        return cloned;
+    }
+
+    @Override
+    public List<Node> getChildren() {
+        ArrayList<Node> children = new ArrayList<>();
+        children.add(negativeNode);
+        children.add(factor);
+        return children;
+    }
+
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb) {
+        sb.append(negativeNode.prettyPrint(sb) + " " + factor.prettyPrint(sb));
+        return sb;
     }
 
     public Negative getLeft()

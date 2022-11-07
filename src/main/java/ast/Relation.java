@@ -38,6 +38,11 @@ public class Relation extends Condition
         left = l;
     }
 
+    public void changeRel(TokenType newRel)
+    {
+        rel = newRel;
+    }
+
     public void changeRight(Expr r)
     {
         right = r;
@@ -49,11 +54,28 @@ public class Relation extends Condition
         return null;
     }
 
+    @Override
+    public Node clone()
+    {
+        Expr lClone = (Expr) left.clone();
+        Expr rClone = (Expr) right.clone();
+        Relation ret = new Relation(lClone, rel, rClone);
+        lClone.setParent(ret);
+        rClone.setParent(ret);
+        return ret;
+    }
+
     public List<Node> getChildren(){
         List<Node> list = new ArrayList<Node>();
         list.add(left);
         list.add(right);
         return list;
+    }
+
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb) {
+        sb.append(left.prettyPrint(sb) + " " + rel.toString() + right.prettyPrint(sb));
+        return sb;
     }
 
     public void accept(Visitor v)

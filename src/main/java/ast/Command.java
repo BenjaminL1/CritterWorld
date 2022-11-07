@@ -13,19 +13,39 @@ public class Command extends AbstractNode
         children = new LinkedList<>();
     }
 
+    @Override
     public Node clone()
     {
         Command cloned = new Command();
         for(Node child : this.children)
         {
-            cloned.getChildren().add(child.clone());
+            if(child.getClass() == Update.class){
+                Update clonedChild = (Update) child.clone();
+                cloned.getChildren().add(clonedChild);
+                clonedChild.setParent(cloned);
+            }
+
+            else if(child.getClass() == Action.class){
+                Action clonedAction = (Action) child.clone();
+                cloned.getChildren().add(clonedAction);
+                clonedAction.setParent(cloned);
+
+            }
+
+
         }
         return cloned;
     }
 
+    @Override
     public List<Node> getChildren()
     {
         return children;
+    }
+
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb) {
+        return null;
     }
 
     public void add(Node node)

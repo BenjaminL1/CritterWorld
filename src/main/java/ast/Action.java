@@ -38,11 +38,22 @@ public class Action extends AbstractNode
         return ret;
     }
 
+    @Override
     public List<Node> getChildren()
     {
         List<Node> list = new ArrayList<Node>();
         list.add(value);
         return list;
+    }
+
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb) {
+        if(value == null){
+            sb.append(name.toString());
+            return sb;
+        }
+        sb.append(name.toString() + "[" + value.prettyPrint(sb) + "]");
+        return sb;
     }
 
     public TokenType getName()
@@ -53,6 +64,11 @@ public class Action extends AbstractNode
     public Expr getExpr()
     {
         return value;
+    }
+
+    public void changeName(TokenType n)
+    {
+        name = n;
     }
 
     public void changeExpr(Expr e)

@@ -3,6 +3,7 @@ package ast;
 import cms.util.maybe.Maybe;
 import parse.TokenType;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class Replace extends SearchMutation
@@ -274,7 +275,24 @@ public class Replace extends SearchMutation
         }
         else if (parent instanceof Update)
         {
-            ((Update) parent).changeExpr(clone);
+            if (node == ((Update) parent).getMemType())
+            {
+                Iterator<Node> iter = subtrees.iterator();
+                while (iter.hasNext()) {
+                    if (!(iter.next() instanceof Mem)) {
+                        iter.remove();
+                    }
+                }
+                clone.setParent(null);
+                index = super.pickElement(subtrees);
+                Mem newClone = (Mem) (subtrees.get(index));
+                newClone.setParent(parent);
+                ((Update) parent).changeMemType(newClone);
+            }
+            else
+            {
+                ((Update) parent).changeExpr(clone);
+            }
         }
         else if (parent instanceof Action)
         {

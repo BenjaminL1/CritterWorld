@@ -1,5 +1,8 @@
 package ast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RandomSensor extends Sensor
 {
     Expr e;
@@ -20,9 +23,25 @@ public class RandomSensor extends Sensor
 
     @Override
     public Node clone(){
-        return new RandomSensor((Expr) this.e.clone());
+        Expr clonedExpr = (Expr) this.e.clone();
+        RandomSensor cloned = new RandomSensor(clonedExpr);
+        clonedExpr.setParent(cloned);
+        return cloned;
     }
 
+    @Override
+    public List<Node> getChildren()
+    {
+        List<Node> ret = new ArrayList<Node>();
+        ret.add(e);
+        return ret;
+    }
+
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb) {
+        sb.append("random[" + e.prettyPrint(sb) + "]");
+        return sb;
+    }
 
     @Override
     public void accept(Visitor v)

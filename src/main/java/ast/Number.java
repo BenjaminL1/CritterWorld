@@ -1,5 +1,7 @@
 package ast;
 
+import java.util.List;
+
 public class Number extends Expr
 {
     private int num;
@@ -14,6 +16,12 @@ public class Number extends Expr
         return new Number(this.getNum());
     }
 
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb) {
+        sb.append(num);
+        return sb;
+    }
+
     public int getNum()
     {
         return num;
@@ -22,6 +30,11 @@ public class Number extends Expr
     public void changeNum(int newNum)
     {
         num = newNum;
+    }
+
+    @Override
+    public List<Node> getChildren() {
+        return null;
     }
 
     @Override

@@ -61,8 +61,9 @@ public class Mem extends Expr
     @Override
     public Node clone()
     {
-        Mem cloned = new Mem((Expr)this.e.clone());
-        cloned.setParent(this.getParent());
+        Expr clonedExpression = (Expr)this.e.clone();
+        Mem cloned = new Mem(clonedExpression);
+        clonedExpression.setParent(cloned);
         return cloned;
     }
 
@@ -74,6 +75,11 @@ public class Mem extends Expr
         return children;
     }
 
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb) {
+        sb.append("mem[" + this.e.prettyPrint(sb) + "]");
+        return sb;
+    }
 
     public Expr getExpr()
     {
