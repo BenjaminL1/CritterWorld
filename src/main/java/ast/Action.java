@@ -52,7 +52,10 @@ public class Action extends AbstractNode
             sb.append(name.toString());
             return sb;
         }
-        sb.append(name.toString() + "[" + value.prettyPrint(sb) + "]");
+        sb.append(name.toString());
+        sb.append("[");
+        sb.append(value.prettyPrint(sb));
+        sb.append("]");
         return sb;
     }
 

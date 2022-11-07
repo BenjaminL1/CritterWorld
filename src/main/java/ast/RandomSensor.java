@@ -39,7 +39,9 @@ public class RandomSensor extends Sensor
 
     @Override
     public StringBuilder prettyPrint(StringBuilder sb) {
-        sb.append("random[" + e.prettyPrint(sb) + "]");
+        sb.append("random[");
+        sb.append(e.prettyPrint(sb));
+        sb.append("]");
         return sb;
     }
 

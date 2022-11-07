@@ -1,5 +1,6 @@
 package ast;
 
+import parse.TokenCategory;
 import parse.TokenType;
 
 import java.sql.Array;
@@ -38,7 +39,29 @@ public class BinaryOp extends Expr
         return cloned;
     }
 
-
+    @Override
+    public StringBuilder prettyPrint(StringBuilder sb) {
+        if(this.getParent() instanceof BinaryOp)
+        {
+            BinaryOp temp = (BinaryOp) this.getParent();
+            if(temp.getOp().equals(TokenCategory.MULOP) && this.op.equals(TokenCategory.ADDOP)){
+                sb.append("{");
+                sb.append(getLeft().prettyPrint(sb));
+                sb.append(" ");
+                sb.append(op.toString());
+                sb.append(" ");
+                sb.append(getRight().prettyPrint(sb));
+                sb.append("}");
+                return sb;
+            }
+        }
+        sb.append(getLeft().prettyPrint(sb));
+        sb.append(" ");
+        sb.append(op.toString());
+        sb.append(" ");
+        sb.append(getRight().prettyPrint(sb));
+        return sb;
+    }
 
     public Expr getLeft()
     {

@@ -45,7 +45,11 @@ public class Command extends AbstractNode
 
     @Override
     public StringBuilder prettyPrint(StringBuilder sb) {
-        return null;
+        for(Node child : this.children){
+            sb.append(child.prettyPrint(sb));
+            sb.append(" ");
+        }
+        return sb;
     }
 
     public void add(Node node)

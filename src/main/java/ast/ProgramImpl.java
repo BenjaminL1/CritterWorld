@@ -31,7 +31,12 @@ public class ProgramImpl extends AbstractNode implements Program
     @Override
     public StringBuilder prettyPrint(StringBuilder sb)
     {
-        return new StringBuilder();
+        for(Node child : getChildren()){
+            sb.append(child.prettyPrint(sb));
+            sb.append(";");
+            sb.append(System.lineSeparator());
+        }
+        return sb;
     }
 
     public void addRule(Rule rule)
