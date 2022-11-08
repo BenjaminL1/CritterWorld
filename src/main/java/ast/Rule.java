@@ -76,8 +76,7 @@ public class Rule extends AbstractNode {
 
     public boolean classInv()
     {
-        // TODO implement/override
-        return false;
+       return condition.classInv() && command.classInv();
     }
 
     public void accept(Visitor v)

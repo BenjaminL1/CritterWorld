@@ -118,6 +118,6 @@ public class BinaryOp extends Expr
     @Override
     public boolean classInv()
     {
-        return false;
+        return (left.classInv() && op != null && right.classInv());
     }
 }

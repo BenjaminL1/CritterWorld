@@ -96,7 +96,8 @@ public class Action extends AbstractNode
 
     @Override
     public boolean classInv() {
-        return false;
+        if(name != TokenType.SMELL) return name != null;
+        else return (name != null && value.classInv());
     }
 
     public void accept(Visitor v)

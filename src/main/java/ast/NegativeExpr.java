@@ -70,6 +70,6 @@ public class NegativeExpr extends Expr
     @Override
     public boolean classInv()
     {
-        return false;
+        return (negativeNode.classInv() && factor.classInv());
     }
 }
