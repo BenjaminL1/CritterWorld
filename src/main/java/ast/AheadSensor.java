@@ -11,6 +11,7 @@ public class AheadSensor extends Sensor
     public AheadSensor(Expr e)
     {
         this.e = e;
+        e.setParent(this);
     }
 
     public Expr getExpr()
@@ -20,7 +21,9 @@ public class AheadSensor extends Sensor
 
     public void changeExpr(Expr e)
     {
+        this.e.setParent(null);
         this.e = e;
+        this.e.setParent(this);
     }
 
     @Override

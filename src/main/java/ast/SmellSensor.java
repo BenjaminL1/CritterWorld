@@ -5,7 +5,8 @@ import java.util.List;
 public class SmellSensor extends Sensor
 {
     @Override
-    public StringBuilder prettyPrint(StringBuilder sb) {
+    public StringBuilder prettyPrint(StringBuilder sb)
+    {
         sb.append("smell");
         return sb;
     }

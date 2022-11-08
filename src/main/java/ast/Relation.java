@@ -16,6 +16,8 @@ public class Relation extends Condition
         this.left = left;
         this.rel = rel;
         this.right = right;
+        this.left.setParent(this);
+        this.right.setParent(this);
     }
 
     public Expr getLeft()
@@ -35,7 +37,9 @@ public class Relation extends Condition
 
     public void changeLeft(Expr l)
     {
+        left.setParent(null);
         left = l;
+        left.setParent(this);
     }
 
     public void changeRel(TokenType newRel)
@@ -45,7 +49,9 @@ public class Relation extends Condition
 
     public void changeRight(Expr r)
     {
+        right.setParent(null);
         right = r;
+        right.setParent(this);
     }
 
 

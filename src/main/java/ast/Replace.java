@@ -29,7 +29,7 @@ public class Replace extends SearchMutation
     @Override
     public boolean canApply(Node n)
     {
-        return n instanceof ProgramImpl || n instanceof Negative;
+        return !(n instanceof ProgramImpl || n instanceof Negative);
     }
 
     @Override

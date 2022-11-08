@@ -8,6 +8,7 @@ public class NearbySensor extends Sensor
     public NearbySensor(Expr e)
     {
         this.e = e;
+        e.setParent(this);
     }
 
     public Expr getExpr()
@@ -17,7 +18,9 @@ public class NearbySensor extends Sensor
 
     public void changeExpr(Expr e)
     {
+        this.e.setParent(null);
         this.e = e;
+        this.e.setParent(this);
     }
 
     @Override

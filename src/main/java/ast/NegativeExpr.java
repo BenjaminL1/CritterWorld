@@ -12,6 +12,8 @@ public class NegativeExpr extends Expr
     {
         this.negativeNode = negativeNode;
         this.factor = factor;
+        this.negativeNode.setParent(this);
+        this.factor.setParent(this);
     }
 
     @Override
@@ -52,7 +54,9 @@ public class NegativeExpr extends Expr
 
     public void changeRight(Expr newFactor)
     {
+        factor.setParent(null);
         factor = newFactor;
+        factor.setParent(this);
     }
 
     @Override

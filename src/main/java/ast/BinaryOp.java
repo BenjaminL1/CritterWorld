@@ -26,6 +26,8 @@ public class BinaryOp extends Expr
         this.left = left;
         this.op = op;
         this.right = right;
+        this.left.setParent(this);
+        this.right.setParent(this);
     }
 
     @Override
@@ -83,7 +85,9 @@ public class BinaryOp extends Expr
 
     public void changeLeft(Expr l)
     {
+        left.setParent(null);
         left = l;
+        left.setParent(this);
     }
 
     public void changeOp(TokenType newOp)
@@ -93,7 +97,9 @@ public class BinaryOp extends Expr
 
     public void changeRight(Expr r)
     {
+        right.setParent(null);
         right = r;
+        right.setParent(this);
     }
 
     public void accept(Visitor v)

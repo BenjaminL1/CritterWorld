@@ -55,11 +55,13 @@ public class Command extends AbstractNode
     public void add(Node node)
     {
         children.add(node);
+        ((AbstractNode) node).setParent(this);
     }
 
     public void remove(Node node)
     {
         children.remove(node);
+        ((AbstractNode) node).setParent(null);
     }
 
     public void replace(Update update, Update newUpdate)
@@ -69,6 +71,8 @@ public class Command extends AbstractNode
             if (children.get(i) == update)
             {
                 children.set(i, newUpdate);
+                update.setParent(null);
+                newUpdate.setParent(this);
                 break;
             }
         }
@@ -79,6 +83,8 @@ public class Command extends AbstractNode
         if (children.get(size - 1) == action)
         {
             children.set(size - 1, newAction);
+            action.setParent(null);
+            newAction.setParent(this);
         }
     }
 

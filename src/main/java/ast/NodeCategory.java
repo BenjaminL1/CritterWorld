@@ -1,6 +1,7 @@
 package ast;
 
-public enum NodeCategory {
+public enum NodeCategory
+{
     PROGRAM,
     RULE,
     COMMAND,

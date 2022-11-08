@@ -26,7 +26,10 @@ public abstract class SearchMutation extends AbstractMutation
             {
                 subtrees.add(head);
             }
-            queue.addAll(head.getChildren());
+            if (head.getChildren() != null)
+            {
+                queue.addAll(head.getChildren());
+            }
         }
         return subtrees;
     }

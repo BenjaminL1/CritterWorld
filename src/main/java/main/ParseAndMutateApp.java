@@ -39,7 +39,6 @@ public class ParseAndMutateApp
             InputStream in = ClassLoader.getSystemResourceAsStream(file);
             Reader r = new BufferedReader(new InputStreamReader(in));
             Parser parser = ParserFactory.getParser();
-            StringBuilder sb = new StringBuilder();
 
             try
             {
@@ -78,8 +77,7 @@ public class ParseAndMutateApp
                         mut.apply(prog, target);
                     }
                 }
-                prog.prettyPrint(sb);
-                System.out.println(sb.toString());
+                System.out.println(prog);
             }
             catch(SyntaxError e)
             {

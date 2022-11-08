@@ -15,6 +15,8 @@ public class Update extends AbstractNode
     {
         this.memType = memType;
         this.updateValue = updateValue;
+        this.memType.setParent(this);
+        this.updateValue.setParent(this);
     }
 
     @Override
@@ -46,18 +48,22 @@ public class Update extends AbstractNode
 
     public void changeMemType(Mem newMem)
     {
+        memType.setParent(null);
         memType = newMem;
+        memType.setParent(this);
     }
 
     public void changeExpr(Expr e)
     {
+        updateValue.setParent(null);
         updateValue = e;
+        updateValue.setParent(this);
     }
 
     @Override
     public NodeCategory getCategory()
     {
-        return null;
+        return NodeCategory.COMMAND;
     }
 
     @Override
@@ -66,7 +72,8 @@ public class Update extends AbstractNode
         return false;
     }
 
-    public List<Node> getChildren(){
+    public List<Node> getChildren()
+    {
         List<Node> list = new ArrayList<Node>();
         list.add(memType);
         list.add(updateValue);

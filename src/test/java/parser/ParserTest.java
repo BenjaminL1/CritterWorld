@@ -49,12 +49,14 @@ public class ParserTest
             Program prog = parser.parse(r);
             Node target = prog.nodeAt((int) (Math.random() * prog.size()));
             System.out.println();
+            System.out.println("--TEST REMOVE--");
+            System.out.println();
             System.out.println(target.toString());
             System.out.println(target.getClass());
             System.out.println();
             System.out.println(mut.canApply(target));
             System.out.println();
-            System.out.println(((AbstractNode) target).getParent());
+            System.out.println("PARENT: " + ((AbstractNode) target).getParent());
             System.out.println(((AbstractNode) target).getParent().getClass());
             System.out.println();
             mut.apply(prog, target);
@@ -78,13 +80,14 @@ public class ParserTest
             Program prog = parser.parse(r);
             Node target = prog.nodeAt((int) (Math.random() * prog.size()));
             System.out.println();
+            System.out.println("--TEST SWAP--");
+            System.out.println();
             System.out.println(target.toString());
             System.out.println(target.getClass());
             System.out.println();
             System.out.println(mut.canApply(target));
             System.out.println();
-            System.out.println(((AbstractNode) target).getParent());
-            System.out.println(((AbstractNode) target).getParent().getClass());
+            System.out.println("CHILDREN: " + target.getChildren());
             System.out.println();
             mut.apply(prog, target);
             System.out.println(prog);
@@ -107,12 +110,14 @@ public class ParserTest
             Program prog = parser.parse(r);
             Node target = prog.nodeAt((int) (Math.random() * prog.size()));
             System.out.println();
+            System.out.println("--TEST REPLACE--");
+            System.out.println();
             System.out.println(target.toString());
             System.out.println(target.getClass());
             System.out.println();
             System.out.println(mut.canApply(target));
             System.out.println();
-            System.out.println(((AbstractNode) target).getParent());
+            System.out.println("PARENT: " + ((AbstractNode) target).getParent());
             System.out.println(((AbstractNode) target).getParent().getClass());
             System.out.println();
             mut.apply(prog, target);
@@ -135,6 +140,8 @@ public class ParserTest
         {
             Program prog = parser.parse(r);
             Node target = prog.nodeAt((int) (Math.random() * prog.size()));
+            System.out.println();
+            System.out.println("--TEST TRANSFORM--");
             System.out.println();
             System.out.println(target.toString());
             System.out.println(target.getClass());
@@ -165,6 +172,8 @@ public class ParserTest
             Program prog = parser.parse(r);
             Node target = prog.nodeAt((int) (Math.random() * prog.size()));
             System.out.println();
+            System.out.println("--TEST TRANSFORM--");
+            System.out.println();
             System.out.println(target.toString());
             System.out.println(target.getClass());
             System.out.println();
@@ -193,6 +202,8 @@ public class ParserTest
         {
             Program prog = parser.parse(r);
             Node target = prog.nodeAt((int) (Math.random() * prog.size()));
+            System.out.println();
+            System.out.println("--TEST DUPLICATE--");
             System.out.println();
             System.out.println(target.toString());
             System.out.println(target.getClass());

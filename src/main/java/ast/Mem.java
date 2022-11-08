@@ -12,6 +12,7 @@ public class Mem extends Expr
     public Mem(Expr e)
     {
         this.e = e;
+        e.setParent(this);
     }
 
     public Mem(TokenType sugar)
@@ -45,6 +46,7 @@ public class Mem extends Expr
         {
             e = new Number(6);
         }
+        e.setParent(this);
     }
 
     public enum Sugar
@@ -90,7 +92,9 @@ public class Mem extends Expr
 
     public void changeExpr(Expr e)
     {
+        this.e.setParent(null);
         this.e = e;
+        this.setParent(this);
     }
 
     @Override

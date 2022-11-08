@@ -99,8 +99,10 @@ class ParserImpl implements Parser
         {
             consume(t, TokenType.MEM);
             consume(t, TokenType.LBRACKET);
-            memNumber = new Mem(parseExpression(t));
+            Expr child = parseExpression(t);
             consume(t, TokenType.RBRACKET);
+            memNumber = new Mem(child);
+            child.setParent(memNumber);
         }
         consume(t, TokenType.ASSIGN);
         Expr memValue = parseExpression(t);
@@ -230,8 +232,10 @@ class ParserImpl implements Parser
         {
             t.next();
             consume(t, TokenType.LBRACKET);
-            Expr ret = new Mem(parseExpression(t));
+            Expr child = parseExpression(t);
             consume(t, TokenType.RBRACKET);
+            Expr ret = new Mem(child);
+            child.setParent(ret);
             return ret;
         }
         else if (t.peek().getType() == TokenType.LPAREN)
@@ -263,24 +267,30 @@ class ParserImpl implements Parser
         {
             t.next();
             consume(t, TokenType.LBRACKET);
-            Expr ret = new NearbySensor(parseExpression(t));
+            Expr child = parseExpression(t);
             consume(t, TokenType.RBRACKET);
+            Expr ret = new NearbySensor(child);
+            child.setParent(ret);
             return ret;
         }
         else if (t.peek().getType() == TokenType.AHEAD)
         {
             t.next();
             consume(t, TokenType.LBRACKET);
-            Expr ret = new AheadSensor(parseExpression(t));
+            Expr child = parseExpression(t);
             consume(t, TokenType.RBRACKET);
+            Expr ret = new AheadSensor(child);
+            child.setParent(ret);
             return ret;
         }
         else if (t.peek().getType() == TokenType.RANDOM)
         {
             t.next();
             consume(t, TokenType.LBRACKET);
-            Expr ret = new RandomSensor(parseExpression(t));
+            Expr child = parseExpression(t);
             consume(t, TokenType.RBRACKET);
+            Expr ret = new RandomSensor(child);
+            child.setParent(ret);
             return ret;
         }
         else if (t.peek().getType() == TokenType.SMELL)
@@ -293,9 +303,6 @@ class ParserImpl implements Parser
             throw new UnsupportedOperationException();
         }
     }
-
-    // TODO
-    // add more as necessary...
 
     /**
      * Consumes a token of the expected type.

@@ -19,6 +19,7 @@ public class Action extends AbstractNode
     {
         this.name = name;
         this.value = value;
+        value.setParent(this);
     }
 
     @Override
@@ -80,7 +81,9 @@ public class Action extends AbstractNode
 
     public void changeExpr(Expr e)
     {
+        value.setParent(null);
         value = e;
+        value.setParent(this);
     }
 
     @Override
@@ -89,8 +92,9 @@ public class Action extends AbstractNode
     }
 
     @Override
-    public NodeCategory getCategory() {
-        return null;
+    public NodeCategory getCategory()
+    {
+        return NodeCategory.ACTION;
     }
 
     @Override

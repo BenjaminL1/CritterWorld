@@ -22,6 +22,8 @@ public class BinaryCondition extends Condition
         this.l = l;
         this.op = op;
         this.r = r;
+        this.l.setParent(this);
+        this.r.setParent(this);
     }
 
     /** An enumeration of all possible binary condition operators. */
@@ -48,7 +50,9 @@ public class BinaryCondition extends Condition
 
     public void changeLeft(Condition left)
     {
+        l.setParent(null);
         l = left;
+        l.setParent(this);
     }
 
     public void changeOp(Operator newOp)
@@ -58,7 +62,9 @@ public class BinaryCondition extends Condition
 
     public void changeRight(Condition right)
     {
+        r.setParent(null);
         r = right;
+        r.setParent(this);
     }
 
     @Override

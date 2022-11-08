@@ -9,6 +9,7 @@ public class RandomSensor extends Sensor
     public RandomSensor(Expr e)
     {
         this.e = e;
+        e.setParent(this);
     }
 
     public Expr getExpr()
@@ -18,7 +19,9 @@ public class RandomSensor extends Sensor
 
     public void changeExpr(Expr e)
     {
+        this.e.setParent(null);
         this.e = e;
+        this.e.setParent(this);
     }
 
     @Override

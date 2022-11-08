@@ -31,7 +31,8 @@ public class ProgramImpl extends AbstractNode implements Program
     @Override
     public StringBuilder prettyPrint(StringBuilder sb)
     {
-        for(Node child : getChildren()){
+        for(Node child : getChildren())
+        {
             child.prettyPrint(sb);
             sb.append(";");
             sb.append(System.lineSeparator());
@@ -42,6 +43,7 @@ public class ProgramImpl extends AbstractNode implements Program
     public void addRule(Rule rule)
     {
         rules.add(rule);
+        rule.setParent(this);
     }
 
     public void replace(Rule rule, Rule newRule)
@@ -51,6 +53,8 @@ public class ProgramImpl extends AbstractNode implements Program
             if (rules.get(i) == rule)
             {
                 rules.set(i, newRule);
+                rule.setParent(null);
+                newRule.setParent(this);
                 break;
             }
         }
@@ -65,6 +69,7 @@ public class ProgramImpl extends AbstractNode implements Program
     public void remove(Rule rule)
     {
         rules.remove(rule);
+        rule.setParent(null);
     }
 
     public List<Node> getChildren()

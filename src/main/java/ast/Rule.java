@@ -14,6 +14,8 @@ public class Rule extends AbstractNode {
     {
         this.condition = condition;
         this.command = command;
+        this.condition.setParent(this);
+        this.command.setParent(this);
     }
     @Override
     public Node clone(){
@@ -44,7 +46,8 @@ public class Rule extends AbstractNode {
         return command;
     }
 
-    public List<Node> getChildren(){
+    public List<Node> getChildren()
+    {
         List<Node> list = new ArrayList<Node>();
         list.add(condition);
         list.add(command);
@@ -53,12 +56,16 @@ public class Rule extends AbstractNode {
 
     public void changeCondition(Condition c)
     {
+        condition.setParent(null);
         condition = c;
+        condition.setParent(this);
     }
 
     public void changeCommand(Command c)
     {
+        command.setParent(null);
         command = c;
+        command.setParent(this);
     }
 
     @Override
