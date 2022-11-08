@@ -22,7 +22,6 @@ public class BinaryCondition extends Condition
         this.l = l;
         this.op = op;
         this.r = r;
-
     }
 
     /** An enumeration of all possible binary condition operators. */
@@ -91,8 +90,9 @@ public class BinaryCondition extends Condition
     {
         if(this.getParent() instanceof BinaryCondition)
         {
-            BinaryCondition temp = (BinaryCondition) this.getParent();
-            if(temp.getOp() == Operator.AND && this.op == Operator.OR){
+            BinaryCondition parent = (BinaryCondition) this.getParent();
+            if(parent.getOp() == Operator.AND && this.op == Operator.OR)
+            {
                 sb.append("{");
                 getLeft().prettyPrint(sb);
                 sb.append(" ");

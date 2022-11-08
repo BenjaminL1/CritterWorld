@@ -20,22 +20,23 @@ public class ParserTest
 {
     /** Checks that a valid critter program is not {@code null} when parsed. */
     @Test
-    public void testProgramIsNotNone() {
-        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter.txt");
+    public void testProgramIsNotNone()
+    {
+        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_2.txt");
         Reader r = new BufferedReader(new InputStreamReader(in));
         Parser parser = ParserFactory.getParser();
         StringBuilder sb = new StringBuilder();
 
-        try{
+        try
+        {
             Program prog = parser.parse(r);
             prog.prettyPrint(sb);
             System.out.println(sb.toString());
         }
-        catch(SyntaxError e){
+        catch(SyntaxError e)
+        {
             fail("A valid program should not have syntax errors");
         }
-
-
     }
 
     // TODO continue adding tests

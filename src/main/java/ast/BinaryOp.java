@@ -40,18 +40,21 @@ public class BinaryOp extends Expr
     }
 
     @Override
-    public StringBuilder prettyPrint(StringBuilder sb) {
-        if(this.getParent() instanceof BinaryOp)
+    public StringBuilder prettyPrint(StringBuilder sb)
+    {
+        if (this.getParent() instanceof BinaryOp)
         {
-            BinaryOp temp = (BinaryOp) this.getParent();
-            if(temp.getOp().equals(TokenCategory.MULOP) && this.op.equals(TokenCategory.ADDOP)){
-                sb.append("{");
+            BinaryOp parent = (BinaryOp) this.getParent();
+            if ((parent.getOp().category() == TokenCategory.MULOP && this.op.category() == TokenCategory.ADDOP)
+                    || (this == parent.getRight() && (parent.getOp().category() == TokenCategory.MULOP || this.op.category() == TokenCategory.ADDOP)))
+            {
+                sb.append("(");
                 getLeft().prettyPrint(sb);
                 sb.append(" ");
                 sb.append(op.toString());
                 sb.append(" ");
                 getRight().prettyPrint(sb);
-                sb.append("}");
+                sb.append(")");
                 return sb;
             }
         }
