@@ -112,7 +112,8 @@ public class BinaryCondition extends Condition
         }
         getLeft().prettyPrint(sb);
         sb.append(" ");
-        sb.append(op.toString());
+        if(op == Operator.OR) sb.append("or");
+        else sb.append("and");
         sb.append(" ");
         getRight().prettyPrint(sb);
         return sb;

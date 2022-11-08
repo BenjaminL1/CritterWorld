@@ -47,7 +47,7 @@ public class Command extends AbstractNode
     public StringBuilder prettyPrint(StringBuilder sb) {
         for(Node child : this.children){
             child.prettyPrint(sb);
-            sb.append(" ");
+            if(child.getClass() != Action.class) sb.append(" ");
         }
         return sb;
     }

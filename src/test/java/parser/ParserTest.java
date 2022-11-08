@@ -58,7 +58,152 @@ public class ParserTest
             System.out.println(((AbstractNode) target).getParent().getClass());
             System.out.println();
             mut.apply(prog, target);
-            System.out.println(prog.toString());
+            System.out.println(prog);
+        }
+        catch(SyntaxError e)
+        {
+            fail("A valid program should not have syntax errors");
+        }
+    }
+
+    @Test
+    public void testSwap()
+    {
+        Mutation mut = MutationFactory.getSwap();
+        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_2.txt");
+        Reader r = new BufferedReader(new InputStreamReader(in));
+        Parser parser = ParserFactory.getParser();
+        try
+        {
+            Program prog = parser.parse(r);
+            Node target = prog.nodeAt((int) (Math.random() * prog.size()));
+            System.out.println();
+            System.out.println(target.toString());
+            System.out.println(target.getClass());
+            System.out.println();
+            System.out.println(mut.canApply(target));
+            System.out.println();
+            System.out.println(((AbstractNode) target).getParent());
+            System.out.println(((AbstractNode) target).getParent().getClass());
+            System.out.println();
+            mut.apply(prog, target);
+            System.out.println(prog);
+        }
+        catch(SyntaxError e)
+        {
+            fail("A valid program should not have syntax errors");
+        }
+    }
+
+    @Test
+    public void testReplace()
+    {
+        Mutation mut = MutationFactory.getReplace();
+        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_2.txt");
+        Reader r = new BufferedReader(new InputStreamReader(in));
+        Parser parser = ParserFactory.getParser();
+        try
+        {
+            Program prog = parser.parse(r);
+            Node target = prog.nodeAt((int) (Math.random() * prog.size()));
+            System.out.println();
+            System.out.println(target.toString());
+            System.out.println(target.getClass());
+            System.out.println();
+            System.out.println(mut.canApply(target));
+            System.out.println();
+            System.out.println(((AbstractNode) target).getParent());
+            System.out.println(((AbstractNode) target).getParent().getClass());
+            System.out.println();
+            mut.apply(prog, target);
+            System.out.println(prog);
+        }
+        catch(SyntaxError e)
+        {
+            fail("A valid program should not have syntax errors");
+        }
+    }
+
+    @Test
+    public void testTransform()
+    {
+        Mutation mut = MutationFactory.getTransform();
+        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_2.txt");
+        Reader r = new BufferedReader(new InputStreamReader(in));
+        Parser parser = ParserFactory.getParser();
+        try
+        {
+            Program prog = parser.parse(r);
+            Node target = prog.nodeAt((int) (Math.random() * prog.size()));
+            System.out.println();
+            System.out.println(target.toString());
+            System.out.println(target.getClass());
+            System.out.println();
+            System.out.println(mut.canApply(target));
+            System.out.println();
+            System.out.println(((AbstractNode) target).getParent());
+            System.out.println(((AbstractNode) target).getParent().getClass());
+            System.out.println();
+            mut.apply(prog, target);
+            System.out.println(prog);
+        }
+        catch(SyntaxError e)
+        {
+            fail("A valid program should not have syntax errors");
+        }
+    }
+
+    @Test
+    public void testInsert()
+    {
+        Mutation mut = MutationFactory.getInsert();
+        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_2.txt");
+        Reader r = new BufferedReader(new InputStreamReader(in));
+        Parser parser = ParserFactory.getParser();
+        try
+        {
+            Program prog = parser.parse(r);
+            Node target = prog.nodeAt((int) (Math.random() * prog.size()));
+            System.out.println();
+            System.out.println(target.toString());
+            System.out.println(target.getClass());
+            System.out.println();
+            System.out.println(mut.canApply(target));
+            System.out.println();
+            System.out.println(((AbstractNode) target).getParent());
+            System.out.println(((AbstractNode) target).getParent().getClass());
+            System.out.println();
+            mut.apply(prog, target);
+            System.out.println(prog);
+        }
+        catch(SyntaxError e)
+        {
+            fail("A valid program should not have syntax errors");
+        }
+    }
+
+    @Test
+    public void testDuplicate()
+    {
+        Mutation mut = MutationFactory.getDuplicate();
+        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_2.txt");
+        Reader r = new BufferedReader(new InputStreamReader(in));
+        Parser parser = ParserFactory.getParser();
+        try
+        {
+            Program prog = parser.parse(r);
+            Node target = prog.nodeAt((int) (Math.random() * prog.size()));
+            System.out.println();
+            System.out.println(target.toString());
+            System.out.println(target.getClass());
+            System.out.println();
+            System.out.println(mut.canApply(target));
+            System.out.println();
+            System.out.println(((AbstractNode) target).getParent());
+            System.out.println(((AbstractNode) target).getParent().getClass());
+            System.out.println();
+            mut.apply(prog, target);
+            System.out.println(prog);
         }
         catch(SyntaxError e)
         {
