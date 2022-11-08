@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Transform extends AbstractMutation
 {
-
+    private Program root;
     @Override
     public boolean equals(Mutation m)
     {
@@ -19,6 +19,7 @@ public class Transform extends AbstractMutation
     {
         if (canApply(node))
         {
+            root = program;
             node.accept(this);
             return Maybe.from(program);
         }

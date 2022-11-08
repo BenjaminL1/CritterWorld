@@ -74,7 +74,8 @@ public class Rule extends AbstractNode {
     }
 
 
-    public boolean classInv() {
+    public boolean classInv()
+    {
         // TODO implement/override
         return false;
     }

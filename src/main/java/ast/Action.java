@@ -52,8 +52,10 @@ public class Action extends AbstractNode
     }
 
     @Override
-    public StringBuilder prettyPrint(StringBuilder sb) {
-        if(value == null){
+    public StringBuilder prettyPrint(StringBuilder sb)
+    {
+        if(value == null)
+        {
             sb.append(name.toString());
             return sb;
         }
@@ -84,11 +86,6 @@ public class Action extends AbstractNode
         value.setParent(null);
         value = e;
         value.setParent(this);
-    }
-
-    @Override
-    public String toString() {
-        return null;
     }
 
     @Override

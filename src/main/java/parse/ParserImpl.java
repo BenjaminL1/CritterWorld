@@ -59,12 +59,10 @@ class ParserImpl implements Parser
     public static Command parseCommand(Tokenizer t) throws SyntaxError
     {
 //        System.out.println("parseCommand");
-        // TODO: fix for update-or-action
         Command command = new Command();
         while(t.peek().getType().category() == TokenCategory.MEMSUGAR || t.peek().getType() == TokenType.MEM
                 || t.peek().getType().category() == TokenCategory.ACTION)
         {
-            // TODO: fix mem
             if(t.peek().getType().category() == TokenCategory.MEMSUGAR || t.peek().getType() == TokenType.MEM)
             {
                 Update update = parseUpdate(t);
@@ -86,7 +84,6 @@ class ParserImpl implements Parser
         return command;
     }
 
-    // TODO: fix to account for memsugars
     public static Update parseUpdate(Tokenizer t) throws SyntaxError
     {
 //        System.out.println("parseUpdate");

@@ -33,6 +33,4 @@ public interface Visitor
     void visit(Update node);
 
     void visit(Action node);
-
-    // TODO create visit class for every node
 }
