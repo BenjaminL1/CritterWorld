@@ -92,7 +92,7 @@ public class Relation extends Condition
     @Override
     public boolean classInv()
     {
-        return false;
+        return (left.classInv() && rel != null && right.classInv());
     }
 
 }

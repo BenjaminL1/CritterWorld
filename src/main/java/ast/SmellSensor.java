@@ -29,6 +29,6 @@ public class SmellSensor extends Sensor
 
     @Override
     public boolean classInv() {
-        return false;
+        return true;
     }
 }

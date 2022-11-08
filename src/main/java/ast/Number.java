@@ -48,6 +48,6 @@ public class Number extends Expr
     @Override
     public boolean classInv()
     {
-        return false;
+        return true;
     }
 }

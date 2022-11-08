@@ -127,7 +127,6 @@ public class BinaryCondition extends Condition
 
     public boolean classInv()
     {
-        // TODO
-        return false;
+        return (l.classInv() && op != null && r.classInv());
     }
 }

@@ -59,6 +59,6 @@ public class AheadSensor extends Sensor
 
     @Override
     public boolean classInv() {
-        return false;
+        return e.classInv();
     }
 }

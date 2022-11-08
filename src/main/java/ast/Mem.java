@@ -107,6 +107,6 @@ public class Mem extends Expr
     @Override
     public boolean classInv()
     {
-        return false;
+        return e.classInv();
     }
 }

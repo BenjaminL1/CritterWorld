@@ -35,6 +35,6 @@ public class Negative extends AbstractNode
     @Override
     public boolean classInv()
     {
-        return false;
+        return true;
     }
 }

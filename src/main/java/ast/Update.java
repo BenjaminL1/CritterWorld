@@ -69,7 +69,7 @@ public class Update extends AbstractNode
     @Override
     public boolean classInv()
     {
-        return false;
+        return memType.classInv() && updateValue.classInv();
     }
 
     public List<Node> getChildren()

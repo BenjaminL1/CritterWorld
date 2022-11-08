@@ -1,5 +1,7 @@
 package ast;
 
+import parse.TokenCategory;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,8 +49,9 @@ public class Command extends AbstractNode
     public StringBuilder prettyPrint(StringBuilder sb) {
         for(Node child : this.children){
             child.prettyPrint(sb);
-            if(child.getClass() != Action.class) sb.append(" ");
+            sb.append(" ");
         }
+        sb.deleteCharAt(sb.length() -1);
         return sb;
     }
 
@@ -91,13 +94,16 @@ public class Command extends AbstractNode
     @Override
     public NodeCategory getCategory()
     {
-        return null;
+        return NodeCategory.COMMAND;
     }
 
     @Override
     public boolean classInv()
     {
-        return false;
+        for(Node child : this.getChildren()){
+            if(child == null || !child.classInv()) return false;
+        }
+        return true;
     }
 
     public void accept(Visitor v)

@@ -3,7 +3,9 @@ package ast;
 import cms.util.maybe.Maybe;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /** A data structure representing a critter program. */
 public class ProgramImpl extends AbstractNode implements Program
@@ -80,8 +82,42 @@ public class ProgramImpl extends AbstractNode implements Program
     @Override
     public Program mutate()
     {
-        // TODO Auto-generated method stub
-        return null;
+        int randomMut = (int)(Math.random() * 6);
+        int randomNode = (int)(Math.random() * this.size());
+        Mutation m;
+
+        if(randomMut == 0)
+        {
+            m = MutationFactory.getRemove();
+        }
+
+        else if(randomMut == 1)
+        {
+            m = MutationFactory.getSwap();
+        }
+
+        else if(randomMut == 2)
+        {
+            m = MutationFactory.getReplace();
+        }
+
+        else if(randomMut == 3)
+        {
+            m = MutationFactory.getTransform();
+        }
+
+        else if(randomMut == 4)
+        {
+            m = MutationFactory.getInsert();
+        }
+
+        else
+        {
+            m = MutationFactory.getDuplicate();
+        }
+
+        m.apply(this, this.nodeAt(randomNode));
+        return this;
     }
 
     @Override
@@ -93,8 +129,19 @@ public class ProgramImpl extends AbstractNode implements Program
     @Override
     public Maybe<Node> findNodeOfType(NodeCategory type)
     {
-        // TODO Auto-generated method stub
-        return null;
+        Queue<Node> queue = new LinkedList<Node>();
+        queue.add(this);
+        while (queue.peek() != null)
+        {
+            Node head = queue.poll();
+            if(head.getCategory() == type) return Maybe.from(head);
+            List<Node> children = head.getChildren();
+            if (children != null)
+            {
+                queue.addAll(children);
+            }
+        }
+        return Maybe.none();
     }
 
     @Override
@@ -104,7 +151,9 @@ public class ProgramImpl extends AbstractNode implements Program
 
 
     public boolean classInv() {
-        // TODO
-        return false;
+        for(Node child : this.getChildren()){
+            if(child == null || !child.classInv()) return false;
+        }
+        return true;
     }
 }

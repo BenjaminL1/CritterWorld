@@ -229,4 +229,19 @@ public class ParserTest
         }
     }
 
+    @Test
+    public void testClassInv(){
+        Mutation mut = MutationFactory.getDuplicate();
+        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_2.txt");
+        Reader r = new BufferedReader(new InputStreamReader(in));
+        Parser parser = ParserFactory.getParser();
+        try{
+            Program prog = parser.parse(r);
+            assertEquals(true, prog.classInv());
+        }
+        catch(SyntaxError e){
+
+        }
+    }
+
 }
