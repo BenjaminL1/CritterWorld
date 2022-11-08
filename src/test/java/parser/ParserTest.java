@@ -206,6 +206,7 @@ public class ParserTest
             {
                 target = prog.nodeAt((int) (Math.random() * prog.size()));
             }
+//            Node target = prog.nodeAt(8);
             System.out.println();
             System.out.println("--TEST DUPLICATE--");
             System.out.println();
@@ -228,5 +229,4 @@ public class ParserTest
             fail("A valid program should not have syntax errors");
         }
     }
-
 }
