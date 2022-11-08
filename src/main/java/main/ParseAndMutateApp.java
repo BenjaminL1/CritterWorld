@@ -25,6 +25,7 @@ public class ParseAndMutateApp
             if (args.length == 1)
             {
                 file = args[0];
+                System.out.println(file);
             }
             else if (args.length == 3 && args[0].equals("--mutate"))
             {
