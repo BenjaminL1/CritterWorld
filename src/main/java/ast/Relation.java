@@ -48,11 +48,7 @@ public class Relation extends Condition
         right = r;
     }
 
-    @Override
-    public String toString()
-    {
-        return null;
-    }
+
 
     @Override
     public Node clone()

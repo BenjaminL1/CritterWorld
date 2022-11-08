@@ -41,9 +41,13 @@ public class Action extends AbstractNode
     @Override
     public List<Node> getChildren()
     {
-        List<Node> list = new ArrayList<Node>();
-        list.add(value);
-        return list;
+        if (value != null)
+        {
+            List<Node> list = new ArrayList<Node>();
+            list.add(value);
+            return list;
+        }
+        else return null;
     }
 
     @Override

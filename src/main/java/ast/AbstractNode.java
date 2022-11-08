@@ -1,6 +1,9 @@
 package ast;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+
 import cms.util.maybe.Maybe;
 
 public abstract class AbstractNode implements Node
@@ -20,7 +23,7 @@ public abstract class AbstractNode implements Node
 
         for(Node node : this.getChildren())
         {
-            size += node.size();
+            if (node != null) size += node.size();
         }
         return size;
     }
@@ -28,18 +31,25 @@ public abstract class AbstractNode implements Node
     @Override
     public Node nodeAt(int index)
     {
-        if(index > this.size()) throw new IndexOutOfBoundsException();
-
-        if(index == 0) return this;
-
-        if(this.getChildren() == null) return null;
-
-        for(Node node : this.getChildren()){
-            index--;
-            Node curr = node.nodeAt(index);
-            if(index == 0) return curr;
+        Queue<Node> queue = new LinkedList<Node>();
+        queue.add(this);
+        int count = 0;
+        while (queue.peek() != null && count < index)
+        {
+            Node head = queue.poll();
+            List<Node> children = head.getChildren();
+            if (children != null)
+            {
+                queue.addAll(children);
+            }
+            count++;
         }
-        return null;
+        count++;
+        if (count < index)
+        {
+            throw new IndexOutOfBoundsException();
+        }
+        return queue.peek();
     }
 
     @Override
@@ -67,6 +77,9 @@ public abstract class AbstractNode implements Node
      * @return the String representation of the tree rooted at this {@code
      * Node}.
      */
-    public abstract String toString();
+    public String toString()
+    {
+        return this.prettyPrint(new StringBuilder()).toString();
+    }
 
 }

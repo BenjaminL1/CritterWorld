@@ -62,11 +62,6 @@ public class ProgramImpl extends AbstractNode implements Program
         v.visit(this);
     }
 
-    public int size()
-    {
-        return rules.size();
-    }
-
     public void remove(Rule rule)
     {
         rules.remove(rule);
@@ -101,11 +96,6 @@ public class ProgramImpl extends AbstractNode implements Program
         return NodeCategory.PROGRAM;
     }
 
-    @Override
-    public String toString(){
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     public boolean classInv() {
         // TODO

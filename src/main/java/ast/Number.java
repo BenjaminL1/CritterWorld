@@ -33,7 +33,8 @@ public class Number extends Expr
     }
 
     @Override
-    public List<Node> getChildren() {
+    public List<Node> getChildren()
+    {
         return null;
     }
 
@@ -43,11 +44,6 @@ public class Number extends Expr
         v.visit(this);
     }
 
-    @Override
-    public String toString()
-    {
-        return "" + num;
-    }
 
     @Override
     public boolean classInv()

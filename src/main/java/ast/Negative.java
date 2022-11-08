@@ -31,11 +31,6 @@ public class Negative extends AbstractNode
         v.visit(this);
     }
 
-    @Override
-    public String toString()
-    {
-        return "-";
-    }
 
     @Override
     public boolean classInv()

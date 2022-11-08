@@ -66,11 +66,6 @@ public class Rule extends AbstractNode {
         return NodeCategory.RULE;
     }
 
-    @Override
-    public String toString(){
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     public boolean classInv() {
         // TODO implement/override

@@ -55,12 +55,6 @@ public class Update extends AbstractNode
     }
 
     @Override
-    public String toString()
-    {
-        return null;
-    }
-
-    @Override
     public NodeCategory getCategory()
     {
         return null;

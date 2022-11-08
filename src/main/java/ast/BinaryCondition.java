@@ -96,7 +96,14 @@ public class BinaryCondition extends Condition
                 sb.append("{");
                 getLeft().prettyPrint(sb);
                 sb.append(" ");
-                sb.append(op.toString());
+                if(op == Operator.OR)
+                {
+                    sb.append("or");
+                }
+                else
+                {
+                    sb.append("and");
+                }
                 sb.append(" ");
                 getRight().prettyPrint(sb);
                 sb.append("}");
@@ -109,12 +116,6 @@ public class BinaryCondition extends Condition
         sb.append(" ");
         getRight().prettyPrint(sb);
         return sb;
-    }
-
-    @Override
-    public String toString()
-    {
-        return this.prettyPrint(new StringBuilder()).toString();
     }
 
     public boolean classInv()

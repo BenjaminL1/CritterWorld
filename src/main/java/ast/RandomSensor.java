@@ -51,10 +51,6 @@ public class RandomSensor extends Sensor
         v.visit(this);
     }
 
-    @Override
-    public String toString() {
-        return null;
-    }
 
     @Override
     public boolean classInv() {

@@ -50,17 +50,17 @@ public class NegativeExpr extends Expr
         return factor;
     }
 
+    public void changeRight(Expr newFactor)
+    {
+        factor = newFactor;
+    }
+
     @Override
     public void accept(Visitor v)
     {
         v.visit(this);
     }
 
-    @Override
-    public String toString()
-    {
-        return null;
-    }
 
     @Override
     public boolean classInv()

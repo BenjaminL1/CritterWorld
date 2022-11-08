@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AheadSensor extends Sensor
@@ -31,8 +32,11 @@ public class AheadSensor extends Sensor
     }
 
     @Override
-    public List<Node> getChildren() {
-        return null;
+    public List<Node> getChildren()
+    {
+        List<Node> children = new ArrayList<>();
+        children.add(e);
+        return children;
     }
 
     @Override
@@ -49,10 +53,6 @@ public class AheadSensor extends Sensor
         v.visit(this);
     }
 
-    @Override
-    public String toString() {
-        return null;
-    }
 
     @Override
     public boolean classInv() {

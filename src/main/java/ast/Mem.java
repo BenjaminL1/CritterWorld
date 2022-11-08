@@ -99,11 +99,6 @@ public class Mem extends Expr
         v.visit(this);
     }
 
-    @Override
-    public String toString()
-    {
-        return null;
-    }
 
     @Override
     public boolean classInv()

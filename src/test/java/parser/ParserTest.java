@@ -1,6 +1,6 @@
 package parser;
 
-import ast.Program;
+import ast.*;
 import cms.util.maybe.Maybe;
 
 import java.io.BufferedReader;
@@ -25,13 +25,11 @@ public class ParserTest
         InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_2.txt");
         Reader r = new BufferedReader(new InputStreamReader(in));
         Parser parser = ParserFactory.getParser();
-        StringBuilder sb = new StringBuilder();
 
         try
         {
             Program prog = parser.parse(r);
-            prog.prettyPrint(sb);
-            System.out.println(sb.toString());
+            System.out.println(prog.toString());
         }
         catch(SyntaxError e)
         {
@@ -39,6 +37,33 @@ public class ParserTest
         }
     }
 
-    // TODO continue adding tests
+    @Test
+    public void testRemove()
+    {
+        Mutation mut = MutationFactory.getRemove();
+        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_2.txt");
+        Reader r = new BufferedReader(new InputStreamReader(in));
+        Parser parser = ParserFactory.getParser();
+        try
+        {
+            Program prog = parser.parse(r);
+            Node target = prog.nodeAt((int) (Math.random() * prog.size()));
+            System.out.println();
+            System.out.println(target.toString());
+            System.out.println(target.getClass());
+            System.out.println();
+            System.out.println(mut.canApply(target));
+            System.out.println();
+            System.out.println(((AbstractNode) target).getParent());
+            System.out.println(((AbstractNode) target).getParent().getClass());
+            System.out.println();
+            mut.apply(prog, target);
+            System.out.println(prog.toString());
+        }
+        catch(SyntaxError e)
+        {
+            fail("A valid program should not have syntax errors");
+        }
+    }
 
 }

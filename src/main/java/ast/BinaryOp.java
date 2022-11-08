@@ -101,7 +101,8 @@ public class BinaryOp extends Expr
         v.visit(this);
     }
 
-    public List<Node> getChildren(){
+    public List<Node> getChildren()
+    {
         List<Node> list = new ArrayList<Node>();
         list.add(left);
         list.add(right);
@@ -109,12 +110,8 @@ public class BinaryOp extends Expr
     }
 
     @Override
-    public String toString() {
-        return null;
-    }
-
-    @Override
-    public boolean classInv() {
+    public boolean classInv()
+    {
         return false;
     }
 }
