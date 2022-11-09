@@ -5,14 +5,10 @@ import ast.MutationFactory;
 import ast.Node;
 import ast.Program;
 import exceptions.SyntaxError;
-import org.w3c.dom.events.MutationEvent;
 import parse.Parser;
 import parse.ParserFactory;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 
 public class ParseAndMutateApp
 {
@@ -25,7 +21,7 @@ public class ParseAndMutateApp
             if (args.length == 1)
             {
                 file = args[0];
-                System.out.println(file);
+//                System.out.println(file);
             }
             else if (args.length == 3 && args[0].equals("--mutate"))
             {
@@ -37,12 +33,10 @@ public class ParseAndMutateApp
             {
                 throw new IllegalArgumentException();
             }
-            InputStream in = ClassLoader.getSystemResourceAsStream(file);
-            Reader r = new BufferedReader(new InputStreamReader(in));
-            Parser parser = ParserFactory.getParser();
-
             try
             {
+                Reader r = new FileReader(file);
+                Parser parser = ParserFactory.getParser();
                 Program prog = parser.parse(r);
                 if (n > 0)
                 {
@@ -74,8 +68,15 @@ public class ParseAndMutateApp
                         {
                             mut = MutationFactory.getDuplicate();
                         }
-                        Node target = prog.nodeAt((int) ( Math.random() * prog.size()));
+                        Node target = prog.nodeAt((int) (Math.random() * prog.size()));
+                        int count = 0;
+                        while (!(mut.canApply(target)) && count < 50)
+                        {
+                            target = prog.nodeAt((int) (Math.random() * prog.size()));
+                        }
                         mut.apply(prog, target);
+                        System.out.println(mut.getClass());
+                        System.out.println(target);
                     }
                 }
                 System.out.println(prog);
@@ -84,8 +85,12 @@ public class ParseAndMutateApp
             {
                 System.out.println("A valid program should not have syntax errors");
             }
+            catch (FileNotFoundException e)
+            {
+                System.out.println("Please enter a valid file");
+                System.out.println(e);
+            }
         }
-
         catch (IllegalArgumentException e)
         {
             System.out.println("Usage:\n  <input_file>\n  " +
