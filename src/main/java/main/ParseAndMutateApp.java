@@ -7,8 +7,9 @@ import ast.Program;
 import exceptions.SyntaxError;
 import parse.Parser;
 import parse.ParserFactory;
-
-import java.io.*;
+import java.io.Reader;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
 
 public class ParseAndMutateApp
 {
