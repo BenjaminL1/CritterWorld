@@ -47,8 +47,6 @@ public class Replace extends SearchMutation
         Node parent = node.getParent();
         Rule clone = (Rule) (replacementNode.clone());
         ((ProgramImpl) parent).replace(node, clone);
-        clone.setParent(parent);
-        node.setParent(null);
     }
 
     @Override
@@ -59,8 +57,6 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Condition clone = (Condition) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
         if (parent instanceof Rule)
         {
             ((Rule) parent).changeCondition(clone);
@@ -86,8 +82,6 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Condition clone = (Condition) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
         if (parent instanceof Rule)
         {
             ((Rule) parent).changeCondition(clone);
@@ -112,9 +106,7 @@ public class Replace extends SearchMutation
         int index = super.pickElement(subtrees);
         Node replacementNode = subtrees.get(index);
         Node parent = node.getParent();
-        node.setParent(null);
         Expr clone = (Expr) (replacementNode.clone());
-        clone.setParent(parent);
         if (parent instanceof BinaryOp)
         {
             if (node == ((BinaryOp) parent).getLeft())
@@ -181,8 +173,6 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Expr clone = (Expr) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
         if (parent instanceof BinaryOp)
         {
             if (node == ((BinaryOp) parent).getLeft())
@@ -249,8 +239,6 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Expr clone = (Expr) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
         if (parent instanceof BinaryOp)
         {
             if (node == ((BinaryOp) parent).getLeft())
@@ -283,10 +271,8 @@ public class Replace extends SearchMutation
                         iter.remove();
                     }
                 }
-                clone.setParent(null);
                 index = super.pickElement(subtrees);
                 Mem newClone = (Mem) (subtrees.get(index));
-                newClone.setParent(parent);
                 ((Update) parent).changeMemType(newClone);
             }
             else
@@ -334,8 +320,6 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Expr clone = (Expr) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
         if (parent instanceof BinaryOp)
         {
             if (node == ((BinaryOp) parent).getLeft())
@@ -408,8 +392,6 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Expr clone = (Expr) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
         if (parent instanceof BinaryOp)
         {
             if (node == ((BinaryOp) parent).getLeft())
@@ -476,8 +458,6 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Expr clone = (Expr) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
         if (parent instanceof BinaryOp)
         {
             if (node == ((BinaryOp) parent).getLeft())
@@ -544,8 +524,6 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Expr clone = (Expr) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
         if (parent instanceof BinaryOp)
         {
             if (node == ((BinaryOp) parent).getLeft())
@@ -612,8 +590,6 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Expr clone = (Expr) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
         if (parent instanceof BinaryOp)
         {
             if (node == ((BinaryOp) parent).getLeft())
@@ -680,8 +656,10 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Command clone = (Command) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
+        if (parent == null)
+        {
+            System.out.println("parent is null");
+        }
         ((Rule) parent).changeCommand(clone);
     }
 
@@ -693,8 +671,6 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Update clone = (Update) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
         ((Command) parent).replace(node, clone);
     }
 
@@ -706,8 +682,6 @@ public class Replace extends SearchMutation
         Node replacementNode = subtrees.get(index);
         Action clone = (Action) (replacementNode.clone());
         Node parent = node.getParent();
-        clone.setParent(parent);
-        node.setParent(null);
         ((Command) parent).replace(node, clone);
     }
 }

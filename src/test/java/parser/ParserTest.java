@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import com.google.gson.internal.bind.util.ISO8601Utils;
 import exceptions.SyntaxError;
 import org.junit.jupiter.api.Test;
 import parse.Parser;
@@ -201,7 +202,7 @@ public class ParserTest
         try
         {
             Program prog = parser.parse(r);
-            Node target = prog.nodeAt((int) (Math.random() * prog.size()));;
+            Node target = prog.nodeAt((int) (Math.random() * prog.size()));
             while (!(mut.canApply(target)))
             {
                 target = prog.nodeAt((int) (Math.random() * prog.size()));
@@ -247,4 +248,77 @@ public class ParserTest
             fail("A valid program should not have syntax errors");
         }
     }
+
+    @Test
+    public void testBigRandom() throws SyntaxError
+    {
+        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_2.txt");
+        Reader r = new BufferedReader(new InputStreamReader(in));
+        Parser parser = ParserFactory.getParser();
+        Program prog = parser.parse(r);
+//        Mutation mut = MutationFactory.getSwap();
+        Node target = prog.nodeAt((int) (Math.random() * prog.size()));
+        for (int i = 0; i < 1000; i++)
+        {
+            target = prog.nodeAt((int) (Math.random() * prog.size()));
+            System.out.println(i);
+            Mutation mut;
+            int mutationPicker = (int) (Math.random() * 6);
+            if (mutationPicker == 0)
+            {
+                mut = MutationFactory.getRemove();
+            }
+            else if (mutationPicker == 1)
+            {
+                mut = MutationFactory.getSwap();
+            }
+            else if (mutationPicker == 2)
+            {
+                mut = MutationFactory.getReplace();
+            }
+            else if (mutationPicker == 3)
+            {
+                mut = MutationFactory.getTransform();
+            }
+            else if (mutationPicker == 4)
+            {
+                mut = MutationFactory.getInsert();
+            }
+            else
+            {
+                mut = MutationFactory.getDuplicate();
+            }
+
+            int count = 0;
+            while (!(mut.canApply(target)) && count < 50)
+            {
+                target = prog.nodeAt((int) (Math.random() * prog.size()));
+                count++;
+            }
+            try
+            {
+                mut.apply(prog, target);
+//                System.out.println(mut.canApply(target));
+            }
+            catch (IndexOutOfBoundsException | StackOverflowError | NullPointerException e)
+            {
+                System.out.println(e);
+                System.out.println();
+                System.out.println(prog);
+                System.out.println();
+                System.out.println(mut.getClass());
+                System.out.println();
+                System.out.println(target);
+                System.out.println();
+                throw e;
+            }
+        }
+        System.out.println();
+        System.out.println(prog);
+        System.out.println();
+        System.out.println(target);
+        System.out.println();
+        System.out.println(target.getClass());
+    }
 }
+

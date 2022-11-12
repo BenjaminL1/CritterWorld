@@ -78,7 +78,8 @@ public class Mem extends Expr
     }
 
     @Override
-    public StringBuilder prettyPrint(StringBuilder sb) {
+    public StringBuilder prettyPrint(StringBuilder sb)
+    {
         sb.append("mem[");
         this.e.prettyPrint(sb);
         sb.append("]");
@@ -92,9 +93,8 @@ public class Mem extends Expr
 
     public void changeExpr(Expr e)
     {
-        this.e.setParent(null);
         this.e = e;
-        this.setParent(this);
+        e.setParent(this);
     }
 
     @Override

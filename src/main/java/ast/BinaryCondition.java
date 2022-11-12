@@ -50,7 +50,6 @@ public class BinaryCondition extends Condition
 
     public void changeLeft(Condition left)
     {
-        l.setParent(null);
         l = left;
         l.setParent(this);
     }
@@ -62,7 +61,6 @@ public class BinaryCondition extends Condition
 
     public void changeRight(Condition right)
     {
-        r.setParent(null);
         r = right;
         r.setParent(this);
     }

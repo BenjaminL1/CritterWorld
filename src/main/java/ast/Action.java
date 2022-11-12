@@ -48,7 +48,7 @@ public class Action extends AbstractNode
             list.add(value);
             return list;
         }
-        else return null;
+        else return new ArrayList<Node>();
     }
 
     @Override
@@ -83,7 +83,6 @@ public class Action extends AbstractNode
 
     public void changeExpr(Expr e)
     {
-        value.setParent(null);
         value = e;
         value.setParent(this);
     }

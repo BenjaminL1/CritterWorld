@@ -154,20 +154,20 @@ public class Swap extends AbstractMutation
             int childPicker2;
             if (children.get(children.size() - 1) instanceof Action)
             {
-                childPicker1 = (int) (Math.random() * children.size());
-                childPicker2 = (int) (Math.random() * children.size());
+                childPicker1 = (int) (Math.random() * children.size() - 1);
+                childPicker2 = (int) (Math.random() * children.size() - 1);
             }
             else
             {
-                childPicker1 = (int) (Math.random() * (children.size() - 1));
-                childPicker2 = (int) (Math.random() * (children.size() - 1));
+                childPicker1 = (int) (Math.random() * (children.size()));
+                childPicker2 = (int) (Math.random() * (children.size()));
             }
             while (childPicker1 == childPicker2)
             {
                 childPicker2 = (int) (Math.random() * node.getChildren().size());
             }
-            Node temp = node.getChildren().get(childPicker1);
-            Node temp2 = node.getChildren().get(childPicker2);
+            Node temp = children.get(childPicker1);
+            Node temp2 = children.get(childPicker2);
             node.getChildren().set(childPicker1, temp2);
             node.getChildren().set(childPicker2, temp);
         }

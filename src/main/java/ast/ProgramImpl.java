@@ -36,7 +36,6 @@ public class ProgramImpl extends AbstractNode implements Program
         for(Node child : getChildren())
         {
             child.prettyPrint(sb);
-            sb.append(";");
             sb.append(System.lineSeparator());
         }
         return sb;

@@ -74,6 +74,7 @@ public class ParseAndMutateApp
                         while (!(mut.canApply(target)) && count < 50)
                         {
                             target = prog.nodeAt((int) (Math.random() * prog.size()));
+                            count++;
                         }
                         mut.apply(prog, target);
                         System.out.println(mut.getClass());

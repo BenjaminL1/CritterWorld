@@ -21,7 +21,6 @@ public class AheadSensor extends Sensor
 
     public void changeExpr(Expr e)
     {
-        this.e.setParent(null);
         this.e = e;
         this.e.setParent(this);
     }

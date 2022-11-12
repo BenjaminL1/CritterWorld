@@ -85,7 +85,6 @@ public class BinaryOp extends Expr
 
     public void changeLeft(Expr l)
     {
-        left.setParent(null);
         left = l;
         left.setParent(this);
     }

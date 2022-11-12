@@ -59,7 +59,6 @@ public class Remove extends AbstractMutation
         {
             parent.remove(node);
         }
-        node.setParent(null);
     }
 
     @Override
@@ -71,8 +70,6 @@ public class Remove extends AbstractMutation
         {
             Condition child = childPicker == 0 ? node.getLeft() : node.getRight();
             ((Rule) parent).changeCondition(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         if (parent instanceof BinaryCondition)
         {
@@ -85,8 +82,6 @@ public class Remove extends AbstractMutation
             {
                 ((BinaryCondition) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
     }
 
@@ -112,8 +107,6 @@ public class Remove extends AbstractMutation
             {
                 ((BinaryOp) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         if (parent instanceof Relation)
         {
@@ -126,15 +119,11 @@ public class Remove extends AbstractMutation
             {
                 ((Relation) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Update)
         {
             Expr child = childPicker == 0 ? node.getLeft() : node.getRight();
             ((Update) parent).changeExpr(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Action)
         {
@@ -142,8 +131,6 @@ public class Remove extends AbstractMutation
             {
                 Expr child = childPicker == 0 ? node.getLeft() : node.getRight();
                 ((Action) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
 //            else
 //            {
@@ -154,8 +141,6 @@ public class Remove extends AbstractMutation
         {
             Expr child = childPicker == 0 ? node.getLeft() : node.getRight();
             ((Mem) parent).changeExpr(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Sensor)
         {
@@ -163,22 +148,16 @@ public class Remove extends AbstractMutation
             {
                 Expr child = childPicker == 0 ? node.getLeft() : node.getRight();
                 ((NearbySensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
             else if (parent instanceof AheadSensor)
             {
                 Expr child = childPicker == 0 ? node.getLeft() : node.getRight();
-                ((AheadSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
+                ((AheadSensor) parent).changeExpr(child);;
             }
             else if (parent instanceof RandomSensor)
             {
                 Expr child = childPicker == 0 ? node.getLeft() : node.getRight();
                 ((RandomSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
         }
     }
@@ -204,8 +183,6 @@ public class Remove extends AbstractMutation
             {
                 ((BinaryOp) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         if (parent instanceof Relation)
         {
@@ -218,8 +195,6 @@ public class Remove extends AbstractMutation
             {
                 ((Relation) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Update)
         {
@@ -232,8 +207,6 @@ public class Remove extends AbstractMutation
             {
                 ((Update) parent).changeExpr(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Action)
         {
@@ -241,8 +214,6 @@ public class Remove extends AbstractMutation
             {
                 Expr child = node.getExpr();
                 ((Action) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
 //            else
 //            {
@@ -253,15 +224,11 @@ public class Remove extends AbstractMutation
         {
             Expr child = node.getExpr();
             ((Mem) parent).changeExpr(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof NegativeExpr)
         {
             Expr child = node.getExpr();
             ((NegativeExpr) parent).changeRight(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Sensor)
         {
@@ -269,22 +236,16 @@ public class Remove extends AbstractMutation
             {
                 Expr child = node.getExpr();
                 ((NearbySensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
             else if (parent instanceof AheadSensor)
             {
                 Expr child = node.getExpr();
                 ((AheadSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
             else if (parent instanceof RandomSensor)
             {
                 Expr child = node.getExpr();
                 ((RandomSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
         }
     }
@@ -304,8 +265,6 @@ public class Remove extends AbstractMutation
             {
                 ((BinaryOp) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         if (parent instanceof Relation)
         {
@@ -318,15 +277,11 @@ public class Remove extends AbstractMutation
             {
                 ((Relation) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Update)
         {
             Expr child = node.getRight();
             ((Update) parent).changeExpr(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Action)
         {
@@ -334,8 +289,6 @@ public class Remove extends AbstractMutation
             {
                 Expr child = node.getRight();
                 ((Action) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
 //            else
 //            {
@@ -346,15 +299,11 @@ public class Remove extends AbstractMutation
         {
             Expr child = node.getRight();
             ((Mem) parent).changeExpr(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof NegativeExpr)
         {
             Expr child = node.getRight();
             ((NegativeExpr) parent).changeRight(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Sensor)
         {
@@ -362,22 +311,16 @@ public class Remove extends AbstractMutation
             {
                 Expr child = node.getRight();
                 ((NearbySensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
             else if (parent instanceof AheadSensor)
             {
                 Expr child = node.getRight();
                 ((AheadSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
             else if (parent instanceof RandomSensor)
             {
                 Expr child = node.getRight();
                 ((RandomSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
         }
     }
@@ -403,8 +346,6 @@ public class Remove extends AbstractMutation
             {
                 ((BinaryOp) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         if (parent instanceof Relation)
         {
@@ -417,15 +358,11 @@ public class Remove extends AbstractMutation
             {
                 ((Relation) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Update)
         {
             Expr child = node.getExpr();
             ((Update) parent).changeExpr(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Action)
         {
@@ -433,8 +370,6 @@ public class Remove extends AbstractMutation
             {
                 Expr child = node.getExpr();
                 ((Action) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
 //            else
 //            {
@@ -445,15 +380,11 @@ public class Remove extends AbstractMutation
         {
             Expr child = node.getExpr();
             ((Mem) parent).changeExpr(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof NegativeExpr)
         {
             Expr child = node.getExpr();
             ((NegativeExpr) parent).changeRight(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Sensor)
         {
@@ -461,22 +392,16 @@ public class Remove extends AbstractMutation
             {
                 Expr child = node.getExpr();
                 ((NearbySensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
             else if (parent instanceof AheadSensor)
             {
                 Expr child = node.getExpr();
                 ((AheadSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
             else if (parent instanceof RandomSensor)
             {
                 Expr child = node.getExpr();
                 ((RandomSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
         }
     }
@@ -496,8 +421,6 @@ public class Remove extends AbstractMutation
             {
                 ((BinaryOp) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         if (parent instanceof Relation)
         {
@@ -510,15 +433,11 @@ public class Remove extends AbstractMutation
             {
                 ((Relation) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Update)
         {
             Expr child = node.getExpr();
             ((Update) parent).changeExpr(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Action)
         {
@@ -526,8 +445,6 @@ public class Remove extends AbstractMutation
             {
                 Expr child = node.getExpr();
                 ((Action) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
 //            else
 //            {
@@ -538,15 +455,11 @@ public class Remove extends AbstractMutation
         {
             Expr child = node.getExpr();
             ((Mem) parent).changeExpr(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof NegativeExpr)
         {
             Expr child = node.getExpr();
             ((NegativeExpr) parent).changeRight(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Sensor)
         {
@@ -554,22 +467,16 @@ public class Remove extends AbstractMutation
             {
                 Expr child = node.getExpr();
                 ((NearbySensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
             else if (parent instanceof AheadSensor)
             {
                 Expr child = node.getExpr();
                 ((AheadSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
             else if (parent instanceof RandomSensor)
             {
                 Expr child = node.getExpr();
                 ((RandomSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
         }
     }
@@ -589,8 +496,6 @@ public class Remove extends AbstractMutation
             {
                 ((BinaryOp) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         if (parent instanceof Relation)
         {
@@ -603,15 +508,11 @@ public class Remove extends AbstractMutation
             {
                 ((Relation) parent).changeRight(child);
             }
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Update)
         {
             Expr child = node.getExpr();
             ((Update) parent).changeExpr(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Action)
         {
@@ -619,8 +520,6 @@ public class Remove extends AbstractMutation
             {
                 Expr child = node.getExpr();
                 ((Action) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
 //            else
 //            {
@@ -631,15 +530,11 @@ public class Remove extends AbstractMutation
         {
             Expr child = node.getExpr();
             ((Mem) parent).changeExpr(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof NegativeExpr)
         {
             Expr child = node.getExpr();
             ((NegativeExpr) parent).changeRight(child);
-            child.setParent(parent);
-            node.setParent(null);
         }
         else if (parent instanceof Sensor)
         {
@@ -647,22 +542,16 @@ public class Remove extends AbstractMutation
             {
                 Expr child = node.getExpr();
                 ((NearbySensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
             else if (parent instanceof AheadSensor)
             {
                 Expr child = node.getExpr();
                 ((AheadSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
             else if (parent instanceof RandomSensor)
             {
                 Expr child = node.getExpr();
                 ((RandomSensor) parent).changeExpr(child);
-                child.setParent(parent);
-                node.setParent(null);
             }
         }
     }
@@ -686,7 +575,6 @@ public class Remove extends AbstractMutation
         if (((Command) parent).getChildren().size() > 1)
         {
             ((Command) parent).remove(node);
-            node.setParent(null);
         }
     }
 
@@ -697,7 +585,6 @@ public class Remove extends AbstractMutation
         if (((Command) parent).getChildren().size() > 1)
         {
             ((Command) parent).remove(node);
-            node.setParent(null);
         }
     }
 }

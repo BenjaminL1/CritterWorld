@@ -8,7 +8,7 @@ import java.io.Reader;
 
 class ParserImpl implements Parser
 {
-
+    static int line = 1;
     @Override
     public Program parse(Reader r) throws SyntaxError
     {
@@ -36,7 +36,7 @@ class ParserImpl implements Parser
         }
         if (ret.getChildren().size() < 1)
         {
-            throw new UnsupportedOperationException();
+            throw new SyntaxError(line, "invalid input program");
         }
         return ret;
     }
@@ -51,6 +51,7 @@ class ParserImpl implements Parser
         Rule ret = new Rule (condition, command);
         condition.setParent(ret);
         command.setParent(ret);
+        line++;
         return ret;
     }
 
@@ -77,7 +78,7 @@ class ParserImpl implements Parser
         }
         if (command.getChildren().size() < 1)
         {
-            throw new UnsupportedOperationException();
+            throw new SyntaxError(line, "invalid input program");
         }
         return command;
     }
@@ -110,13 +111,13 @@ class ParserImpl implements Parser
     public static Action parseAction(Tokenizer t) throws SyntaxError
     {
 //        System.out.println("parseAction");
-        if(t.peek().getType().category() != TokenCategory.ACTION) throw new UnsupportedOperationException();
+        if(t.peek().getType().category() != TokenCategory.ACTION) throw new SyntaxError(line, "invalid input program");
         TokenType actionName = t.next().getType();
         if(actionName == TokenType.SERVE)
         {
-            consume(t, TokenType.LBRACE);
+            consume(t, TokenType.LBRACKET);
             Expr deezN = parseExpression(t);
-            consume(t, TokenType.RBRACE);
+            consume(t, TokenType.RBRACKET);
             Action ret = new Action(actionName, deezN);
             deezN.setParent(ret);
             return ret;
@@ -169,7 +170,7 @@ class ParserImpl implements Parser
         else
         {
             Expr left = parseExpression(t);
-            if(t.peek().getType().category() != TokenCategory.RELOP) throw new UnsupportedOperationException( );
+            if(t.peek().getType().category() != TokenCategory.RELOP) throw new SyntaxError(line, "invalid input program");
             TokenType rel = t.next().getType();
             Expr right = parseExpression(t);
             Condition ret = new Relation(left, rel, right);
@@ -251,7 +252,7 @@ class ParserImpl implements Parser
         }
         else
         {
-            throw new UnsupportedOperationException();
+            throw new SyntaxError(line, "invalid input program");
         }
     }
 
@@ -295,7 +296,7 @@ class ParserImpl implements Parser
         }
         else
         {
-            throw new UnsupportedOperationException();
+            throw new SyntaxError(line, "invalid input program");
         }
     }
 
@@ -309,7 +310,7 @@ class ParserImpl implements Parser
         Token temp = t.next();
         if(temp.getType() != tt)
         {
-            throw new UnsupportedOperationException();
+            throw new SyntaxError(line, "invalid input program");
         }
     }
 }

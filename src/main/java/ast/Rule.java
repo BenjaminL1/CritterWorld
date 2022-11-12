@@ -32,6 +32,7 @@ public class Rule extends AbstractNode {
         condition.prettyPrint(sb);
         sb.append((" --> "));
         command.prettyPrint(sb);
+        sb.append(";");
 
         return sb;
     }
@@ -69,7 +70,8 @@ public class Rule extends AbstractNode {
     }
 
     @Override
-    public NodeCategory getCategory() {
+    public NodeCategory getCategory()
+    {
         return NodeCategory.RULE;
     }
 
