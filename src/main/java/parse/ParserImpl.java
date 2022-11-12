@@ -8,7 +8,6 @@ import java.io.Reader;
 
 class ParserImpl implements Parser
 {
-    static int line = 1;
     @Override
     public Program parse(Reader r) throws SyntaxError
     {
@@ -36,7 +35,7 @@ class ParserImpl implements Parser
         }
         if (ret.getChildren().size() < 1)
         {
-            throw new SyntaxError(line, "invalid input program");
+            throw new SyntaxError(t.lineNumber(), "invalid input program");
         }
         return ret;
     }
@@ -51,7 +50,6 @@ class ParserImpl implements Parser
         Rule ret = new Rule (condition, command);
         condition.setParent(ret);
         command.setParent(ret);
-        line++;
         return ret;
     }
 
@@ -78,7 +76,7 @@ class ParserImpl implements Parser
         }
         if (command.getChildren().size() < 1)
         {
-            throw new SyntaxError(line, "invalid input program");
+            throw new SyntaxError(t.lineNumber(), "invalid input program");
         }
         return command;
     }
@@ -111,7 +109,7 @@ class ParserImpl implements Parser
     public static Action parseAction(Tokenizer t) throws SyntaxError
     {
 //        System.out.println("parseAction");
-        if(t.peek().getType().category() != TokenCategory.ACTION) throw new SyntaxError(line, "invalid input program");
+        if(t.peek().getType().category() != TokenCategory.ACTION) throw new SyntaxError(t.lineNumber(), "invalid input program");
         TokenType actionName = t.next().getType();
         if(actionName == TokenType.SERVE)
         {
@@ -170,7 +168,7 @@ class ParserImpl implements Parser
         else
         {
             Expr left = parseExpression(t);
-            if(t.peek().getType().category() != TokenCategory.RELOP) throw new SyntaxError(line, "invalid input program");
+            if(t.peek().getType().category() != TokenCategory.RELOP) throw new SyntaxError(t.lineNumber(), "invalid input program");
             TokenType rel = t.next().getType();
             Expr right = parseExpression(t);
             Condition ret = new Relation(left, rel, right);
@@ -252,7 +250,7 @@ class ParserImpl implements Parser
         }
         else
         {
-            throw new SyntaxError(line, "invalid input program");
+            throw new SyntaxError(t.lineNumber(), "invalid input program");
         }
     }
 
@@ -296,7 +294,7 @@ class ParserImpl implements Parser
         }
         else
         {
-            throw new SyntaxError(line, "invalid input program");
+            throw new SyntaxError(t.lineNumber(), "invalid input program");
         }
     }
 
@@ -310,7 +308,7 @@ class ParserImpl implements Parser
         Token temp = t.next();
         if(temp.getType() != tt)
         {
-            throw new SyntaxError(line, "invalid input program");
+            throw new SyntaxError(t.lineNumber(), "invalid input program");
         }
     }
 }

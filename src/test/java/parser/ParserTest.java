@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import com.google.gson.internal.bind.util.ISO8601Utils;
 import exceptions.SyntaxError;
 import org.junit.jupiter.api.Test;
 import parse.Parser;
@@ -23,17 +22,18 @@ public class ParserTest
     @Test
     public void testProgramIsNotNone()
     {
-        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_2.txt");
+        InputStream in = ClassLoader.getSystemResourceAsStream("files/mutated_critter_1.txt");
         Reader r = new BufferedReader(new InputStreamReader(in));
         Parser parser = ParserFactory.getParser();
 
         try
         {
             Program prog = parser.parse(r);
-            System.out.println(prog.toString());
+            System.out.println(prog);
         }
         catch(SyntaxError e)
         {
+            System.out.println(e);
             fail("A valid program should not have syntax errors");
         }
     }

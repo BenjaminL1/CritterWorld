@@ -8,6 +8,7 @@ import java.util.Queue;
 
 import easyIO.EOF;
 import easyIO.Scanner;
+import easyIO.UnexpectedInput;
 
 /**
  * A Tokenizer turns a Reader into a stream of tokens that can be iterated over
@@ -79,11 +80,16 @@ public class Tokenizer implements Iterator<Token> {
      * @throws TokenizerIOException if an IOException was thrown while trying
      *                              to read from the source Reader
      */
-    public Token peek() {
-        if (tokens.isEmpty()) {
-            try {
+    public Token peek()
+    {
+        if (tokens.isEmpty())
+        {
+            try
+            {
                 lexOneToken();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 throw new TokenizerIOException(e);
             }
         }
@@ -151,7 +157,15 @@ public class Tokenizer implements Iterator<Token> {
                     addToken(TokenType.MUL);
                     break;
                 case '/':
-                    addToken(TokenType.DIV);
+                    if (in.peek() == '/')
+                    {
+                        in.nextLine();
+                        lexOneToken();
+                    }
+                    else
+                    {
+                        addToken(TokenType.DIV);
+                    }
                     break;
                 case '<':
                     lexLAngle();
@@ -174,7 +188,9 @@ public class Tokenizer implements Iterator<Token> {
                     else addErrorToken(
                         String.format("Unrecognized character %c", c));
             }
-        } catch (EOF eof) {
+        }
+        catch (EOF | UnexpectedInput eof)
+        {
             addEOFToken();
         }
     }
