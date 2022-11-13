@@ -1,12 +1,14 @@
 package ast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Negative extends AbstractNode
 {
     @Override
-    public List<Node> getChildren() {
-        return null;
+    public List<Node> getChildren()
+    {
+        return new ArrayList<Node>();
     }
 
     @Override
@@ -21,7 +23,8 @@ public class Negative extends AbstractNode
     }
 
     @Override
-    public NodeCategory getCategory() {
+    public NodeCategory getCategory()
+    {
         return null;
     }
 

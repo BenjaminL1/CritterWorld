@@ -12,7 +12,8 @@ import model.ReadOnlyWorld;
  * <p>You have to provide one implementation of {@code ConsoleController} to {@code
  * ControllerFactory}.
  */
-public interface Controller {
+public interface Controller
+{
     /** @return the readonly world. */
     ReadOnlyWorld getReadOnlyWorld();
 

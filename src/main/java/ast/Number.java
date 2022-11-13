@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Number extends Expr
@@ -35,7 +36,7 @@ public class Number extends Expr
     @Override
     public List<Node> getChildren()
     {
-        return null;
+        return new ArrayList<Node>();
     }
 
     @Override

@@ -2,7 +2,8 @@ package model;
 
 import cms.util.maybe.Maybe;
 
-public interface ReadOnlyWorld {
+public interface ReadOnlyWorld
+{
     /** @return number of steps */
     int getSteps();
 

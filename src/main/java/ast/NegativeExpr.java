@@ -27,7 +27,8 @@ public class NegativeExpr extends Expr
     }
 
     @Override
-    public List<Node> getChildren() {
+    public List<Node> getChildren()
+    {
         ArrayList<Node> children = new ArrayList<>();
         children.add(negativeNode);
         children.add(factor);
@@ -38,7 +39,7 @@ public class NegativeExpr extends Expr
     public StringBuilder prettyPrint(StringBuilder sb)
     {
         negativeNode.prettyPrint(sb);
-        sb.append(" ");
+//        sb.append(" ");
         factor.prettyPrint(sb);
         return sb;
     }

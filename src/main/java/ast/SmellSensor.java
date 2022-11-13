@@ -1,5 +1,7 @@
 package ast;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SmellSensor extends Sensor
@@ -18,7 +20,7 @@ public class SmellSensor extends Sensor
 
     @Override
     public List<Node> getChildren() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

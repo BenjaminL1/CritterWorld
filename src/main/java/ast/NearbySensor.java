@@ -1,5 +1,6 @@
 package ast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NearbySensor extends Sensor
@@ -32,8 +33,9 @@ public class NearbySensor extends Sensor
     }
 
     @Override
-    public List<Node> getChildren() {
-        return null;
+    public List<Node> getChildren()
+    {
+        return new ArrayList<>();
     }
 
     @Override

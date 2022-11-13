@@ -3,6 +3,8 @@ package ast;
 import parse.TokenType;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Action extends AbstractNode
@@ -48,7 +50,7 @@ public class Action extends AbstractNode
             list.add(value);
             return list;
         }
-        else return new ArrayList<Node>();
+        else return new ArrayList<>();
     }
 
     @Override
