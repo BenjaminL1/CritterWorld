@@ -1,4 +1,6 @@
 package model;
 
-public class CritterAction {
+public class CritterAction
+{
+
 }

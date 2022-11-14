@@ -28,6 +28,9 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         this.tiles = new Tile[height + 1][width + 1];
     }
 
+    public Tile[][] getTiles(){
+        return tiles;
+    }
 
     @Override
     public boolean addCritter(String species, int[] mem, Program ast)
@@ -50,7 +53,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
             if(curr.getIsCritter() || curr.getIsFood() || curr.getIsRock()) return false;
         }
 
-        tiles[column][row] = new Tile(new Critter(species, ast, mem, row, column, dir));
+        tiles[column][row] = new Tile(new Critter(species, ast, mem, tiles.length - row, column, dir));
         return true;
 
     }
@@ -120,8 +123,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         if( tiles[c][r] == null) return 0;
         if(tiles[c][r].getIsRock()) return -1;
         else if(tiles[c][r].getIsFood()) return (tiles[c][r].getNumFood() + 1) * -1;
-        // TODO
-//        else if(tiles[c][r].getIsCritter()) return tiles[c][r].getCritter().getDirection() + 1;
+        else if(tiles[c][r].getIsCritter()) return tiles[c][r].getCritter().getDirection() + 1;
         return 0;
     }
 }

@@ -4,6 +4,8 @@ import ast.*;
 import ast.Number;
 import parse.TokenType;
 
+import java.util.Random;
+
 public class Interpreter
 {
     private World world;
@@ -183,15 +185,157 @@ public class Interpreter
             AheadSensor as = (AheadSensor) expr;
             return interpretAheadSensor(as, interpretExpression(as.getExpr()));
         }
-        // TODO
+        else if(expr.getClass() == RandomSensor.class){
+            RandomSensor rs = (RandomSensor) expr;
+            return (int) (Math.random() * interpretExpression(rs.getExpr()));
+        }
+
         return 0;
+    }
+
+    public int interpretNearbySensor(NearbySensor ns, int dir)
+    {
+        dir %= 6;
+        if (dir == 0)
+        {
+            int info = world.getTerrainInfo(critter.getColumn(), critter.getRow() - 2);
+            if(info == 0) return 0;
+            else if(info < -1) return info;
+            else if(info == -1) return -1;
+            else
+            {
+                Tile[][] tiles = world.getTiles();
+                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
+                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  critter.getDirection();
+
+            }
+        }
+        else if (dir == 1)
+        {
+            int info = world.getTerrainInfo(critter.getColumn() + 1, critter.getRow() - 1);
+            if(info == 0) return 0;
+            else if(info < -1) return info;
+            else if(info == -1) return -1;
+            else{
+                Tile[][] tiles = world.getTiles();
+                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
+                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
+
+            }
+        }
+        else if (dir == 2)
+        {
+            int info = world.getTerrainInfo(critter.getColumn() + 1, critter.getRow() + 1);
+            if(info == 0) return 0;
+            else if(info < -1) return info;
+            else if(info == -1) return -1;
+            else{
+                Tile[][] tiles = world.getTiles();
+                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
+                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
+
+            }
+        }
+        else if (dir == 3)
+        {
+            int info = world.getTerrainInfo(critter.getColumn(), critter.getRow() + 2);
+            if(info == 0) return 0;
+            else if(info < -1) return info;
+            else if(info == -1) return -1;
+            else{
+                Tile[][] tiles = world.getTiles();
+                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
+                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
+
+            }
+        }
+        else if (dir == 4)
+        {
+            int info = world.getTerrainInfo(critter.getColumn() - 1, critter.getRow() + 1);
+            if(info == 0) return 0;
+            else if(info < -1) return info;
+            else if(info == -1) return -1;
+            else{
+                Tile[][] tiles = world.getTiles();
+                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
+                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
+
+            }
+        }
+        else if (dir == 5)
+        {
+            int info = world.getTerrainInfo(critter.getColumn() - 1, critter.getRow() - 1);
+            if(info == 0) return 0;
+            else if(info < -1) return info;
+            else if(info == -1) return -1;
+            else{
+                Tile[][] tiles = world.getTiles();
+                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
+                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
+
+            }
+        }
+        else{
+
+            return 0;
+        }
     }
 
     public int interpretAheadSensor(AheadSensor as, int dist)
     {
-        // TODO
-        return 0;
+        dist = Math.max(dist, 0);
+        int dir = critter.getDirection();
+        int row = critter.getRow();
+        int column = critter.getColumn();
+        int info;
+        if (dir == 0)
+        {
+            row -= dist * 2;
+            info = world.getTerrainInfo(row, column);
+        }
+        else if (dir == 1)
+        {
+            row -= dist;
+            column += dist;
+            info = world.getTerrainInfo(row, column);
+        }
+        else if (dir == 2)
+        {
+            row += dist;
+            column += dist;
+            info = world.getTerrainInfo(row, column);
+        }
+        else if (dir == 3)
+        {
+            row += dist * 2;
+            info = world.getTerrainInfo(row, column);
+        }
+        else if (dir == 4)
+        {
+            row += dist;
+            column -= dist;
+            info = world.getTerrainInfo(row, column);
+        }
+        else
+        {
+            row -= dist;
+            column -= dist;
+            info = world.getTerrainInfo(row, column);
+        }
+
+        if (info <= 0)
+        {
+            return info;
+        }
+        else
+        {
+            Tile[][] tiles = world.getTiles();
+            Critter target = tiles[row][column].getCritter();
+            return target.getMemValue(3) * 1000 + target.getMemValue(6) * 10 + target.getDirection();
+        }
     }
+
+
 
     public void setMem(int memIndex, int changeNumber)
     {
