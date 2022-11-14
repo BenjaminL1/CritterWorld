@@ -85,12 +85,6 @@ public class Duplicate extends SearchMutation
     }
 
     @Override
-    public void visit(Negative node)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void visit(NearbySensor node)
     {
         throw new UnsupportedOperationException();

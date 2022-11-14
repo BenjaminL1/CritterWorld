@@ -5,23 +5,19 @@ import java.util.List;
 
 public class NegativeExpr extends Expr
 {
-    private Negative negativeNode;
     private Expr factor;
 
-    public NegativeExpr(Negative negativeNode, Expr factor)
+    public NegativeExpr(Expr factor)
     {
-        this.negativeNode = negativeNode;
         this.factor = factor;
-        this.negativeNode.setParent(this);
         this.factor.setParent(this);
     }
 
     @Override
-    public Node clone(){
-        Negative clonedNegativeNode =  (Negative) this.negativeNode.clone();
+    public Node clone()
+    {
         Expr clonedFactor =  (Expr) this.factor.clone();
-        NegativeExpr cloned = new NegativeExpr(clonedNegativeNode, clonedFactor);
-        clonedNegativeNode.setParent(cloned);
+        NegativeExpr cloned = new NegativeExpr(clonedFactor);
         clonedFactor.setParent(cloned);
         return cloned;
     }
@@ -30,7 +26,6 @@ public class NegativeExpr extends Expr
     public List<Node> getChildren()
     {
         ArrayList<Node> children = new ArrayList<>();
-        children.add(negativeNode);
         children.add(factor);
         return children;
     }
@@ -38,15 +33,10 @@ public class NegativeExpr extends Expr
     @Override
     public StringBuilder prettyPrint(StringBuilder sb)
     {
-        negativeNode.prettyPrint(sb);
+        sb.append("-");
 //        sb.append(" ");
         factor.prettyPrint(sb);
         return sb;
-    }
-
-    public Negative getLeft()
-    {
-        return negativeNode;
     }
 
     public Expr getRight()
@@ -71,6 +61,6 @@ public class NegativeExpr extends Expr
     @Override
     public boolean classInv()
     {
-        return (negativeNode.classInv() && factor.classInv());
+        return factor.classInv();
     }
 }

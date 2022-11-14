@@ -29,7 +29,7 @@ public class Remove extends AbstractMutation
     public boolean canApply(Node n)
     {
         if (n instanceof ProgramImpl || n instanceof Relation || n instanceof Number
-                || n instanceof Negative || n instanceof SmellSensor || n instanceof Command)
+                || n instanceof SmellSensor || n instanceof Command)
         {
             return false;
         }
@@ -323,12 +323,6 @@ public class Remove extends AbstractMutation
                 ((RandomSensor) parent).changeExpr(child);
             }
         }
-    }
-
-    @Override
-    public void visit(Negative node)
-    {
-        throw new UnsupportedOperationException();
     }
 
     @Override

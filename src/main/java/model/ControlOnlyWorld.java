@@ -6,9 +6,9 @@ import java.io.PrintStream;
 
 public abstract class ControlOnlyWorld
 {
-    abstract boolean addCritter(String species, int[] mem, Program ast);
+    public abstract boolean addCritter(String species, int[] mem, Program ast);
 
-    abstract boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir);
+    public abstract boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir);
 
     public abstract boolean addRock(int row, int column);
 

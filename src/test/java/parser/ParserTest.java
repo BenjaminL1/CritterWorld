@@ -22,7 +22,7 @@ public class ParserTest
     @Test
     public void testProgramIsNotNone()
     {
-        InputStream in = ClassLoader.getSystemResourceAsStream("files/mutated_critter_1.txt");
+        InputStream in = ClassLoader.getSystemResourceAsStream("files/draw_critter_5.txt");
         Reader r = new BufferedReader(new InputStreamReader(in));
         Parser parser = ParserFactory.getParser();
 

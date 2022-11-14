@@ -29,7 +29,7 @@ public class Replace extends SearchMutation
     @Override
     public boolean canApply(Node n)
     {
-        return !(n instanceof ProgramImpl || n instanceof Negative);
+        return !(n instanceof ProgramImpl);
     }
 
     @Override
@@ -376,12 +376,6 @@ public class Replace extends SearchMutation
                 ((RandomSensor) parent).changeExpr(clone);
             }
         }
-    }
-
-    @Override
-    public void visit(Negative node)
-    {
-        throw new UnsupportedOperationException();
     }
 
     @Override

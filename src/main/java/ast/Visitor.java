@@ -18,8 +18,6 @@ public interface Visitor
 
     void visit(NegativeExpr node);
 
-    void visit(Negative node);
-
     void visit(NearbySensor node);
 
     void visit(AheadSensor node);

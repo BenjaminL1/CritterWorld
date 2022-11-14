@@ -15,7 +15,8 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     private int numSteps;
     private ArrayList<Critter> critters;
 
-    public World(){
+    public World()
+    {
         this.numRows = (int)(Math.random()*100);
         this.numColumns = (int)(Math.random()*100);
         this.tiles = new Tile[numRows][numColumns];
@@ -29,10 +30,12 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
 
 
     @Override
-    public boolean addCritter(String species, int[] mem, Program ast) {
+    public boolean addCritter(String species, int[] mem, Program ast)
+    {
         boolean flag = false;
         int count = 0;
-        while( !flag && count < numRows*numColumns){
+        while( !flag && count < numRows*numColumns)
+        {
             flag = addCritter( species, mem, ast, (int)(Math.random()*numRows), (int)(Math.random()*numColumns), (int)(Math.random()*6));
         }
         return flag;
@@ -117,7 +120,8 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         if( tiles[c][r] == null) return 0;
         if(tiles[c][r].getIsRock()) return -1;
         else if(tiles[c][r].getIsFood()) return (tiles[c][r].getNumFood() + 1) * -1;
-        else if(tiles[c][r].getIsCritter()) return tiles[c][r].getCritter().getDirection() + 1;
+        // TODO
+//        else if(tiles[c][r].getIsCritter()) return tiles[c][r].getCritter().getDirection() + 1;
         return 0;
     }
 }

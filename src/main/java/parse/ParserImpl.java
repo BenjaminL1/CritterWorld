@@ -242,7 +242,7 @@ class ParserImpl implements Parser
         else if (t.peek().getType() == TokenType.MINUS)
         {
             t.next();
-            return new NegativeExpr(new Negative(), parseFactor(t));
+            return new NegativeExpr(parseFactor(t));
         }
         else if (t.peek().isSensor())
         {
