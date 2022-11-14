@@ -30,7 +30,12 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
 
     @Override
     public boolean addCritter(String species, int[] mem, Program ast) {
-        return addCritter( species, mem, ast, (int)(Math.random()*numRows), (int)(Math.random()*numColumns), (int)(Math.random()*6));
+        boolean flag = false;
+        int count = 0;
+        while( !flag && count < numRows*numColumns){
+            flag = addCritter( species, mem, ast, (int)(Math.random()*numRows), (int)(Math.random()*numColumns), (int)(Math.random()*6));
+        }
+        return flag;
     }
 
     @Override
