@@ -195,7 +195,7 @@ public class Interpreter
 
     public int interpretNearbySensor(NearbySensor ns, int dir)
     {
-        dir %= 6;
+        dir = (dir + critter.getDirection()) % 6;
         if (dir == 0)
         {
             int info = world.getTerrainInfo(critter.getColumn(), critter.getRow() - 2);
@@ -337,7 +337,7 @@ public class Interpreter
 
     public int interpretSmellSensor()
     {
-        
+
     }
 
     public int interpretRandomSensor(RandomSensor rs, int n)
