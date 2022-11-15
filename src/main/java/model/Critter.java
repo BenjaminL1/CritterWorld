@@ -19,7 +19,7 @@ public class Critter implements ReadOnlyCritter
         this.mem = mem;
         this.row = row;
         this.column = column;
-        this.direction = direction % 6;
+        this.direction = direction % 6; // idk if we should the mod 6 should be included
     }
 
     public Program getProgram()
