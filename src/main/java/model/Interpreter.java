@@ -275,8 +275,8 @@ public class Interpreter
 
             }
         }
-        else{
-
+        else
+        {
             return 0;
         }
     }
@@ -335,10 +335,19 @@ public class Interpreter
         }
     }
 
+    public int interpretSmellSensor()
+    {
+        
+    }
+
+    public int interpretRandomSensor(RandomSensor rs, int n)
+    {
+        return n < 2 ? 0 : (int) (Math.random() * n);
+    }
 
 
     public void setMem(int memIndex, int changeNumber)
     {
-
+        critter.setMem(memIndex, changeNumber);
     }
 }
