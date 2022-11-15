@@ -31,7 +31,7 @@ public abstract class AbstractNode implements Node
     @Override
     public Node nodeAt(int index)
     {
-        if(index < 0 || index > this.size()) throw new IndexOutOfBoundsException();
+        if(index < 0 || index >= this.size()) throw new IndexOutOfBoundsException();
         Queue<Node> queue = new LinkedList<Node>();
         queue.add(this);
         int count = 0;

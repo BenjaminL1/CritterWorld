@@ -185,7 +185,7 @@ public class Interpreter
 
         else if(expr.getClass() == AheadSensor.class){
             AheadSensor as = (AheadSensor) expr;
-            return interpretAheadSensor(as, interpretExpression(as.getExpr()));
+            return interpretAheadSensor(interpretExpression(as.getExpr()));
         }
         else if(expr.getClass() == RandomSensor.class){
             RandomSensor rs = (RandomSensor) expr;
@@ -198,7 +198,7 @@ public class Interpreter
     // TODO account for out of bounds indices
     public int interpretNearbySensor(int dir)
     {
-        dir = (dir + critter.getDirection()) % 6;
+        dir = Math.abs((dir + critter.getDirection())) % 6;
         if (dir == 0)
         {
             int info = world.getTerrainInfo(critter.getColumn(), critter.getRow() - 2);
@@ -271,7 +271,8 @@ public class Interpreter
             if(info == 0) return 0;
             else if(info < -1) return info;
             else if(info == -1) return -1;
-            else{
+            else
+            {
                 Tile[][] tiles = world.getTiles();
                 Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
                 return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
@@ -353,46 +354,52 @@ public class Interpreter
         tileSearch.add(new int[]{row + 1, column - 1});
         tileSearch.add(new int[]{row - 1, column - 1});
         int[] foodCoordinates = findNearestFood(tiles, tileSearch);
-        int radius = ((foodCoordinates[0] - row) + (foodCoordinates[1] - column)) / 2;
-        if (foodCoordinates[0] == -1 || radius > Constants.MAX_SMELL_DISTANCE)
+        int cx = column;
+        int cy = tiles[0].length - 1 - row;
+        int fx = foodCoordinates[1];
+        int fy = foodCoordinates[0];
+        int dist = Math.max(Math.abs(fx - cx), Math.abs(fx - cx + fy - cy) / 2);
+        dist = Math.max(dist, Math.abs(fx - cx - fy + cy));
+        if (foodCoordinates[0] == -1 || dist > Constants.MAX_SMELL_DISTANCE)
         {
             return 1000000;
         }
 
-        int tanned = (int) Math.atan( (foodCoordinates[1] - column) / (foodCoordinates[0] - row)); //based off assumption row is first
-
+        // TODO fix int division
+        // based off assumption row is first
+        int tanned = (int) Math.atan((double) (fx - cx) / (double) (fy - cy));
         if( (foodCoordinates[1] - row) < 0)
         {
             tanned += 180;
         }
 
         int dirOfFood = critter.getDirection();
-        if(tanned >= 0 && tanned < 60){
-            dirOfFood = 1 - dirOfFood;
-            dirOfFood %= dirOfFood;
+        if(tanned >= 0 && tanned < 60)
+        {
+            dirOfFood = 1 - dirOfFood + 6;
         }
-        else if(tanned >= 60 && tanned < 120){
-            dirOfFood = 0 - dirOfFood;
-            dirOfFood %= dirOfFood;
+        else if(tanned >= 60 && tanned < 120)
+        {
+            dirOfFood = 0 - dirOfFood + 6;
         }
-        else if(tanned >= 120 && tanned < 180){
-            dirOfFood = 5 - dirOfFood;
-            dirOfFood %= dirOfFood;
+        else if(tanned >= 120 && tanned < 180)
+        {
+            dirOfFood = 5 - dirOfFood + 6;
         }
-        else if(tanned >= 180 && tanned < 240){
-            dirOfFood = 4 - dirOfFood;
-            dirOfFood %= dirOfFood;
+        else if(tanned >= 180 && tanned < 240)
+        {
+            dirOfFood = 4 - dirOfFood + 6;
         }
-        else if(tanned >= 240 && tanned < 300){
-            dirOfFood = 3 - dirOfFood;
-            dirOfFood %= dirOfFood;
+        else if(tanned >= 240 && tanned < 300)
+        {
+            dirOfFood = 3 - dirOfFood + 6;
         }
-        else if(tanned >= 300 && tanned < 360){
-            dirOfFood = 2 - dirOfFood;
-            dirOfFood %= dirOfFood;
+        else if(tanned >= 300 && tanned < 360)
+        {
+            dirOfFood = 2 - dirOfFood + 6;
         }
-
-        return 1000 * radius + dirOfFood;
+        dirOfFood %= 6;
+        return 1000 * dist + dirOfFood;
     }
 
     public int[] findNearestFood(Tile[][] tiles, LinkedList<int[]> tileSearch)

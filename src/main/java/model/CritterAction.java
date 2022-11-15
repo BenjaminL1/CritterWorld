@@ -1,5 +1,9 @@
 package model;
 
+import ast.Mutation;
+import ast.MutationFactory;
+import ast.Node;
+import ast.Program;
 import parse.TokenType;
 
 public class CritterAction
@@ -7,7 +11,8 @@ public class CritterAction
     private World world;
     private Critter critter;
 
-    public CritterAction (World world, Critter critter){
+    public CritterAction (World world, Critter critter)
+    {
         this.world = world;
         this.critter = critter;
     }
@@ -15,7 +20,8 @@ public class CritterAction
     public boolean action(TokenType actionName)
     {
         String name = actionName.toString();
-        switch(name){
+        switch(name)
+        {
             case ("wait"):
                 return waitTurn();
             case ("forward"):
@@ -38,12 +44,15 @@ public class CritterAction
                 return waitTurn();
             case ("serve"):
                 return waitTurn();
-
+            default:
+                return false;
         }
+
     }
 
 
-    public boolean waitTurn(){
+    public boolean waitTurn()
+    {
         critter.setMem(4, critter.getMemValue(4 ) + critter.getMemValue(3) * Constants.SOLAR_FLUX);
         return true;
     }
@@ -57,13 +66,14 @@ public class CritterAction
             return false;
         }
 
-        if(critter.getMemValue(4) == critter.getMemValue(3) * 3) {
-
+        if(critter.getMemValue(4) == critter.getMemValue(3) * 3)
+        {
             Tile[][] tiles = world.getTiles();
             int row = -1;
             int column = -1;
             if(direction){
-                switch(critter.getDirection()){
+                switch(critter.getDirection())
+                {
                     case 0:
                         column = c;
                         row = r - 2;
@@ -85,8 +95,10 @@ public class CritterAction
                 }
             }
 
-            else{
-                switch(critter.getDirection()){
+            else
+            {
+                switch(critter.getDirection())
+                {
                     case 0:
                         column = c;
                         row = r + 2;
@@ -190,7 +202,6 @@ public class CritterAction
                 }
             }
         }
-
         return false;
     }
     public boolean turn (boolean orientation){ //true is left, false is right
@@ -318,7 +329,10 @@ public class CritterAction
                 r = r + 1;
         }
 
-        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length || !tiles[r][c].getIsCritter()) return false;
+        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length || !tiles[r][c].getIsCritter()){
+            if(currEnergy == 0) world.deadCritter(critter);
+            return false;
+        }
 
         Critter target = tiles[r][c].getCritter();
         int size1 = critter.getMemValue(3);
@@ -354,14 +368,203 @@ public class CritterAction
         critter.setMem(3, critter.getMemValue(3) + 1);
         return true;
     }
-    public boolean bud (){
+    public boolean bud ()
+    {
+        int newEnergy = critter.getMemValue(4) - critter.complexity() * 9;
+        if(newEnergy < 0){
+            world.deadCritter(critter);
+            return false;
+        }
+
+        critter.setMem(4, newEnergy);
+
+        Tile[][] tiles = world.getTiles();
+        int r = critter.getRow();
+        int c = critter.getColumn();
+        switch(critter.getDirection()){
+            case 0:
+                c = c;
+                r = r + 2;
+            case 1:
+                c = c - 1;
+                r = r + 1;
+            case 2:
+                c = c - 1;
+                r = r - 1;
+            case 3:
+                c = c;
+                r = r - 2;
+            case 4:
+                c = c + 1;
+                r = r - 1;
+            case 5:
+                c = c + 1;
+                r = r + 1;
+        }
+
+        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length
+                || tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || tiles[r][c].getIsCritter()){
+            if(newEnergy == 0) world.deadCritter(critter);
+            return false;
+        }
+
+        Program clonedAST = (Program) critter.getProgram().clone();
+
+        while(Math.random() < 1/4){
+            int selecter = (int) Math.random() * clonedAST.size();
+            Node mutatedNode = clonedAST.nodeAt(selecter);
+
+            int mutation = (int) (Math.random() * 6);
+
+            switch(mutation){
+                case 0:
+                    Mutation remove = MutationFactory.getRemove();
+                    remove.apply(clonedAST, mutatedNode);
+                case 1:
+                    Mutation swap = MutationFactory.getSwap();
+                    swap.apply(clonedAST, mutatedNode);
+                case 2:
+                    Mutation replace = MutationFactory.getReplace();
+                    replace.apply(clonedAST, mutatedNode);
+                case 3:
+                    Mutation transform = MutationFactory.getTransform();
+                    transform.apply(clonedAST, mutatedNode);
+                case 4:
+                    Mutation insert = MutationFactory.getInsert();
+                    insert.apply(clonedAST, mutatedNode);
+                case 5:
+                    Mutation duplicate = MutationFactory.getDuplicate();
+                    duplicate.apply(clonedAST, mutatedNode);
+            }
+        }
+
+        int[] mem = new int[critter.getMemory().length];
+        for(int i=0; i< mem.length; i++){
+            if(i==3) mem[3] = 1;
+            else if( i == 4) mem[4] = Constants.INITIAL_ENERGY;
+            else if(i == 6) mem[6] = 0;
+            else if(i >= 7) mem[i] = 0;
+            else {
+                mem[i] = critter.getMemValue(i);
+            }
+        }
+
+        world.addCritter(critter.getSpecies(), mem, clonedAST, r, c, critter.getDirection() );
+
+        if(newEnergy == 0) world.deadCritter(critter);
+        return true;
 
     }
-    public boolean mate (){
+    public boolean mate ()
+    {
+        int cost = critter.complexity() * Constants.MATE_COST;
+        int newEnergy = critter.getMemValue(4) - cost;
+        if(newEnergy < 0){
+            world.deadCritter(critter);
+            return false;
+        }
+        critter.setMem(4, newEnergy);
+
+        Tile[][] tiles = world.getTiles();
+        int r = critter.getRow();
+        int c = critter.getColumn();
+        switch(critter.getDirection()){
+            case 0:
+                c = c;
+                r = r + 2;
+            case 1:
+                c = c - 1;
+                r = r + 1;
+            case 2:
+                c = c - 1;
+                r = r - 1;
+            case 3:
+                c = c;
+                r = r - 2;
+            case 4:
+                c = c + 1;
+                r = r - 1;
+            case 5:
+                c = c + 1;
+                r = r + 1;
+        }
+
+        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length
+                || tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || !tiles[r][c].getIsCritter()){
+            if(newEnergy == 0) world.deadCritter(critter);
+            return false;
+        }
+
+        Critter mate = tiles[r][c].getCritter();
+
+        boolean behindMate = true;
+        switch(critter.getDirection()){
+            case 0:
+                c = c;
+                r = r + 2;
+            case 1:
+                c = c - 1;
+                r = r + 1;
+            case 2:
+                c = c - 1;
+                r = r - 1;
+            case 3:
+                c = c;
+                r = r - 2;
+            case 4:
+                c = c + 1;
+                r = r - 1;
+            case 5:
+                c = c + 1;
+                r = r + 1;
+        }
+
+        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length
+                || tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || tiles[r][c].getIsCritter()){
+            behindMate = false;
+        }
+
+        boolean behindSelf = true;
+
+        r = critter.getRow();
+        c = critter.getColumn();
+        switch( (critter.getDirection() + 3) % 6){
+            case 0:
+                c = c;
+                r = r + 2;
+            case 1:
+                c = c - 1;
+                r = r + 1;
+            case 2:
+                c = c - 1;
+                r = r - 1;
+            case 3:
+                c = c;
+                r = r - 2;
+            case 4:
+                c = c + 1;
+                r = r - 1;
+            case 5:
+                c = c + 1;
+                r = r + 1;
+        }
+
+        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length
+                || tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || tiles[r][c].getIsCritter()){
+            behindSelf = false;
+        }
+
+        if( !behindMate && !behindSelf) return false;
+
+        mate.getLastRuleString()
+
+
+        return true;
 
     }
-    public boolean serve (){
-
+    public boolean serve ()
+    {
+        return false;
     }
 
 

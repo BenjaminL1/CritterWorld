@@ -6,7 +6,8 @@ import java.util.Map;
 
 /** An instance represents a Token with a category and a string representation.
  */
-public enum TokenType {
+public enum TokenType
+{
     MEM(TokenCategory.OTHER, "mem"),
     WAIT(TokenCategory.ACTION, "wait"),
     FORWARD(TokenCategory.ACTION, "forward"),
@@ -60,7 +61,8 @@ public enum TokenType {
     private static final Map<String, TokenType> stringToTypeMap;
 
     // static initializer to initialize the values of stringToTypeMap
-    static {
+    static
+    {
         final Map<String, TokenType> temp = new HashMap<>();
         for (TokenType t : TokenType.values()) {
             temp.put(t.stringRep, t);
