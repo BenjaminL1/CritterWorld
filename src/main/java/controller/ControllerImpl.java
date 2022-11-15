@@ -97,13 +97,21 @@ public class ControllerImpl implements Controller
     @Override
     public boolean advanceTime(int n)
     {
-        return false;
+        if (controlWorld == null || n < 0)
+        {
+            return false;
+        }
+        for (int i = 0; i < n; i++)
+        {
+            controlWorld.advanceTimeStep();
+        }
+        return true;
     }
 
     @Override
     public void printWorld(PrintStream out)
     {
-
+        controlWorld.printWorld(out);
     }
 
     public Object[] parseCritterFile(String filename)

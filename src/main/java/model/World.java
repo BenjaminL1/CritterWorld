@@ -47,13 +47,14 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir)
     {
-        if(tiles[column][row] != null)
+        if(tiles[row][column] != null)
         {
-            Tile curr = tiles[column][row];
+            Tile curr = tiles[row][column];
             if(curr.getIsCritter() || curr.getIsFood() || curr.getIsRock()) return false;
         }
 
-        tiles[column][row] = new Tile(new Critter(species, ast, mem, tiles.length - row, column, dir));
+        tiles[row][column] = new Tile(new Critter(species, ast, mem, tiles.length - row, column, dir));
+        critters.add(tiles[row][column].getCritter());
         return true;
 
     }
@@ -62,29 +63,29 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public boolean addRock(int row, int column)
     {
-        if(tiles[column][row] != null)
+        if(tiles[row][column] != null)
         {
-            Tile curr = tiles[column][row];
+            Tile curr = tiles[row][column];
             if(curr.getIsCritter() || curr.getIsFood() || curr.getIsRock()) return false;
         }
-        tiles[column][row] = new Tile();
+        tiles[row][column] = new Tile();
         return true;
     }
 
     @Override
     public boolean addFood(int row, int column, int amount)
     {
-        if(tiles[column][row] != null)
+        if(tiles[row][column] != null)
         {
-            Tile curr = tiles[column][row];
+            Tile curr = tiles[row][column];
             if(curr.getIsCritter() || curr.getIsFood() || curr.getIsRock()) return false;
         }
-        tiles[column][row] = new Tile(amount);
+        tiles[row][column] = new Tile(amount);
         return true;
     }
 
     @Override
-    void advanceTimeStep()
+    public void advanceTimeStep()
     {
         for (Critter critter: critters)
         {
@@ -93,7 +94,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     }
 
     @Override
-    void printWorld(PrintStream out)
+    public void printWorld(PrintStream out)
     {
 
     }
@@ -112,18 +113,36 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
 
     @Override
     public Maybe<ReadOnlyCritter> getReadOnlyCritter(int c, int r) {
-        if(c > numColumns || r > numRows || tiles[c][r] == null || !tiles[c][r].getIsCritter()) return Maybe.none();
+        if(c > numColumns || r > numRows || tiles[r][c] == null || !tiles[r][c].getIsCritter()) return Maybe.none();
 
-        return Maybe.some(tiles[c][r].getCritter());
+        return Maybe.some(tiles[r][c].getCritter());
     }
 
     @Override
     public int getTerrainInfo(int c, int r) {
         if(c > numColumns || r > numRows) throw new IndexOutOfBoundsException();
-        if( tiles[c][r] == null) return 0;
-        if(tiles[c][r].getIsRock()) return -1;
-        else if(tiles[c][r].getIsFood()) return (tiles[c][r].getNumFood() + 1) * -1;
-        else if(tiles[c][r].getIsCritter()) return tiles[c][r].getCritter().getDirection() + 1;
+        if( tiles[r][c] == null) return 0;
+        if(tiles[r][c].getIsRock()) return -1;
+        else if(tiles[r][c].getIsFood()) return (tiles[r][c].getNumFood() + 1) * -1;
+        else if(tiles[r][c].getIsCritter()) return tiles[r][c].getCritter().getDirection() + 1;
         return 0;
+    }
+
+    public boolean deadCritter(Critter critter){
+
+        int row = critter.getRow();
+        int column = critter.getColumn();
+        if( !tiles[row][column].getCritter().equals(critter) ) return false;
+
+        tiles[row][column] = new Tile(critter.getMemValue(3) * Constants.FOOD_PER_SIZE);
+        critters.remove(critter);
+
+        return true;
+    }
+
+    public void setCritterPosition(Critter critter, int r, int c){
+        tiles[critter.getColumn()][critter.getRow()] = null;
+        tiles[r][c] = new Tile(critter);
+        critter.setPosition(r, c);
     }
 }

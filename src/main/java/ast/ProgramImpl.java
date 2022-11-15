@@ -81,8 +81,9 @@ public class ProgramImpl extends AbstractNode implements Program
     @Override
     public Program mutate()
     {
+        int size = this.size();
         int randomMut = (int)(Math.random() * 6);
-        int randomNode = (int)(Math.random() * this.size());
+        int randomNode = (int)(Math.random() * size);
         Mutation m;
 
         if(randomMut == 0)
@@ -115,6 +116,12 @@ public class ProgramImpl extends AbstractNode implements Program
             m = MutationFactory.getDuplicate();
         }
 
+        int count = 0;
+        while (!m.canApply(this.nodeAt(randomNode)) && count < size)
+        {
+            randomNode = (int)(Math.random() * size);
+            count++;
+        }
         m.apply(this, this.nodeAt(randomNode));
         return this;
     }

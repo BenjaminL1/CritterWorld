@@ -4,6 +4,8 @@ import ast.*;
 import ast.Number;
 import parse.TokenType;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class Interpreter
@@ -193,7 +195,8 @@ public class Interpreter
         return 0;
     }
 
-    public int interpretNearbySensor(NearbySensor ns, int dir)
+    // TODO account for out of bounds indices
+    public int interpretNearbySensor(int dir)
     {
         dir = (dir + critter.getDirection()) % 6;
         if (dir == 0)
@@ -207,7 +210,6 @@ public class Interpreter
                 Tile[][] tiles = world.getTiles();
                 Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
                 return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  critter.getDirection();
-
             }
         }
         else if (dir == 1)
@@ -216,7 +218,8 @@ public class Interpreter
             if(info == 0) return 0;
             else if(info < -1) return info;
             else if(info == -1) return -1;
-            else{
+            else
+            {
                 Tile[][] tiles = world.getTiles();
                 Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
                 return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
@@ -281,7 +284,8 @@ public class Interpreter
         }
     }
 
-    public int interpretAheadSensor(AheadSensor as, int dist)
+    // TODO account for out of bounds indices
+    public int interpretAheadSensor(int dist)
     {
         dist = Math.max(dist, 0);
         int dir = critter.getDirection();
@@ -291,36 +295,36 @@ public class Interpreter
         if (dir == 0)
         {
             row -= dist * 2;
-            info = world.getTerrainInfo(row, column);
+            info = world.getTerrainInfo(column, row);
         }
         else if (dir == 1)
         {
             row -= dist;
             column += dist;
-            info = world.getTerrainInfo(row, column);
+            info = world.getTerrainInfo(column, row);
         }
         else if (dir == 2)
         {
             row += dist;
             column += dist;
-            info = world.getTerrainInfo(row, column);
+            info = world.getTerrainInfo(column, row);
         }
         else if (dir == 3)
         {
             row += dist * 2;
-            info = world.getTerrainInfo(row, column);
+            info = world.getTerrainInfo(column, row);
         }
         else if (dir == 4)
         {
             row += dist;
             column -= dist;
-            info = world.getTerrainInfo(row, column);
+            info = world.getTerrainInfo(column, row);
         }
         else
         {
             row -= dist;
             column -= dist;
-            info = world.getTerrainInfo(row, column);
+            info = world.getTerrainInfo(column, row);
         }
 
         if (info <= 0)
@@ -337,7 +341,99 @@ public class Interpreter
 
     public int interpretSmellSensor()
     {
+        Tile[][] tiles = world.getTiles();
+        int row = critter.getRow();
+        int column = critter.getColumn();
+        int dir = critter.getDirection();
+        LinkedList<int[]> tileSearch = new LinkedList<int[]>();
+        tileSearch.add(new int[]{row - 2, column});
+        tileSearch.add(new int[]{row - 1, column + 1});
+        tileSearch.add(new int[]{row + 1, column + 1});
+        tileSearch.add(new int[]{row + 2, column});
+        tileSearch.add(new int[]{row + 1, column - 1});
+        tileSearch.add(new int[]{row - 1, column - 1});
+        int[] foodCoordinates = findNearestFood(tiles, tileSearch);
+        int radius = ((foodCoordinates[0] - row) + (foodCoordinates[1] - column)) / 2;
+        if (foodCoordinates[0] == -1 || radius > Constants.MAX_SMELL_DISTANCE)
+        {
+            return 1000000;
+        }
 
+        int tanned = (int) Math.atan( (foodCoordinates[1] - column) / (foodCoordinates[0] - row)); //based off assumption row is first
+
+        if( (foodCoordinates[1] - row) < 0)
+        {
+            tanned += 180;
+        }
+
+        int dirOfFood = critter.getDirection();
+        if(tanned >= 0 && tanned < 60){
+            dirOfFood = 1 - dirOfFood;
+            dirOfFood %= dirOfFood;
+        }
+        else if(tanned >= 60 && tanned < 120){
+            dirOfFood = 0 - dirOfFood;
+            dirOfFood %= dirOfFood;
+        }
+        else if(tanned >= 120 && tanned < 180){
+            dirOfFood = 5 - dirOfFood;
+            dirOfFood %= dirOfFood;
+        }
+        else if(tanned >= 180 && tanned < 240){
+            dirOfFood = 4 - dirOfFood;
+            dirOfFood %= dirOfFood;
+        }
+        else if(tanned >= 240 && tanned < 300){
+            dirOfFood = 3 - dirOfFood;
+            dirOfFood %= dirOfFood;
+        }
+        else if(tanned >= 300 && tanned < 360){
+            dirOfFood = 2 - dirOfFood;
+            dirOfFood %= dirOfFood;
+        }
+
+        return 1000 * radius + dirOfFood;
+    }
+
+    public int[] findNearestFood(Tile[][] tiles, LinkedList<int[]> tileSearch)
+    {
+        while (tileSearch.peek() != null)
+        {
+            int[] coordinates = tileSearch.poll();
+            if (tiles[coordinates[0]][coordinates[1]].getIsFood())
+            {
+                return coordinates;
+            }
+            int rowSize = tiles.length;
+            int columnSize = tiles[0].length;
+            int row = coordinates[0];
+            int column = coordinates[1];
+            if (row - 2 >= 0)
+            {
+                tileSearch.add(new int[]{row - 2, column});
+            }
+            if (row - 1 >= 0 && column + 1 < columnSize)
+            {
+                tileSearch.add(new int[]{row - 1, column + 1});
+            }
+            if (row + 1 < rowSize && column + 1 < columnSize)
+            {
+                tileSearch.add(new int[]{row + 1, column + 1});
+            }
+            if (row + 1 < rowSize)
+            {
+                tileSearch.add(new int[]{row + 2, column});
+            }
+            if (row + 1 < rowSize && column - 1 >= 0)
+            {
+                tileSearch.add(new int[]{row + 1, column - 1});
+            }
+            if (row - 1 >= 0 && column - 1 >= 0)
+            {
+                tileSearch.add(new int[]{row - 1, column - 1});
+            }
+        }
+        return new int[]{-1, -1};
     }
 
     public int interpretRandomSensor(RandomSensor rs, int n)

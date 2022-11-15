@@ -19,7 +19,7 @@ public class Critter implements ReadOnlyCritter
         this.mem = mem;
         this.row = row;
         this.column = column;
-        this.direction = direction;
+        this.direction = direction % 6;
     }
 
     public Program getProgram()
@@ -40,6 +40,23 @@ public class Critter implements ReadOnlyCritter
     public int getColumn()
     {
         return column;
+    }
+
+    public void setPosition(int r, int c){
+        row = r;
+        column = c;
+    }
+
+    public void setDirection(int newDir){
+        direction = newDir;
+    }
+
+    public int energyCapacity(){
+        return mem[3] *  Constants.ENERGY_PER_SIZE;
+    }
+
+    public int complexity(){
+        return ast.getChildren().size() * Constants.RULE_COST + (mem[1] + mem[2]) * Constants.ABILITY_COST;
     }
 
     public int getDirection()

@@ -14,8 +14,8 @@ public abstract class ControlOnlyWorld
 
     public abstract boolean addFood(int row, int column, int amount);
 
-    abstract void advanceTimeStep();
+    public abstract void advanceTimeStep();
 
-    abstract void printWorld(PrintStream out);
+    public abstract void printWorld(PrintStream out);
 
 }
