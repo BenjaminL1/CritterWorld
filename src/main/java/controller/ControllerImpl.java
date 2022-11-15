@@ -39,6 +39,7 @@ public class ControllerImpl implements Controller
     @Override
     public boolean loadWorld(String filename, boolean enableManna, boolean enableForcedMutation)
     {
+        // TODO fix coordinates
         File worldFile = new File(filename);
         try
         {
