@@ -157,7 +157,7 @@ public class ControllerImpl implements Controller
                     text = text.substring(0, text.length() - 1);
                 }
 //                System.out.println(text + ", line " + line);
-                if (text.startsWith("//"))
+                if (text.startsWith("//") || text.equals(""))
                 {
                     continue;
                 }
