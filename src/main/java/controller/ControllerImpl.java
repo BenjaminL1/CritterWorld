@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.Reader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ControllerImpl implements Controller
@@ -44,10 +45,22 @@ public class ControllerImpl implements Controller
         try
         {
             Scanner sc = new Scanner(worldFile);
+            sc.next();
+            System.out.println(sc.nextLine().substring(1));
+            sc.next();
+            int width = sc.nextInt();
+            int height = sc.nextInt();
+            World world = new World(width, height, enableManna, enableForcedMutation);
+            controlWorld = world;
+            readOnlyWorld = world;
             while (sc.hasNext())
             {
                 String object = sc.next();
-                if (object.equals("rock"))
+                if (object.startsWith("//"))
+                {
+                    sc.nextLine();
+                }
+                else if (object.equals("rock"))
                 {
                     int column = sc.nextInt();
                     int row = sc.nextInt();
@@ -66,7 +79,8 @@ public class ControllerImpl implements Controller
                     int column = sc.nextInt();
                     int row = sc.nextInt();
                     int direction = sc.nextInt();
-                    Object[] critterInfo = parseCritterFile(critterFile);
+                    Object[] critterInfo = parseCritterFile(worldFile.getParent() + "\\" + critterFile);
+//                    System.out.println(Arrays.toString(critterInfo));
                     controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2],
                             row, column, direction);
                 }
@@ -119,7 +133,9 @@ public class ControllerImpl implements Controller
     {
         try
         {
+//            System.out.println(filename);
             Reader r = new FileReader(filename);
+//            System.out.println("passed 1");
             String species = "";
             Program ast;
             int[] mem = new int[Constants.MIN_MEMORY];
@@ -136,7 +152,16 @@ public class ControllerImpl implements Controller
                 {
                     text += (char) i;
                 }
-                if (text.startsWith("species: ") && line == 1)
+                if (text.endsWith("\r"))
+                {
+                    text = text.substring(0, text.length() - 1);
+                }
+//                System.out.println(text + ", line " + line);
+                if (text.startsWith("//"))
+                {
+                    continue;
+                }
+                else if (text.startsWith("species: ") && line == 1)
                 {
                     species = text.substring(9);
                 }
@@ -176,11 +201,11 @@ public class ControllerImpl implements Controller
                 {
                     throw new IOException();
                 }
-                r.read();
                 line++;
             }
             Parser p = ParserFactory.getParser();
             ast = p.parse(r);
+//            System.out.println(ast);
             return new Object[]{species, mem, ast};
         }
         catch (IOException e)

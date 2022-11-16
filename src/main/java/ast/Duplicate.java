@@ -115,7 +115,7 @@ public class Duplicate extends SearchMutation
         List<Node> children = node.getChildren();
         int size = children.size();
         Node lastChild = children.get(size - 1);
-        if (lastChild instanceof Action)
+        if (lastChild instanceof Action && subtrees.size() > 0)
         {
             int index = super.pickElement(subtrees);
             Update clone = (Update) (subtrees.get(index).clone());
@@ -123,7 +123,7 @@ public class Duplicate extends SearchMutation
             children.set(size - 1, clone);
             children.add(lastChild);
         }
-        else
+        else if (lastChild instanceof Update)
         {
             List<Node> actionSubtrees = super.findSubtrees(new Action(TokenType.WAIT));
             subtrees.addAll(actionSubtrees);

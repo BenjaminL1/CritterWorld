@@ -8,24 +8,30 @@ import java.util.ArrayList;
 
 public class World extends ControlOnlyWorld implements ReadOnlyWorld
 {
-
     private int numRows;
     private int numColumns;
     private Tile[][] tiles;
     private int numSteps;
     private ArrayList<Critter> critters;
+    private boolean enableManna;
+    private boolean enableForcedMutation;
 
     public World()
     {
         this.numRows = (int)(Math.random()*100);
         this.numColumns = (int)(Math.random()*100);
         this.tiles = new Tile[numRows][numColumns];
+        this.critters = new ArrayList<>();
     }
 
-    public World(int width, int height){
-        this.numRows = height + 1;
-        this.numColumns = width + 1;
-        this.tiles = new Tile[height + 1][width + 1];
+    public World(int width, int height, boolean enableManna, boolean enableForcedMutation)
+    {
+        this.numRows = height;
+        this.numColumns = width;
+        this.tiles = new Tile[numRows][numColumns];
+        this.critters = new ArrayList<>();
+        this.enableManna = enableManna;
+        this.enableForcedMutation = enableForcedMutation;
     }
 
     public Tile[][] getTiles()
@@ -51,12 +57,13 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir)
     {
+        row = tiles.length - 1 - row;
         if(tiles[row][column] != null)
         {
             Tile curr = tiles[row][column];
             if(curr.getIsCritter() || curr.getIsFood() || curr.getIsRock()) return false;
         }
-        tiles[row][column] = new Tile(new Critter(species, ast, mem, tiles.length - 1 - row, column, dir));
+        tiles[row][column] = new Tile(new Critter(species, ast, mem, row, column, dir));
         critters.add(tiles[row][column].getCritter());
         return true;
     }
@@ -65,6 +72,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public boolean addRock(int row, int column)
     {
+        row = tiles.length - 1 - row;
         if(tiles[row][column] != null)
         {
             Tile curr = tiles[row][column];
@@ -77,6 +85,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public boolean addFood(int row, int column, int amount)
     {
+        row = tiles.length - 1 - row;
         if(tiles[row][column] != null)
         {
             Tile curr = tiles[row][column];

@@ -1,9 +1,6 @@
 package model;
 
-import ast.Mutation;
-import ast.MutationFactory;
-import ast.Node;
-import ast.Program;
+import ast.*;
 import parse.TokenType;
 
 public class CritterAction
@@ -17,9 +14,9 @@ public class CritterAction
         this.critter = critter;
     }
 
-    public boolean action(TokenType actionName)
+    public boolean action(Action actionNode)
     {
-        String name = actionName.toString();
+        String name = actionNode.getName().toString();
         switch(name)
         {
             case ("wait"):
@@ -42,12 +39,14 @@ public class CritterAction
                 return waitTurn();
             case ("mate"):
                 return waitTurn();
-            case ("serve"):
-                return waitTurn();
             default:
                 return false;
         }
 
+    }
+
+    public boolean actionServe(Action actionNode, int value){
+        return serve(value);
     }
 
 
@@ -498,25 +497,29 @@ public class CritterAction
         Critter mate = tiles[r][c].getCritter();
 
         boolean behindMate = true;
+
+        int r2 = r;
+        int c2 = c;
+
         switch(critter.getDirection()){
             case 0:
-                c = c;
-                r = r + 2;
+                c2 = c2;
+                r2 = r2 + 2;
             case 1:
-                c = c - 1;
-                r = r + 1;
+                c2 = c2 - 1;
+                r2 = r2 + 1;
             case 2:
-                c = c - 1;
-                r = r - 1;
+                c2 = c2 - 1;
+                r2 = r2 - 1;
             case 3:
-                c = c;
-                r = r - 2;
+                c2 = c2;
+                r2 = r2 - 2;
             case 4:
-                c = c + 1;
-                r = r - 1;
+                c2 = c2 + 1;
+                r2 = r2 - 1;
             case 5:
-                c = c + 1;
-                r = r + 1;
+                c2 = c2 + 1;
+                r2 = r2 + 1;
         }
 
         if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length
@@ -556,15 +559,141 @@ public class CritterAction
 
         if( !behindMate && !behindSelf) return false;
 
-        mate.getLastRuleString()
+        if(mate.isMating() == false) {
+            critter.setMating(true);
+            return false;
+        }
+        else{
+            int matedRow;
+            int matedColumn;
+            int matedDirection;
+            if(behindMate && behindSelf){
+                if(Math.random() > 0.5) behindMate = false;
+                else behindSelf = false;
+            }
+            if(!behindMate && behindSelf){
+                matedRow = r;
+                matedColumn = c;
+                matedDirection = critter.getDirection();
+            }
+            else{
+                matedRow = r2;
+                matedColumn = c2;
+                matedDirection = mate.getDirection();
+            }
 
+            String newSpeciesName;
+            if(Math.random() > 0.5) newSpeciesName = critter.getSpecies();
+            else newSpeciesName = mate.getSpecies();
+
+            int size;
+            if(Math.random() < 0.5){
+                size = critter.getMemValue(0);
+            }
+            else{
+                size = mate.getMemValue(0);
+            }
+            int[] mem = new int[size];
+            for(int i=0; i< mem.length; i++){
+                if(i==3) mem[3] = 1;
+                else if( i == 4) mem[4] = Constants.INITIAL_ENERGY;
+                else if(i == 6) mem[6] = 0;
+                else if(i >= 7) mem[i] = 0;
+                else {
+                    if(Math.random() > 0.5) mem[i] = critter.getMemValue(i);
+                    else mem[i] = mate.getMemValue(i);
+                }
+            }
+
+            world.addCritter(newSpeciesName, mem, matedCritter(critter, mate), matedRow, matedColumn, matedDirection);
+
+            critter.setMating(false);
+            mate.setMating(false);
+        }
+
+        if(critter.getMemValue(4) == 0) world.deadCritter(critter);
 
         return true;
 
     }
-    public boolean serve ()
+
+    public Program matedCritter(Critter mate1, Critter mate2){
+
+        double pickGenomeSize = Math.random();
+
+        Program mate1AST = mate1.getProgram();
+        Program mate2AST = mate2.getProgram();
+
+        Program newProgram = new ProgramImpl();
+        int size;
+        if(pickGenomeSize < 0.5){
+            size = mate1AST.size();
+        }
+        else{
+            size = mate2AST.size();
+        }
+
+        for(int i=0; i<size; i++){
+            if(i > mate1AST.size()) newProgram.getChildren().add(mate2AST.getChildren().get(i).clone());
+            else if(i > mate2AST.size()) newProgram.getChildren().add(mate1AST.getChildren().get(i).clone());
+            else {
+                if(Math.random() > 0.5) newProgram.getChildren().add(mate1AST.getChildren().get(i).clone());
+                else newProgram.getChildren().add(mate2AST.getChildren().get(i).clone());
+            }
+        }
+
+        return newProgram;
+    }
+
+
+    public boolean serve (int value)
     {
-        return false;
+        int energySpent = critter.getMemValue(3) + value;
+
+        if(energySpent > critter.getMemValue(4)) {
+            world.deadCritter(critter);
+            return false;
+        }
+
+        critter.setMem(4, critter.getMemValue(4) - energySpent);
+
+        Tile[][] tiles = world.getTiles();
+        int r = critter.getRow();
+        int c = critter.getColumn();
+        switch(critter.getDirection()){
+            case 0:
+                c = c;
+                r = r + 2;
+            case 1:
+                c = c - 1;
+                r = r + 1;
+            case 2:
+                c = c - 1;
+                r = r - 1;
+            case 3:
+                c = c;
+                r = r - 2;
+            case 4:
+                c = c + 1;
+                r = r - 1;
+            case 5:
+                c = c + 1;
+                r = r + 1;
+        }
+
+        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length
+                || tiles[r][c].getIsRock() || tiles[r][c].getIsCritter()){
+            if(critter.getMemValue(4) == 0) world.deadCritter(critter);
+            return false;
+        }
+
+        tiles[r][c] = new Tile(tiles[r][c].getNumFood() + value);
+
+        if(critter.getMemValue(4) == 0){
+            world.deadCritter(critter);
+        }
+
+        return true;
     }
 
 

@@ -1,0 +1,14 @@
+species: test critter
+memsize: 8
+defense: 1
+offense: 1
+size: 1
+energy: 500
+posture: 0
+// test
+POSTURE != 17 --> POSTURE := 17;
+{nearby[3] = 0 or ENERGY > 2500} --> bud;
+{ENERGY > SIZE * 5 * ((8 / 2) mod (2 + 4)) and SIZE < 7} --> grow;
+ahead[0] < -1 and ENERGY < 500 * SIZE --> eat;
+(ahead[1] / 10 mod 100) != 17 and ahead[1] > 0 --> attack;
+1 = 1 --> wait;

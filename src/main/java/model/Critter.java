@@ -11,6 +11,7 @@ public class Critter implements ReadOnlyCritter
     private int row;
     private int column;
     private int direction;
+    private boolean mating;
 
     public Critter(String species, Program ast, int[] mem, int row, int column, int direction)
     {
@@ -31,6 +32,16 @@ public class Critter implements ReadOnlyCritter
 //    {
 //        return mem;
 //    }
+
+    public boolean isMating()
+    {
+        return mating;
+    }
+
+    public void setMating(boolean mating)
+    {
+        this.mating = mating;
+    }
 
     public int getRow()
     {

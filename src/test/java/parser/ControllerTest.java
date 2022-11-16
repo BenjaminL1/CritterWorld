@@ -10,6 +10,7 @@ public class ControllerTest
     public void testLoadCritter()
     {
         Controller controller = ControllerFactory.getConsoleController();
-        controller.loadWorld("src\\test\\resources\\A5files\\small_world", true, false);
+        controller.loadWorld("src\\test\\resources\\A5files\\test_world.txt", true, false);
+        controller.printWorld(System.out);
     }
 }

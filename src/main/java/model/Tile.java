@@ -6,7 +6,7 @@ public class Tile {
     private boolean isFood;
     private boolean isCritter;
 
-    private int numFood;
+    private int numFood = 0;
     private Critter critter;
 
     Tile()
@@ -30,6 +30,12 @@ public class Tile {
         this.isFood = false;
         this.isRock = false;
         this.critter = critter;
+    }
+
+    Tile(Boolean bool){
+        this.isCritter = false;
+        this.isFood = false;
+        this.isRock = false;
     }
 
     public boolean getIsRock()
