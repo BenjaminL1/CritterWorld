@@ -32,7 +32,8 @@ public class Tile {
         this.critter = critter;
     }
 
-    Tile(Boolean bool){
+    Tile(Boolean bool)
+    {
         this.isCritter = false;
         this.isFood = false;
         this.isRock = false;

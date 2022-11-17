@@ -2,6 +2,7 @@ package model;
 
 import ast.*;
 import ast.Number;
+import org.eclipse.jetty.http.HttpTokens;
 import parse.TokenType;
 
 import java.util.ArrayList;
@@ -23,39 +24,64 @@ public class Interpreter
     {
         for(int i=0; i<1000; i++)
         {
-            if(interpretProgram(critter.getProgram()) == 0) break;
+            if (interpretProgram(critter.getProgram()) == 0) return true;
         }
-        // TODO
+
+        CritterAction critterAction = new CritterAction(world, critter);
+        critterAction.perform(TokenType.WAIT);
         return false;
     }
     public int interpretProgram(Program program)
     {
-        // TODO uncomment
-//        for(Node rule : program.getChildren()){
-//            public interpretRule();
-//        }
-        // TODO
-        return 0;
+        Rule lastRule = null;
+        for(Node rule : program.getChildren())
+        {
+            int i = interpretRule(rule);
+            if(i == 0)
+            {
+                lastRule = (Rule) rule;
+                critter.setLastRuleString(lastRule.toString());
+                return 0;
+            }
+            else if(i == 1)
+            {
+                lastRule = (Rule) rule;
+                critter.setLastRuleString(lastRule.toString());
+            }
+        }
+
+        if(lastRule == null)
+        {
+            return -1;
+        }
+        else return 1;
     }
-    public int interpretRule(Node node){
+    public int interpretRule(Node node)
+    {
         Rule rule = (Rule) node;
         boolean updated = false;
-        if(interpretCondition(rule.getCondition())){
-            for(Node child : rule.getCommand().getChildren()){
-                if(child.getClass() == Update.class) {
+        if(interpretCondition(rule.getCondition()))
+        {
+            critter.setLastRuleString(node.toString());
+            for(Node child : rule.getCommand().getChildren())
+            {
+                if(child.getClass() == Update.class)
+                {
                     interpretUpdate(child);
                     updated = true;
                 }
-                else if(child.getClass() == Action.class) {
-                    interpretAction(child);
-                    return 0;
+                else if(child.getClass() == Action.class)
+                {
+                    if(interpretAction(child)) return 0;
+                    else System.out.println("failed action bozo");
                 }
             }
         }
         if(updated) return 1;
         else return -1;
     }
-    public boolean interpretUpdate(Node update){
+    public boolean interpretUpdate(Node update)
+    {
         Update curr = (Update) update;
         int memType = interpretExpression(curr.getMemType().getExpr());
         int updateValue = interpretExpression(curr.getExpr());
@@ -86,12 +112,25 @@ public class Interpreter
 
         return true;
     }
-    public boolean interpretAction(Node action){
-        //create a critter action
-        // TODO
-        return false;
+    public boolean interpretAction(Node node)
+    {
+        Action action = (Action) node;
+        TokenType tt = action.getName();
+        CritterAction critterAction = new CritterAction(world, critter);
+
+        if(tt == TokenType.SERVE){
+            return critterAction.serve(interpretExpression(action.getExpr()));
+        }
+        else{
+            return critterAction.perform(tt);
+        }
     }
     public boolean interpretCondition(Node condition){
+
+        if(condition.getClass() == Relation.class){
+            return interpretRelation(condition);
+        }
+
         BinaryCondition bc = (BinaryCondition) condition;
         boolean left = false;
         boolean right = false;

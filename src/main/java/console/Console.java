@@ -17,7 +17,8 @@ import model.ReadOnlyWorld;
  *
  * <p>NEVER remove this file, since it will be your entry point of the JAR file.
  */
-public final class Console {
+public final class Console
+{
     private final Controller controller = ControllerFactory.getConsoleController();
     private final Scanner scan = new Scanner(System.in);
 
@@ -138,7 +139,8 @@ public final class Console {
         return true;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         Console console = new Console();
         while (console.handleCommand()) ;
     }

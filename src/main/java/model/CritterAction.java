@@ -14,9 +14,9 @@ public class CritterAction
         this.critter = critter;
     }
 
-    public boolean action(Action actionNode)
+    public boolean perform(TokenType action)
     {
-        String name = actionNode.getName().toString();
+        String name = action.toString();
         switch(name)
         {
             case ("wait"):
@@ -26,29 +26,24 @@ public class CritterAction
             case ("back"):
                 return move(false);
             case ("left"):
-                return waitTurn();
+                return turn(true);
             case ("right"):
-                return waitTurn();
+                return turn(false);
             case ("eat"):
-                return waitTurn();
+                return eat();
             case ("attack"):
-                return waitTurn();
+                return attack();
             case ("grow"):
-                return waitTurn();
+                return grow();
             case ("bud"):
-                return waitTurn();
+                return bud();
             case ("mate"):
-                return waitTurn();
+                return mate();
             default:
                 return false;
         }
 
     }
-
-    public boolean actionServe(Action actionNode, int value){
-        return serve(value);
-    }
-
 
     public boolean waitTurn()
     {
@@ -118,7 +113,7 @@ public class CritterAction
                         row = r + 1;
                 }
             }
-            if(column < 0 || row < 0 || column > tiles[0].length || row > tiles.length
+            if(column < 0 || row < 0 || column >= tiles[0].length || row >= tiles.length
                     || tiles[row][column].getIsRock() || tiles[row][column].getIsFood() || tiles[row][column].getIsCritter()){
                 world.deadCritter(critter);
                 return false;
@@ -156,7 +151,7 @@ public class CritterAction
                         column = c - 1;
                         row = r - 1;
                 }
-                if(column < 0 || row < 0 || column > tiles[0].length || row > tiles.length
+                if(column < 0 || row < 0 || column >= tiles[0].length || row >= tiles.length
                         || tiles[row][column].getIsRock() || tiles[row][column].getIsFood() || tiles[row][column].getIsCritter()){
                     critter.setMem(4, critter.getMemValue(4) - critter.getMemValue(3) * Constants.MOVE_COST);
                     return false;
@@ -189,7 +184,7 @@ public class CritterAction
                         column = c + 1;
                         row = r + 1;
                 }
-                if(column < 0 || row < 0 || column > tiles[0].length || row > tiles.length
+                if(column < 0 || row < 0 || column >= tiles[0].length || row >= tiles.length
                         || tiles[row][column].getIsRock() || tiles[row][column].getIsFood() || tiles[row][column].getIsCritter()){
                     critter.setMem(4, critter.getMemValue(4) - critter.getMemValue(3) * Constants.MOVE_COST);
                     return false;
@@ -273,7 +268,7 @@ public class CritterAction
                 r = r + 1;
         }
 
-        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length || !tiles[r][c].getIsFood()) return false;
+        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length || !tiles[r][c].getIsFood()) return false;
 
         int food = tiles[r][c].getNumFood();
         int energyBefore = critter.getMemValue(4);
@@ -328,7 +323,7 @@ public class CritterAction
                 r = r + 1;
         }
 
-        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length || !tiles[r][c].getIsCritter()){
+        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length || !tiles[r][c].getIsCritter()){
             if(currEnergy == 0) world.deadCritter(critter);
             return false;
         }
@@ -401,7 +396,7 @@ public class CritterAction
                 r = r + 1;
         }
 
-        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length
+        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length
                 || tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || tiles[r][c].getIsCritter()){
             if(newEnergy == 0) world.deadCritter(critter);
             return false;
@@ -488,7 +483,7 @@ public class CritterAction
                 r = r + 1;
         }
 
-        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length
+        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length
                 || tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || !tiles[r][c].getIsCritter()){
             if(newEnergy == 0) world.deadCritter(critter);
             return false;
@@ -522,7 +517,7 @@ public class CritterAction
                 r2 = r2 + 1;
         }
 
-        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length
+        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length
                 || tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || tiles[r][c].getIsCritter()){
             behindMate = false;
         }
@@ -552,7 +547,7 @@ public class CritterAction
                 r = r + 1;
         }
 
-        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length
+        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length
                 || tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || tiles[r][c].getIsCritter()){
             behindSelf = false;
         }
@@ -681,7 +676,7 @@ public class CritterAction
                 r = r + 1;
         }
 
-        if(c < 0 || r < 0 || c > tiles[0].length || r > tiles.length
+        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length
                 || tiles[r][c].getIsRock() || tiles[r][c].getIsCritter()){
             if(critter.getMemValue(4) == 0) world.deadCritter(critter);
             return false;

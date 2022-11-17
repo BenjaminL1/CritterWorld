@@ -2,10 +2,7 @@ package controller;
 
 import ast.Program;
 import exceptions.SyntaxError;
-import model.Constants;
-import model.ControlOnlyWorld;
-import model.ReadOnlyWorld;
-import model.World;
+import model.*;
 import parse.Parser;
 import parse.ParserFactory;
 
@@ -79,10 +76,13 @@ public class ControllerImpl implements Controller
                     int column = sc.nextInt();
                     int row = sc.nextInt();
                     int direction = sc.nextInt();
-                    Object[] critterInfo = parseCritterFile(worldFile.getParent() + "\\" + critterFile);
+                    if ((row + column) % 2 == 0)
+                    {
+                        Object[] critterInfo = parseCritterFile(worldFile.getParent() + "\\" + critterFile);
 //                    System.out.println(Arrays.toString(critterInfo));
-                    controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2],
-                            row, column, direction);
+                        controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2],
+                                row, column, direction);
+                    }
                 }
             }
             return true;

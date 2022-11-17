@@ -11,6 +11,7 @@ public class Critter implements ReadOnlyCritter
     private int row;
     private int column;
     private int direction;
+    private String lastRuleString;
     private boolean mating;
 
     public Critter(String species, Program ast, int[] mem, int row, int column, int direction)
@@ -20,7 +21,7 @@ public class Critter implements ReadOnlyCritter
         this.mem = mem;
         this.row = row;
         this.column = column;
-        this.direction = direction % 6; // idk if we should the mod 6 should be included
+        this.direction = direction % 6 >= 0 ? direction % 6 : direction % 6 + 6; // idk if we should the mod 6 should be included
     }
 
     public Program getProgram()
@@ -37,6 +38,12 @@ public class Critter implements ReadOnlyCritter
     {
         return mating;
     }
+
+    public void setLastRuleString(String newRule)
+    {
+        lastRuleString = newRule;
+    }
+
 
     public void setMating(boolean mating)
     {
@@ -109,7 +116,6 @@ public class Critter implements ReadOnlyCritter
     @Override
     public Maybe<String> getLastRuleString()
     {
-        // TODO implement
-        return Maybe.none();
+        return lastRuleString != null ? Maybe.from(lastRuleString) : Maybe.none();
     }
 }
