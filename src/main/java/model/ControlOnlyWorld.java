@@ -18,4 +18,8 @@ public abstract class ControlOnlyWorld
 
     public abstract void printWorld(PrintStream out);
 
+    public abstract void forcedMutate();
+
+    public abstract void addManna();
+
 }

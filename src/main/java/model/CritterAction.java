@@ -268,9 +268,13 @@ public class CritterAction
                 r = r + 1;
         }
 
-        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length || !tiles[r][c].getIsFood()) return false;
+        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length && (tiles[r][c] != null && !tiles[r][c].getIsFood())) return false;
 
-        int food = tiles[r][c].getNumFood();
+
+        int food;
+        if(tiles[r][c] == null) food = 0;
+        else food = tiles[r][c].getNumFood();
+
         int energyBefore = critter.getMemValue(4);
 
         if(energyBefore + food <= critter.energyCapacity()){
@@ -364,7 +368,7 @@ public class CritterAction
     }
     public boolean bud ()
     {
-        int newEnergy = critter.getMemValue(4) - critter.complexity() * 9;
+        int newEnergy = critter.getMemValue(4) - critter.complexity() * Constants.BUD_COST;
         if(newEnergy < 0){
             world.deadCritter(critter);
             return false;
@@ -396,8 +400,8 @@ public class CritterAction
                 r = r + 1;
         }
 
-        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length
-                || tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || tiles[r][c].getIsCritter()){
+        if( c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length && ( tiles[r][c] != null
+                && tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || tiles[r][c].getIsCritter())){
             if(newEnergy == 0) world.deadCritter(critter);
             return false;
         }

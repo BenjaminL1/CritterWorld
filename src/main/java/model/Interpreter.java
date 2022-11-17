@@ -13,18 +13,23 @@ public class Interpreter
 {
     private World world;
     private Critter critter;
+    private int numRulesRun;
 
     public Interpreter(World world, Critter critter)
     {
         this.world = world;
         this.critter = critter;
+        this.numRulesRun = 0;
     }
 
     public boolean interpret()
     {
-        for(int i=0; i<1000; i++)
+        while(numRulesRun < Constants.MAX_RULES_PER_TURN)
         {
-            if (interpretProgram(critter.getProgram()) == 0) return true;
+            if (interpretProgram(critter.getProgram()) == 0){
+                System.out.println(critter.getLastRuleString());
+                return true;
+            }
         }
 
         CritterAction critterAction = new CritterAction(world, critter);
@@ -48,6 +53,7 @@ public class Interpreter
                 lastRule = (Rule) rule;
                 critter.setLastRuleString(lastRule.toString());
             }
+            numRulesRun ++;
         }
 
         if(lastRule == null)
@@ -68,10 +74,12 @@ public class Interpreter
                 if(child.getClass() == Update.class)
                 {
                     interpretUpdate(child);
+                    System.out.println(critter.getSpecies() + ": " + child.toString());
                     updated = true;
                 }
                 else if(child.getClass() == Action.class)
                 {
+                    System.out.println(critter.getSpecies() + ":" + child.toString());
                     if(interpretAction(child)) return 0;
                     else System.out.println("failed action bozo");
                 }
@@ -86,29 +94,12 @@ public class Interpreter
         int memType = interpretExpression(curr.getMemType().getExpr());
         int updateValue = interpretExpression(curr.getExpr());
 
-        switch(memType){
-            case 0:
-                critter.setMem(0, updateValue);
-                break;
-            case 1:
-                critter.setMem(1, updateValue);
-                break;
-            case 2:
-                critter.setMem(2, updateValue);
-                break;
-            case 3:
-                critter.setMem(3, updateValue);
-                break;
-            case 4:
-                critter.setMem(4, updateValue);
-                break;
-            case 5:
-                critter.setMem(5, updateValue);
-                break;
-            default:
-                System.out.println( memType + " is not a valid mem index");
-                return false;
+        if(memType >= critter.getMemValue(0)){
+            System.out.println("not valid mem value bozo");
+            return false;
         }
+        critter.setMem(memType, updateValue);
+
 
         return true;
     }

@@ -13,6 +13,7 @@ public class Critter implements ReadOnlyCritter
     private int direction;
     private String lastRuleString;
     private boolean mating;
+    private boolean justCreated;
 
     public Critter(String species, Program ast, int[] mem, int row, int column, int direction)
     {
@@ -22,6 +23,7 @@ public class Critter implements ReadOnlyCritter
         this.row = row;
         this.column = column;
         this.direction = direction % 6 >= 0 ? direction % 6 : direction % 6 + 6; // idk if we should the mod 6 should be included
+        this.justCreated = true;
     }
 
     public Program getProgram()
@@ -37,6 +39,14 @@ public class Critter implements ReadOnlyCritter
     public boolean isMating()
     {
         return mating;
+    }
+
+    public boolean isJustCreated() {
+        return justCreated;
+    }
+
+    public void setJustcreated(boolean temp){
+        justCreated = temp;
     }
 
     public void setLastRuleString(String newRule)

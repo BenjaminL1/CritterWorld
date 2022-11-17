@@ -19,6 +19,8 @@ public class ControllerImpl implements Controller
 {
     private ControlOnlyWorld controlWorld;
     private ReadOnlyWorld readOnlyWorld;
+    private boolean enableManna;
+    private boolean enableForcedMutation;
 
     @Override
     public ReadOnlyWorld getReadOnlyWorld()
@@ -38,6 +40,9 @@ public class ControllerImpl implements Controller
     public boolean loadWorld(String filename, boolean enableManna, boolean enableForcedMutation)
     {
         // TODO fix coordinates
+        this.enableManna = enableManna;
+        this.enableForcedMutation = enableForcedMutation;
+
         File worldFile = new File(filename);
         try
         {
@@ -119,6 +124,8 @@ public class ControllerImpl implements Controller
         for (int i = 0; i < n; i++)
         {
             controlWorld.advanceTimeStep();
+            if(enableForcedMutation) controlWorld.forcedMutate();
+            if(enableManna) controlWorld.addManna();
         }
         return true;
     }
@@ -167,9 +174,9 @@ public class ControllerImpl implements Controller
                 }
                 else if (text.startsWith("memsize: ") && line == 2)
                 {
-                    int num = Integer.parseInt(text.substring(9));
-                    mem = num > 7 ? new int[num] : mem;
-                    mem[0] = num;
+                    int memsize = Integer.parseInt(text.substring(9));
+                    mem = memsize > Constants.MIN_MEMORY ? new int[memsize] : mem;
+                    mem[0] = memsize;
                     mem[5] = 1;
                 }
                 else if (text.startsWith("defense: ") && line == 3)

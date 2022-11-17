@@ -22,4 +22,15 @@ public class ControllerTest
         controller.loadCritters("src\\test\\resources\\A5files\\test_critter.txt", 10);
         controller.printWorld(System.out);
     }
+
+    @Test
+    public void testAdvanceTimeStep()
+    {
+        Controller controller = ControllerFactory.getConsoleController();
+        controller.loadWorld("src\\test\\resources\\A5files\\test_world.txt", true, false);
+//        controller.printWorld(System.out);
+//        System.out.println();
+        controller.advanceTime(50);
+        controller.printWorld(System.out);
+    }
 }

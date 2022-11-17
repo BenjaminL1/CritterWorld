@@ -18,7 +18,8 @@ public final class ConsoleControllerTest {
     private static final String COMMON_TEST_PATH = Paths.get("src", "test", "resources", "A5files").toString();
 
     @Test
-    public void testRandomWorld() {
+    public void testRandomWorld()
+    {
         // Test a randomly generated world only contains empty and rock.
         final var controller = ControllerFactory.getConsoleController();
         controller.newWorld();

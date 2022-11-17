@@ -1,7 +1,11 @@
 package model;
 
+import ast.Mutation;
+import ast.MutationFactory;
+import ast.Node;
 import ast.Program;
 import cms.util.maybe.Maybe;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -18,8 +22,8 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
 
     public World()
     {
-        this.numRows = (int)(Math.random()*100);
-        this.numColumns = (int)(Math.random()*100);
+        this.numRows = Constants.HEIGHT;
+        this.numColumns = Constants.WIDTH;
         this.tiles = new Tile[numRows][numColumns];
         this.critters = new ArrayList<>();
     }
@@ -53,7 +57,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     public boolean addCritter(String species, int[] mem, Program ast)
     {
         // TODO fix random coordinates ((x + y) % 2 == 0)
-        System.out.println(numRows + " " + numColumns);
+//        System.out.println(numRows + " " + numColumns);
         boolean flag = false;
         int count = 0;
         while (!flag && count < numRows * numColumns)
@@ -61,16 +65,16 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
             int row = (int)(Math.random() * numRows);
             int column = (tiles.length - 1 - row) % 2 == 0 ? (int) (Math.random() * ((numColumns + 1) / 2)) * 2:
                     (int) (Math.random() * (numColumns / 2)) * 2 + 1;
-            if ((tiles.length - 1 - row) % 2 == 0)
-            {
-                System.out.println("even");
-            }
-            else
-            {
-                System.out.println("odd");
-            }
-            System.out.println((tiles.length - 1 - row) + " " + column);
-            System.out.println();
+//            if ((tiles.length - 1 - row) % 2 == 0)
+//            {
+//                System.out.println("even");
+//            }
+//            else
+//            {
+//                System.out.println("odd");
+//            }
+//            System.out.println((tiles.length - 1 - row) + " " + column);
+//            System.out.println();
             flag = addCritter(species, mem, ast, row, column, (int) (Math.random() * 6));
             count++;
         }
@@ -121,10 +125,26 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public void advanceTimeStep()
     {
-        for (Critter critter: critters)
+        if(critters.size() == 0) System.out.println("all critters dead at timestep :" + numSteps);
+
+        for (int i = 0; i < critters.size(); i++)
         {
+            Critter critter = critters.get(i);
+            if(critter.isJustCreated())
+            {
+                critter.setJustcreated(false);
+                continue;
+            }
             Interpreter interpreter = new Interpreter(this, critter);
             interpreter.interpretProgram(critter.getProgram());
+            if (!critters.contains(critter))
+            {
+                i--;
+            }
+        }
+        for(Critter critter: critters)
+        {
+            critter.setMating(false);
         }
         numSteps++;
     }
@@ -147,7 +167,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
                 }
                 else if (tiles[i][j].getIsRock())
                 {
-                    System.out.print("-");
+                    System.out.print("#");
                 }
                 else if (tiles[i][j].getIsCritter())
                 {
@@ -155,7 +175,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
                 }
                 else if (tiles[i][j].getIsFood())
                 {
-                    System.out.println("F");
+                    System.out.print("F");
                 }
 
                 if (j < tiles[i].length - 1)
@@ -192,7 +212,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     {
         if(c >= numColumns || c < 0 || r >= numRows || r < 0) return -1; // out of bounds indices should be treated as a rock
         if(tiles[r][c] == null) return 0;
-        if(tiles[r][c].getIsRock()) return -1;
+        if(tiles[r][c].getIsRock()) return Constants.ROCK_VALUE;
         else if(tiles[r][c].getIsFood()) return (tiles[r][c].getNumFood() + 1) * -1;
         else if(tiles[r][c].getIsCritter()) return tiles[r][c].getCritter().getDirection() + 1;
         return 0;
@@ -204,6 +224,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         int column = critter.getColumn();
         if( !tiles[row][column].getCritter().equals(critter) ) return false;
 
+        System.out.println(critter.getSpecies() + " died at time step: " + numSteps);
         tiles[row][column] = new Tile(critter.getMemValue(3) * Constants.FOOD_PER_SIZE);
         critters.remove(critter);
 
@@ -214,5 +235,84 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         tiles[critter.getColumn()][critter.getRow()] = null;
         tiles[r][c] = new Tile(critter);
         critter.setPosition(r, c);
+    }
+
+    @Override
+    public void addManna()
+    {
+        if(critters.size() == 0){
+            return;
+        }
+
+        if(Math.random() > ((double) (1) / (double) (getNumberOfAliveCritters()))) return;
+
+        int numTiles = numRows * numColumns;
+
+        for(int i=0; i < ( Constants.MANNA_COUNT * numTiles / 1000); i++){
+
+            int r = (int)(Math.random() * numRows);
+            int c = (tiles.length - 1 - r) % 2 == 0 ? (int) (Math.random() * ((numColumns + 1) / 2)) * 2:
+                    (int) (Math.random() * (numColumns / 2)) * 2 + 1;
+
+            if (tiles[r][c] == null)
+            {
+                tiles[r][c] = new Tile(Constants.MANNA_AMOUNT);
+            }
+
+            else
+            {
+                while (tiles[r][c].getIsRock() || tiles[r][c].getIsCritter())
+                {
+                    r = (int) (Math.random() * numRows);
+                    c = (tiles.length - 1 - r) % 2 == 0 ? (int) (Math.random() * ((numColumns + 1) / 2)) * 2 :
+                            (int) (Math.random() * (numColumns / 2)) * 2 + 1;
+                    if (tiles[r][c] == null)
+                    {
+                        tiles[r][c] = new Tile(Constants.MANNA_AMOUNT);
+                        break;
+                    }
+                }
+                if (tiles[r][c] != null)
+                {
+                    tiles[r][c] = new Tile(tiles[r][c].getNumFood() + Constants.MANNA_AMOUNT);
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void forcedMutate()
+    {
+        for(Critter critter : critters)
+        {
+            Program ast = critter.getProgram();
+            int selector = (int) Math.random() * ast.size();
+            Node mutatedNode = ast.nodeAt(selector);
+
+            int mutation = (int) (Math.random() * 6);
+
+            switch(mutation){
+                case 0:
+                    Mutation remove = MutationFactory.getRemove();
+                    remove.apply(ast, mutatedNode);
+                case 1:
+                    Mutation swap = MutationFactory.getSwap();
+                    swap.apply(ast, mutatedNode);
+                case 2:
+                    Mutation replace = MutationFactory.getReplace();
+                    replace.apply(ast, mutatedNode);
+                case 3:
+                    Mutation transform = MutationFactory.getTransform();
+                    transform.apply(ast, mutatedNode);
+                case 4:
+                    Mutation insert = MutationFactory.getInsert();
+                    insert.apply(ast, mutatedNode);
+                case 5:
+                    Mutation duplicate = MutationFactory.getDuplicate();
+                    duplicate.apply(ast, mutatedNode);
+            }
+        }
+
     }
 }
