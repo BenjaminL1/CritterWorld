@@ -39,7 +39,6 @@ public class ControllerImpl implements Controller
     @Override
     public boolean loadWorld(String filename, boolean enableManna, boolean enableForcedMutation)
     {
-        // TODO fix coordinates
         this.enableManna = enableManna;
         this.enableForcedMutation = enableForcedMutation;
 
@@ -85,11 +84,17 @@ public class ControllerImpl implements Controller
                     {
                         Object[] critterInfo = parseCritterFile(worldFile.getParent() + "\\" + critterFile);
 //                    System.out.println(Arrays.toString(critterInfo));
-                        controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2],
-                                row, column, direction);
+                        if (critterInfo != null)
+                        {
+                            controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2],
+                                    row, column, direction);
+                        }
                     }
                 }
             }
+
+            world.addFood(20, 20, 1000);
+
             return true;
         }
         catch (FileNotFoundException e)
@@ -127,6 +132,7 @@ public class ControllerImpl implements Controller
             if(enableForcedMutation) controlWorld.forcedMutate();
             if(enableManna) controlWorld.addManna();
         }
+
         return true;
     }
 
@@ -212,7 +218,6 @@ public class ControllerImpl implements Controller
             }
             Parser p = ParserFactory.getParser();
             ast = p.parse(r);
-//            System.out.println(ast);
             return new Object[]{species, mem, ast};
         }
         catch (IOException e)

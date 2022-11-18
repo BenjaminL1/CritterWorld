@@ -56,7 +56,6 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public boolean addCritter(String species, int[] mem, Program ast)
     {
-        // TODO fix random coordinates ((x + y) % 2 == 0)
 //        System.out.println(numRows + " " + numColumns);
         boolean flag = false;
         int count = 0;
@@ -125,7 +124,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public void advanceTimeStep()
     {
-        if(critters.size() == 0) System.out.println("all critters dead at timestep :" + numSteps);
+        if(critters.size() == 0) System.out.println("all critters dead at timestep: " + numSteps);
 
         for (int i = 0; i < critters.size(); i++)
         {
@@ -135,6 +134,10 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
                 critter.setJustcreated(false);
                 continue;
             }
+//            System.out.println(critter.getColumn() + " " + (tiles.length - 1 - critter.getRow()));
+//            System.out.println(critter.getLastRuleString());
+//            System.out.println();
+
             Interpreter interpreter = new Interpreter(this, critter);
             interpreter.interpretProgram(critter.getProgram());
             if (!critters.contains(critter))
@@ -144,8 +147,16 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         }
         for(Critter critter: critters)
         {
+            if(critter.isMating()){
+                critter.setMem(4, critter.getMemValue(4) + critter.complexity() * Constants.MATE_COST - critter.getMemValue(3));
+            }
             critter.setMating(false);
         }
+
+//        for(Critter critter : critters){
+//            System.out.println(critter.toString());
+//
+//        }
         numSteps++;
     }
 
@@ -210,9 +221,10 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public int getTerrainInfo(int c, int r)
     {
-        if(c >= numColumns || c < 0 || r >= numRows || r < 0) return -1; // out of bounds indices should be treated as a rock
+        r = tiles.length - 1 - r;
+        if(c >= numColumns || c < 0 || r >= numRows || r < 0) return Constants.ROCK_VALUE; // out of bounds indices should be treated as a rock
         if(tiles[r][c] == null) return 0;
-        if(tiles[r][c].getIsRock()) return Constants.ROCK_VALUE;
+        if(tiles[r][c].getIsRock()) return Constants.ROCK_VALUE; // -1
         else if(tiles[r][c].getIsFood()) return (tiles[r][c].getNumFood() + 1) * -1;
         else if(tiles[r][c].getIsCritter()) return tiles[r][c].getCritter().getDirection() + 1;
         return 0;
@@ -231,8 +243,9 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         return true;
     }
 
-    public void setCritterPosition(Critter critter, int r, int c){
-        tiles[critter.getColumn()][critter.getRow()] = null;
+    public void setCritterPosition(Critter critter, int r, int c)
+    {
+        tiles[critter.getRow()][critter.getColumn()] = null;
         tiles[r][c] = new Tile(critter);
         critter.setPosition(r, c);
     }

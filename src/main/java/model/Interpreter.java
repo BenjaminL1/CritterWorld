@@ -2,12 +2,9 @@ package model;
 
 import ast.*;
 import ast.Number;
-import org.eclipse.jetty.http.HttpTokens;
 import parse.TokenType;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Random;
 
 public class Interpreter
 {
@@ -27,9 +24,10 @@ public class Interpreter
         while(numRulesRun < Constants.MAX_RULES_PER_TURN)
         {
             if (interpretProgram(critter.getProgram()) == 0){
-                System.out.println(critter.getLastRuleString());
+                //System.out.println(critter.getLastRuleString());
                 return true;
             }
+            critter.setMem(5, critter.getMemValue(5) + 1);
         }
 
         CritterAction critterAction = new CritterAction(world, critter);
@@ -74,14 +72,16 @@ public class Interpreter
                 if(child.getClass() == Update.class)
                 {
                     interpretUpdate(child);
-                    System.out.println(critter.getSpecies() + ": " + child.toString());
+                    //System.out.println(critter.getSpecies() + ": " + child.toString());
                     updated = true;
                 }
                 else if(child.getClass() == Action.class)
                 {
-                    System.out.println(critter.getSpecies() + ":" + child.toString());
-                    if(interpretAction(child)) return 0;
-                    else System.out.println("failed action bozo");
+                    //System.out.println(critter.getSpecies() + ":" + child.toString());
+                    if( !interpretAction(child) ) {
+                        //System.out.println("failed action bozo");
+                    }
+                    return 0;
                 }
             }
         }
@@ -94,7 +94,8 @@ public class Interpreter
         int memType = interpretExpression(curr.getMemType().getExpr());
         int updateValue = interpretExpression(curr.getExpr());
 
-        if(memType >= critter.getMemValue(0)){
+        if(memType < 6 || memType >= critter.getMemValue(0))
+        {
             System.out.println("not valid mem value bozo");
             return false;
         }
@@ -213,149 +214,72 @@ public class Interpreter
             return critter.getMemValue(interpretExpression(mem.getExpr()));
         }
 
-        else if(expr.getClass() == AheadSensor.class){
+        else if(expr.getClass() == NearbySensor.class)
+        {
+            NearbySensor ns = (NearbySensor) expr;
+            return interpretNearbySensor(interpretExpression(ns.getExpr()));
+        }
+
+        else if(expr.getClass() == AheadSensor.class)
+        {
             AheadSensor as = (AheadSensor) expr;
             return interpretAheadSensor(interpretExpression(as.getExpr()));
         }
-        else if(expr.getClass() == RandomSensor.class){
+
+        else if(expr.getClass() == SmellSensor.class)
+        {
+            return interpretSmellSensor();
+        }
+
+        else if(expr.getClass() == RandomSensor.class)
+        {
             RandomSensor rs = (RandomSensor) expr;
-            return (int) (Math.random() * interpretExpression(rs.getExpr()));
+            return interpretExpression(rs.getExpr());
         }
 
         return 0;
     }
 
-    // TODO account for out of bounds indices
     public int interpretNearbySensor(int dir)
     {
-        dir = Math.abs((dir + critter.getDirection())) % 6;
-        if (dir == 0)
-        {
-            int info = world.getTerrainInfo(critter.getColumn(), critter.getRow() - 2);
-            if(info == 0) return 0;
-            else if(info < -1) return info;
-            else if(info == -1) return -1;
-            else
-            {
-                Tile[][] tiles = world.getTiles();
-                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
-                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  critter.getDirection();
-            }
-        }
-        else if (dir == 1)
-        {
-            int info = world.getTerrainInfo(critter.getColumn() + 1, critter.getRow() - 1);
-            if(info == 0) return 0;
-            else if(info < -1) return info;
-            else if(info == -1) return -1;
-            else
-            {
-                Tile[][] tiles = world.getTiles();
-                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
-                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
-
-            }
-        }
-        else if (dir == 2)
-        {
-            int info = world.getTerrainInfo(critter.getColumn() + 1, critter.getRow() + 1);
-            if(info == 0) return 0;
-            else if(info < -1) return info;
-            else if(info == -1) return -1;
-            else{
-                Tile[][] tiles = world.getTiles();
-                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
-                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
-
-            }
-        }
-        else if (dir == 3)
-        {
-            int info = world.getTerrainInfo(critter.getColumn(), critter.getRow() + 2);
-            if(info == 0) return 0;
-            else if(info < -1) return info;
-            else if(info == -1) return -1;
-            else{
-                Tile[][] tiles = world.getTiles();
-                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
-                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
-
-            }
-        }
-        else if (dir == 4)
-        {
-            int info = world.getTerrainInfo(critter.getColumn() - 1, critter.getRow() + 1);
-            if(info == 0) return 0;
-            else if(info < -1) return info;
-            else if(info == -1) return -1;
-            else{
-                Tile[][] tiles = world.getTiles();
-                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
-                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
-
-            }
-        }
-        else if (dir == 5)
-        {
-            int info = world.getTerrainInfo(critter.getColumn() - 1, critter.getRow() - 1);
-            if(info == 0) return 0;
-            else if(info < -1) return info;
-            else if(info == -1) return -1;
-            else
-            {
-                Tile[][] tiles = world.getTiles();
-                Critter crit = tiles[critter.getColumn()][critter.getRow() + 2].getCritter();
-                return crit.getMemValue(3)*1000 + crit.getMemValue(6)*10 +  crit.getDirection();
-
-            }
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
-    // TODO account for out of bounds indices
-    public int interpretAheadSensor(int dist)
-    {
-        dist = Math.max(dist, 0);
-        int dir = critter.getDirection();
+        Tile[][] tiles = world.getTiles();
+        dir = dir + critter.getDirection() % 6;
         int row = critter.getRow();
         int column = critter.getColumn();
         int info;
         if (dir == 0)
         {
-            row -= dist * 2;
-            info = world.getTerrainInfo(column, row);
+            row -= 2;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
         }
         else if (dir == 1)
         {
-            row -= dist;
-            column += dist;
-            info = world.getTerrainInfo(column, row);
+            row--;
+            column++;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
         }
         else if (dir == 2)
         {
-            row += dist;
-            column += dist;
-            info = world.getTerrainInfo(column, row);
+            row++;
+            column++;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
         }
         else if (dir == 3)
         {
-            row += dist * 2;
-            info = world.getTerrainInfo(column, row);
+            row += 2;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
         }
         else if (dir == 4)
         {
-            row += dist;
-            column -= dist;
-            info = world.getTerrainInfo(column, row);
+            row++;
+            column--;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
         }
         else
         {
-            row -= dist;
-            column -= dist;
-            info = world.getTerrainInfo(column, row);
+            row--;
+            column--;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
         }
 
         if (info <= 0)
@@ -364,7 +288,60 @@ public class Interpreter
         }
         else
         {
-            Tile[][] tiles = world.getTiles();
+            Critter target = tiles[row][column].getCritter();
+            return target.getMemValue(3) * 1000 + target.getMemValue(6) * 10 + target.getDirection();
+        }
+    }
+
+    public int interpretAheadSensor(int dist)
+    {
+        Tile[][] tiles = world.getTiles();
+        dist = Math.max(dist, 0);
+        int dir = critter.getDirection();
+        int row = critter.getRow();
+        int column = critter.getColumn();
+        int info;
+        if (dir == 0)
+        {
+            row -= dist * 2;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
+        }
+        else if (dir == 1)
+        {
+            row -= dist;
+            column += dist;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
+        }
+        else if (dir == 2)
+        {
+            row += dist;
+            column += dist;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
+        }
+        else if (dir == 3)
+        {
+            row += dist * 2;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
+        }
+        else if (dir == 4)
+        {
+            row += dist;
+            column -= dist;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
+        }
+        else
+        {
+            row -= dist;
+            column -= dist;
+            info = world.getTerrainInfo(column, tiles.length - 1 - row);
+        }
+
+        if (info <= 0)
+        {
+            return info;
+        }
+        else
+        {
             Critter target = tiles[row][column].getCritter();
             return target.getMemValue(3) * 1000 + target.getMemValue(6) * 10 + target.getDirection();
         }
@@ -385,50 +362,68 @@ public class Interpreter
         tileSearch.add(new int[]{row - 1, column - 1});
         int[] foodCoordinates = findNearestFood(tiles, tileSearch);
         int cx = column;
-        int cy = tiles[0].length - 1 - row;
+        int cy = tiles.length - 1 - row;
         int fx = foodCoordinates[1];
-        int fy = foodCoordinates[0];
+        int fy = tiles.length - 1 - foodCoordinates[0];
+
+
+
         int dist = Math.max(Math.abs(fx - cx), Math.abs(fx - cx + fy - cy) / 2);
-        dist = Math.max(dist, Math.abs(fx - cx - fy + cy));
+        dist = Math.max(dist, Math.abs(fx - cx - fy + cy) / 2);
         if (foodCoordinates[0] == -1 || dist > Constants.MAX_SMELL_DISTANCE)
         {
             return 1000000;
         }
 
-        // TODO fix int division
         // based off assumption row is first
-        int tanned = (int) Math.atan((double) (fx - cx) / (double) (fy - cy));
-        if( (foodCoordinates[1] - row) < 0)
+
+        int deltax = fx - cx;
+        int deltay = fy - cy;
+
+        double tanned;
+        double angle;
+        if(deltax == 0 )
         {
-            tanned += 180;
+            angle = 90;
+        }
+        else {
+            tanned = deltay/deltax;
+            angle = Math.atan(tanned);
+        }
+
+        if( (deltay) < 0)
+        {
+            angle += 180;
         }
 
         int dirOfFood = critter.getDirection();
-        if(tanned >= 0 && tanned < 60)
+        if(angle >= 0 && angle < 60)
         {
             dirOfFood = 1 - dirOfFood + 6;
         }
-        else if(tanned >= 60 && tanned < 120)
+        else if(angle >= 60 && angle < 120)
         {
             dirOfFood = 0 - dirOfFood + 6;
         }
-        else if(tanned >= 120 && tanned < 180)
+        else if(angle >= 120 && angle < 180)
         {
             dirOfFood = 5 - dirOfFood + 6;
         }
-        else if(tanned >= 180 && tanned < 240)
+        else if(angle >= 180 && angle < 240)
         {
             dirOfFood = 4 - dirOfFood + 6;
         }
-        else if(tanned >= 240 && tanned < 300)
+        else if(angle >= 240 && angle < 300)
         {
             dirOfFood = 3 - dirOfFood + 6;
         }
-        else if(tanned >= 300 && tanned < 360)
+        else if(angle >= 300 && angle < 360)
         {
             dirOfFood = 2 - dirOfFood + 6;
         }
         dirOfFood %= 6;
+        System.out.println("direction: " + dirOfFood);
+        System.out.println("return: " + 1000 * dist + dirOfFood);
         return 1000 * dist + dirOfFood;
     }
 
@@ -437,7 +432,7 @@ public class Interpreter
         while (tileSearch.peek() != null)
         {
             int[] coordinates = tileSearch.poll();
-            if (tiles[coordinates[0]][coordinates[1]].getIsFood())
+            if (tiles[coordinates[0]][coordinates[1]] != null && tiles[coordinates[0]][coordinates[1]].getIsFood())
             {
                 return coordinates;
             }

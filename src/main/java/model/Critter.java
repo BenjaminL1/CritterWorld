@@ -99,7 +99,7 @@ public class Critter implements ReadOnlyCritter
 
     public void setMem(int index, int newNum)
     {
-        if ((index >= 3 && index <= 5 && newNum >= 1) || (index == 6 && newNum >= 0 && newNum <= 99))
+        if ((index >= 3 && index <= 5 && newNum >= 1) || (index == 6 && newNum >= 0 && newNum <= 99) || (index >= 7 && index < mem.length))
         {
             mem[index] = newNum;
         }
@@ -127,5 +127,18 @@ public class Critter implements ReadOnlyCritter
     public Maybe<String> getLastRuleString()
     {
         return lastRuleString != null ? Maybe.from(lastRuleString) : Maybe.none();
+    }
+
+    @Override
+    public String toString()
+    {
+        String ret = "";
+        for(int i = 0; i<mem.length; i++)
+        {
+            ret += (mem[i] + ", ");
+        }
+        ret += (row + ", " + column + ", " + direction);
+        return ret;
+
     }
 }

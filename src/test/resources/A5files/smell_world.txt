@@ -1,0 +1,6 @@
+name smell world
+size 50 50
+
+critter smell_critter.txt 49 23 0
+
+
