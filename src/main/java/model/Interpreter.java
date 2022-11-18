@@ -354,12 +354,12 @@ public class Interpreter
         int column = critter.getColumn();
         int dir = critter.getDirection();
         LinkedList<int[]> tileSearch = new LinkedList<int[]>();
-        tileSearch.add(new int[]{row - 2, column});
-        tileSearch.add(new int[]{row - 1, column + 1});
-        tileSearch.add(new int[]{row + 1, column + 1});
-        tileSearch.add(new int[]{row + 2, column});
-        tileSearch.add(new int[]{row + 1, column - 1});
-        tileSearch.add(new int[]{row - 1, column - 1});
+        if (row - 2 > 0) tileSearch.add(new int[]{row - 2, column});
+        if (row - 1 > 0 && column + 1 < tiles[0].length) tileSearch.add(new int[]{row - 1, column + 1});
+        if (row + 1 < tiles.length && column + 1 < tiles[0].length) tileSearch.add(new int[]{row + 1, column + 1});
+        if (row + 2 < tiles.length) tileSearch.add(new int[]{row + 2, column});
+        if (row + 1 < tiles.length && column - 1 > 0)tileSearch.add(new int[]{row + 1, column - 1});
+        if (row - 1 > 0 && column - 1 > 0) tileSearch.add(new int[]{row - 1, column - 1});
         int[] foodCoordinates = findNearestFood(tiles, tileSearch);
         int cx = column;
         int cy = tiles.length - 1 - row;
