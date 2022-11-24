@@ -5,7 +5,6 @@ import ast.MutationFactory;
 import ast.Node;
 import ast.Program;
 import cms.util.maybe.Maybe;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -305,27 +304,33 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
 
             int mutation = (int) (Math.random() * 6);
 
-            switch(mutation){
+            switch(mutation)
+            {
                 case 0:
                     Mutation remove = MutationFactory.getRemove();
                     remove.apply(ast, mutatedNode);
+                    break;
                 case 1:
                     Mutation swap = MutationFactory.getSwap();
                     swap.apply(ast, mutatedNode);
+                    break;
                 case 2:
                     Mutation replace = MutationFactory.getReplace();
                     replace.apply(ast, mutatedNode);
+                    break;
                 case 3:
                     Mutation transform = MutationFactory.getTransform();
                     transform.apply(ast, mutatedNode);
+                    break;
                 case 4:
                     Mutation insert = MutationFactory.getInsert();
                     insert.apply(ast, mutatedNode);
+                    break;
                 case 5:
                     Mutation duplicate = MutationFactory.getDuplicate();
                     duplicate.apply(ast, mutatedNode);
+                    break;
             }
         }
-
     }
 }

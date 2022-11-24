@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.Reader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class ControllerImpl implements Controller
@@ -93,7 +92,7 @@ public class ControllerImpl implements Controller
                 }
             }
 
-            world.addFood(20, 20, 1000);
+//            world.addFood(20, 20, 1000);
 
             return true;
         }
@@ -132,7 +131,6 @@ public class ControllerImpl implements Controller
             if(enableForcedMutation) controlWorld.forcedMutate();
             if(enableManna) controlWorld.addManna();
         }
-
         return true;
     }
 

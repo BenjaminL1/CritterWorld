@@ -1,3 +1,111 @@
+commit 2b2368baeff4ae23b23f2ddc68f0d0f5ef958c19
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Thu Nov 17 23:51:30 2022 -0500
+
+    maybe last commit for a5
+
+commit 731ed3dd4c090051ee3691d22f2346ef4fc1d243
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Thu Nov 17 23:44:28 2022 -0500
+
+    almost final a5 commit
+
+commit 09d2d4d976953a409a6e697c1b9dc7ebe7a0ef23
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Thu Nov 17 02:28:17 2022 -0500
+
+    can i sleep pls
+
+commit 765ee10b5271d4b904334fcd7d554690ed666dbd
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Wed Nov 16 22:03:05 2022 -0500
+
+    testing shits
+
+commit 90a9f2f29cb493d616219c8f807b4493755f2286
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Wed Nov 16 12:49:10 2022 -0500
+
+    fixed parseCritterFile() to accept files with line spacing
+
+commit 78e9901989b744c71b6499706da8d3817c73218a
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Wed Nov 16 00:38:40 2022 -0500
+
+    finished writing code and tested part of Controller
+
+commit 10619158af56bc97ce19d295d1876443dd197809
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Tue Nov 15 18:03:05 2022 -0500
+
+    added TODO comment
+
+commit 2f87fd9ddf52e781292b11badf6b199be0e0179d
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Tue Nov 15 18:02:29 2022 -0500
+
+    idk
+
+commit 68f948e0d991d30e0c9905aab680a87e89213fee
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Tue Nov 15 02:45:56 2022 -0500
+
+    added comment
+
+commit 7af89be35326dd06271962a772b2f074c2eceed6
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Tue Nov 15 02:45:16 2022 -0500
+
+    can i go to bed pls
+
+commit a6957b30e7fdb396dfc9ce57e481462283ee1f3c
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Mon Nov 14 21:51:45 2022 -0500
+
+    fixed nearby sensor
+
+commit 6cd3f9a55fb617a18fb873dff70f838ac3ced6bd
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Mon Nov 14 21:44:58 2022 -0500
+
+    implemented interpretRandomSensor() and setMem()
+
+commit 416de26a24285c01de97f514db3d6992e837c39b
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Mon Nov 14 00:35:02 2022 -0500
+
+    s
+
+commit 60232f003700a6ce69ef1c9247b26c70f4050d99
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Sun Nov 13 23:14:13 2022 -0500
+
+    deleted Negative class
+
+commit 09fcdae2b9dcb381d3f87f42c77721d33eaf8cb1
+Author: BenjaminL1 <43938864+BenjaminL1@users.noreply.github.com>
+Date:   Sun Nov 13 21:37:26 2022 -0500
+
+    Interpreter shit
+
+commit 0d6215abc69df916696a5f7178af63377824e3d5
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Sun Nov 13 14:02:55 2022 -0500
+
+    a5 shits
+
+commit 67691af6d1e852cc233b45401e708cc44a7b3cd6
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Sat Nov 12 13:31:34 2022 -0500
+
+    fixed tokenizer to accept comments
+
+commit 25b82808b12567832539ab45a855e377b817e603
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Sat Nov 12 12:39:55 2022 -0500
+
+    added a5 files and fixed some mutations
+
 commit a3639fee4759e5f7e9e02b6acfeaceaf339ce13d
 Author: Richard Lin <rl659@cornell.edu>
 Date:   Tue Nov 8 23:11:44 2022 -0500

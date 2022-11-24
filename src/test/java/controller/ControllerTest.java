@@ -71,7 +71,8 @@ public class ControllerTest
     }
 
     @Test
-    public void testSmeller(){
+    public void testSmeller()
+    {
         Controller controller = ControllerFactory.getConsoleController();
         controller.loadWorld("src\\test\\resources\\A5files\\smell_world.txt", false, false);
         controller.printWorld(System.out);

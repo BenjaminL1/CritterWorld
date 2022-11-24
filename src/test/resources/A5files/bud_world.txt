@@ -1,4 +1,4 @@
-name eat world
+name bud world
 size 10 10
 
 critter bud_critter.txt 5 5 0

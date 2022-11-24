@@ -422,8 +422,8 @@ public class Interpreter
             dirOfFood = 2 - dirOfFood + 6;
         }
         dirOfFood %= 6;
-        System.out.println("direction: " + dirOfFood);
-        System.out.println("return: " + 1000 * dist + dirOfFood);
+//        System.out.println("direction: " + dirOfFood);
+//        System.out.println("return: " + 1000 * dist + dirOfFood);
         return 1000 * dist + dirOfFood;
     }
 
