@@ -21,6 +21,16 @@ public class ControllerImpl implements Controller
     private boolean enableManna;
     private boolean enableForcedMutation;
 
+    public int getNumRows()
+    {
+        return controlWorld.getNumRows();
+    }
+
+    public int getNumColumns()
+    {
+        return controlWorld.getNumColumns();
+    }
+
     @Override
     public ReadOnlyWorld getReadOnlyWorld()
     {

@@ -6,6 +6,12 @@ import java.io.PrintStream;
 
 public abstract class ControlOnlyWorld
 {
+    public abstract int getNumRows();
+
+    public abstract int getNumColumns();
+
+    public abstract Tile[][] tileView();
+
     public abstract boolean addCritter(String species, int[] mem, Program ast);
 
     public abstract boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir);

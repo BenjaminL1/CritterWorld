@@ -56,4 +56,8 @@ public interface Controller
      * @param out the stream to print the world.
      */
     void printWorld(PrintStream out);
+
+    int getNumRows();
+
+    int getNumColumns();
 }

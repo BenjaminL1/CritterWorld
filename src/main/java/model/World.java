@@ -21,8 +21,13 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
 
     public World()
     {
-        this.numRows = Constants.HEIGHT;
-        this.numColumns = Constants.WIDTH;
+//        this.numRows = Constants.HEIGHT;
+//        this.numColumns = Constants.WIDTH;
+
+        // TODO: delete commented out section below
+        this.numRows = 10;
+        this.numColumns = 100;
+
         this.tiles = new Tile[numRows][numColumns];
         this.critters = new ArrayList<>();
     }
@@ -41,6 +46,25 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     {
         return tiles;
     }
+
+    @Override
+    public Tile[][] tileView()
+    {
+        return tiles.clone();
+    }
+
+    @Override
+    public int getNumRows()
+    {
+        return numRows;
+    }
+
+    @Override
+    public int getNumColumns()
+    {
+        return numColumns;
+    }
+
 
 //    public int getNumRows()
 //    {
@@ -63,17 +87,8 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
             int row = (int)(Math.random() * numRows);
             int column = (tiles.length - 1 - row) % 2 == 0 ? (int) (Math.random() * ((numColumns + 1) / 2)) * 2:
                     (int) (Math.random() * (numColumns / 2)) * 2 + 1;
-//            if ((tiles.length - 1 - row) % 2 == 0)
-//            {
-//                System.out.println("even");
-//            }
-//            else
-//            {
-//                System.out.println("odd");
-//            }
-//            System.out.println((tiles.length - 1 - row) + " " + column);
-//            System.out.println();
             flag = addCritter(species, mem, ast, row, column, (int) (Math.random() * 6));
+            tiles[row][column].getCritter().setJustCreated(false);
             count++;
         }
         return flag;

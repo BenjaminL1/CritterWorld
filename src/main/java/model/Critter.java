@@ -45,6 +45,10 @@ public class Critter implements ReadOnlyCritter
         return justCreated;
     }
 
+    public void setJustCreated(boolean set) {
+        justCreated = set;
+    }
+
     public void setJustcreated(boolean temp){
         justCreated = temp;
     }
