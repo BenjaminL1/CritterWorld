@@ -54,7 +54,9 @@ public class CritterAction
         Tile[][] tiles = world.getTiles();
         int r = critter.getRow();
         int c = critter.getColumn();
+        System.out.println("before: " + critter.getMemValue(4));
         int energySpent = critter.getMemValue(3) * Constants.MOVE_COST;
+        critter.setMem(4, critter.getMemValue(4) - energySpent);
 
         if(critter.getMemValue(4) < energySpent) {
             world.deadCritter(critter);

@@ -45,12 +45,9 @@ public class Critter implements ReadOnlyCritter
         return justCreated;
     }
 
-    public void setJustCreated(boolean set) {
+    public void setJustCreated(boolean set)
+    {
         justCreated = set;
-    }
-
-    public void setJustcreated(boolean temp){
-        justCreated = temp;
     }
 
     public void setLastRuleString(String newRule)
@@ -91,6 +88,7 @@ public class Critter implements ReadOnlyCritter
         return ast.getChildren().size() * Constants.RULE_COST + (mem[1] + mem[2]) * Constants.ABILITY_COST;
     }
 
+    @Override
     public int getDirection()
     {
         return direction;

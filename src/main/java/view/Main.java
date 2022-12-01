@@ -1,12 +1,16 @@
 package view;
 
+import cms.util.maybe.Maybe;
+import cms.util.maybe.NoMaybeValue;
 import controller.Controller;
 import controller.ControllerFactory;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -14,26 +18,37 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import model.ControlOnlyWorld;
+import model.ReadOnlyCritter;
+import model.ReadOnlyWorld;
 import model.Tile;
+import java.util.Hashtable;
+import java.util.List;
 
 public class Main extends Application
 {
-    Controller controller = ControllerFactory.getConsoleController();
-    int numRows;
-    int numColumns;
+    private Controller controller = ControllerFactory.getConsoleController();
+    private StackPane world;
+    private Hashtable<String, Color> speciesColor;
+    private int numRows;
+    private int numColumns;
 
-    final double BOTTOM_LEFT_X_START = 17.5;
-    final double BOTTOM_LEFT_Y_START = 70.3013;
-    final double BOTTOM_RIGHT_X_START = 42.5;
-    final double BOTTOM_RIGHT_Y_START = 70.3013;
-    final double CENTER_RIGHT_X_START = 55;
-    final double CENTER_RIGHT_Y_START = 48.65065;
-    final double TOP_RIGHT_X_START = 42.5;
-    final double TOP_RIGHT_Y_START = 27;
-    final double TOP_LEFT_X_START = 17.5;
-    final double TOP_LEFT_Y_START = 27;
-    final double CENTER_LEFT_X_START = 5;
-    final double CENTER_LEFT_Y_START = 48.65065;
+    private final double HEIGHT = 43.3013;
+
+    private final double BOTTOM_LEFT_X_START = 17.5;
+    private final double BOTTOM_LEFT_Y_START = 70.3013;
+    private final double BOTTOM_RIGHT_X_START = 42.5;
+    private final double BOTTOM_RIGHT_Y_START = 70.3013;
+    private final double CENTER_RIGHT_X_START = 55;
+    private final double CENTER_RIGHT_Y_START = 48.65065;
+    private final double TOP_RIGHT_X_START = 42.5;
+    private final double TOP_RIGHT_Y_START = 27;
+    private final double TOP_LEFT_X_START = 17.5;
+    private final double TOP_LEFT_Y_START = 27;
+    private final double CENTER_LEFT_X_START = 5;
+    private final double CENTER_LEFT_Y_START = 48.65065;
+
+    private final double HEX_CENTER_X = (CENTER_LEFT_X_START + CENTER_RIGHT_X_START) / 2;
+    private final double HEX_CENTER_Y = (CENTER_LEFT_Y_START + CENTER_RIGHT_Y_START) / 2;
 
     public static void main(String[] args)
     {
@@ -57,23 +72,22 @@ public class Main extends Application
         primaryStage.show();
     }
 
-    public ZoomableScrollPane loadWorld()
+    public ZoomableScrollPane loadWorld() throws NoMaybeValue
     {
         controller.newWorld();
 
         numRows = controller.getNumRows();
         numColumns = controller.getNumColumns();
 
-        Group Hexes = getHexGroup(); // replace with
+        Group Hexes = getHexGroup();
         Group ActivePane = getActivePane();
 
-        StackPane world = new StackPane(Hexes, ActivePane);
+        world = new StackPane(Hexes, ActivePane);
 
         return new ZoomableScrollPane(world, Math.max(numRows, numColumns));
     }
 
-    public ZoomableScrollPane loadWorld(String filename)
-    {
+    public ZoomableScrollPane loadWorld(String filename) throws NoMaybeValue {
         controller.loadWorld(filename, false, false); // TODO change booleans maybe?
 
         numRows = controller.getNumRows();
@@ -82,9 +96,9 @@ public class Main extends Application
         Group Hexes = getHexGroup(); // replace with
         Group ActivePane = getActivePane();
 
-        StackPane world = new StackPane(Hexes, ActivePane);
+        world = new StackPane(Hexes, ActivePane);
 
-        return new ZoomableScrollPane(world);
+        return new ZoomableScrollPane(world, Math.max(numRows, numColumns));
     }
 
     public Group getHexGroup()
@@ -103,8 +117,6 @@ public class Main extends Application
 //        double tlY = 0;
         double clX = CENTER_LEFT_X_START;
 //        double clY = 21.65065;
-
-        final double HEIGHT = 43.3013;
 //        final double width = 50;
 
         for (int i = 0; i < numColumns; i++) {
@@ -169,12 +181,50 @@ public class Main extends Application
         return hexes;
     }
 
-    public Group getActivePane()
+    public Group getActivePane() throws NoMaybeValue
     {
         Group activePane = new Group();
 
+        double centerX = HEX_CENTER_X;
+        double centerY = HEX_CENTER_Y;
 
+        for (int c = 0; c < numColumns; c++)
+        {
+            centerX = c > 0 ? centerX + 37.5 : 37.5;
 
+            for (int r = numRows - 1; r >= 0; r--)
+            {
+                ReadOnlyWorld readWorld = controller.getReadOnlyWorld();
+                int info = readWorld.getTerrainInfo(c, r);
+                // is critter
+                if (info > 0)
+                {
+                    ReadOnlyCritter critter = readWorld.getReadOnlyCritter(c, r).get();
+                    int dir = critter.getDirection();
+                    String species = critter.getSpecies();
+                    Color color = speciesColor.get(species);
+                    if (color == null)
+                    {
+                        color = Color.color(Math.random(), Math.random(), Math.random());
+                        speciesColor.put(species, color);
+                    }
+                    // TODO draw critter with species color and rotate to correct direction
+                }
+                // is rock
+                else if (info == -1)
+                {
+                    // TODO insert image of rock at correct coordinates
+//                    Image rock = new Image(newClass().getResourceAsStream("rock.png"));
+                }
+                // is food
+                else
+                {
+                    // TODO insert image of food at correct coordinates
+                }
+
+                centerY += HEIGHT;
+            }
+        }
 
         return activePane;
     }

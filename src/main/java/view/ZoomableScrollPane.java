@@ -53,7 +53,7 @@ public class ZoomableScrollPane extends ScrollPane
         setFitToHeight(true); //center
         setFitToWidth(true); //center
         updateScale();
-        System.out.println(minScaleValue);
+//        System.out.println(minScaleValue);
     }
 
     private Node outerNode(Node node)
@@ -84,7 +84,7 @@ public class ZoomableScrollPane extends ScrollPane
     {
         double zoomFactor = Math.exp(wheelDelta * zoomIntensity);
 
-        System.out.println(scaleValue * zoomFactor);
+//        System.out.println(scaleValue * zoomFactor);
 
 //        scaleValue = scaleValue * zoomFactor;
 

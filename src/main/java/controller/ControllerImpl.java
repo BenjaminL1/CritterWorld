@@ -96,7 +96,7 @@ public class ControllerImpl implements Controller
                         if (critterInfo != null)
                         {
                             controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2],
-                                    row, column, direction);
+                                    row, column, direction, true);
                         }
                     }
                 }

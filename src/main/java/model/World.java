@@ -21,12 +21,12 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
 
     public World()
     {
-//        this.numRows = Constants.HEIGHT;
-//        this.numColumns = Constants.WIDTH;
+        this.numRows = Constants.HEIGHT;
+        this.numColumns = Constants.WIDTH;
 
         // TODO: delete commented out section below
-        this.numRows = 10;
-        this.numColumns = 100;
+//        this.numRows = 10;
+//        this.numColumns = 100;
 
         this.tiles = new Tile[numRows][numColumns];
         this.critters = new ArrayList<>();
@@ -88,7 +88,12 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
             int column = (tiles.length - 1 - row) % 2 == 0 ? (int) (Math.random() * ((numColumns + 1) / 2)) * 2:
                     (int) (Math.random() * (numColumns / 2)) * 2 + 1;
             flag = addCritter(species, mem, ast, row, column, (int) (Math.random() * 6));
-            tiles[row][column].getCritter().setJustCreated(false);
+
+            Critter critter = tiles[row][column].getCritter();
+            critter.setJustCreated(false);
+            if(critter.getMemValue(4) > critter.getMemValue(3) * Constants.ENERGY_PER_SIZE)
+                critter.setMem(4, critter.getMemValue(3) * Constants.ENERGY_PER_SIZE);
+
             count++;
         }
         return flag;
@@ -105,6 +110,28 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         }
         tiles[row][column] = new Tile(new Critter(species, ast, mem, row, column, dir));
         critters.add(tiles[row][column].getCritter());
+        return true;
+    }
+
+    /*
+        add a loaded critter, justCreated should be false
+     */
+    @Override
+    public boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir, boolean loaded)
+    {
+        row = tiles.length - 1 - row;
+        if(tiles[row][column] != null)
+        {
+            Tile curr = tiles[row][column];
+            if(curr.getIsCritter() || curr.getIsFood() || curr.getIsRock()) return false;
+        }
+        tiles[row][column] = new Tile(new Critter(species, ast, mem, row, column, dir));
+        critters.add(tiles[row][column].getCritter());
+        Critter critter = tiles[row][column].getCritter();
+        critter.setJustCreated( !loaded );
+
+        if(critter.getMemValue(4) > critter.getMemValue(3) * Constants.ENERGY_PER_SIZE)
+            critter.setMem(4, critter.getMemValue(3) * Constants.ENERGY_PER_SIZE);
         return true;
     }
 
@@ -145,12 +172,9 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
             Critter critter = critters.get(i);
             if(critter.isJustCreated())
             {
-                critter.setJustcreated(false);
+                critter.setJustCreated(false);
                 continue;
             }
-//            System.out.println(critter.getColumn() + " " + (tiles.length - 1 - critter.getRow()));
-//            System.out.println(critter.getLastRuleString());
-//            System.out.println();
 
             Interpreter interpreter = new Interpreter(this, critter);
             interpreter.interpretProgram(critter.getProgram());
@@ -227,8 +251,8 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public Maybe<ReadOnlyCritter> getReadOnlyCritter(int c, int r)
     {
+        r = tiles.length - 1 - r;
         if(c >= numColumns || c < 0 || r >= numRows || r < 0 || tiles[r][c] == null || !tiles[r][c].getIsCritter()) return Maybe.none();
-
         return Maybe.some(tiles[r][c].getCritter());
     }
 

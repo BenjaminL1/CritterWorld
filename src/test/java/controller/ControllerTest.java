@@ -71,6 +71,17 @@ public class ControllerTest
     }
 
     @Test
+    public void testRunCritter(){
+        Controller controller = ControllerFactory.getConsoleController();
+        controller.loadWorld("src\\test\\resources\\A5files\\big_world.txt", false, false);
+        controller.printWorld(System.out);
+        System.out.println();
+        controller.advanceTime(10);
+        System.out.println();
+        controller.printWorld(System.out);
+    }
+
+    @Test
     public void testSmeller()
     {
         Controller controller = ControllerFactory.getConsoleController();

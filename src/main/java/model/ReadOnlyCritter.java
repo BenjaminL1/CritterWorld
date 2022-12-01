@@ -2,7 +2,8 @@ package model;
 
 import cms.util.maybe.Maybe;
 
-public interface ReadOnlyCritter {
+public interface ReadOnlyCritter
+{
     /** @return critter species. */
     String getSpecies();
 
@@ -21,4 +22,6 @@ public interface ReadOnlyCritter {
      *     executed any.
      */
     Maybe<String> getLastRuleString();
+
+    int getDirection();
 }

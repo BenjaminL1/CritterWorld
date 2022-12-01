@@ -1,11 +1,4 @@
 name big world
-size 50 87
+size 50 50
 
-critter bud_critter.txt 5 5 0
-critter kyle_critter.txt 10 12 1
-critter mate_critter.txt 32 4 1
-critter spiral_critter.txt 35 67 5
-critter spiral_critter.txt 48 85 2
-critter eat_critter.txt 3 55 0
-critter kyle_critter.txt 0 0 0
-critter run_critter.txt 25 20 4
+critter run_critter.txt 10 10 3
