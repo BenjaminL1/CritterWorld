@@ -12,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -81,10 +83,12 @@ public class Main extends Application
         numRows = controller.getNumRows();
         numColumns = controller.getNumColumns();
 
-        Group Hexes = getHexGroup();
-        Group ActivePane = getActivePane();
+        Group hexes = getHexGroup(); // replace with
+//        BorderPane hexes = getHexGroup();
+        Group activePane = getActivePane();
+//        BorderPane activePane = getActivePane();
 
-        world = new StackPane(Hexes, ActivePane);
+        world = new StackPane(hexes, activePane);
 
         return new ZoomableScrollPane(world, Math.max(numRows, numColumns));
     }
@@ -96,10 +100,12 @@ public class Main extends Application
         numRows = controller.getNumRows();
         numColumns = controller.getNumColumns();
 
-        Group Hexes = getHexGroup(); // replace with
-        Group ActivePane = getActivePane();
+        Group hexes = getHexGroup(); // replace with
+//        BorderPane hexes = getHexGroup();
+        Group activePane = getActivePane();
+//        BorderPane activePane = getActivePane();
 
-        world = new StackPane(Hexes, ActivePane);
+        world = new StackPane(hexes, activePane);
 
         return new ZoomableScrollPane(world, Math.max(numRows, numColumns));
     }
@@ -107,6 +113,7 @@ public class Main extends Application
     public Group getHexGroup()
     {
         Group hexes = new Group();
+//        BorderPane hexes = new BorderPane();
 
         double blX = BOTTOM_LEFT_X_START;
 //        double blY = 43.3013;
@@ -187,12 +194,14 @@ public class Main extends Application
     public Group getActivePane() throws NoMaybeValue
     {
         Group activePane = new Group();
+//        BorderPane activePane = new BorderPane();
 
         double centerX = HEX_CENTER_X;
+        System.out.println();
 
         for (int c = 0; c < numColumns; c++)
         {
-            centerX = c > 0 ? centerX + 37.5 : 37.5;
+            centerX = c > 0 ? centerX + 37.5 : centerX;
             double centerY;
             if (numRows % 2 == 0)
             {
@@ -214,7 +223,10 @@ public class Main extends Application
             }
             for (int r = start; r < numRows; r += 2)
             {
-                System.out.println(c + " " + (numRows - 1 - r));
+                System.out.print(c + " " + (numRows - 1 - r));
+                System.out.print("     ");
+                System.out.println(centerX + " " + centerY);
+                System.out.println();
                 ReadOnlyWorld readWorld = controller.getReadOnlyWorld();
                 int info = readWorld.getTerrainInfo(c, numRows - 1 - r);
                 // is critter
@@ -233,9 +245,13 @@ public class Main extends Application
                     Circle body = new Circle(10, color);
                     body.setLayoutX(centerX);
                     body.setLayoutY(centerY);
+//                    body.setLayoutX(centerX + 12);
+//                    body.setLayoutY(centerY + 12);
                     Circle head = new Circle(4, Color.BLACK);
                     head.setLayoutX(centerX);
-                    head.setLayoutY(centerY - 14);
+                    head.setLayoutY(centerY - 13);
+//                    head.setLayoutX(centerX + 12);
+//                    head.setLayoutY(centerY - 2);
                     activePane.getChildren().add(body);
                     activePane.getChildren().add(head);
                 }
@@ -265,13 +281,13 @@ public class Main extends Application
                 // FOR TESTING
                 else
                 {
-//                    Image foodImage = new Image("C:\\Users\\rhlin\\gitStuffs\\cornellEnterprise" +
-//                            "\\axz5-bbl35-rl659-critterworld\\src\\main\\java\\model\\sprites\\razzBerry.png",
-//                            23, 23, true, false);
-//                    ImageView food = new ImageView(foodImage);
-//                    food.setLayoutX(centerX);
-//                    food.setLayoutY(centerY);
-//                    activePane.getChildren().add(food);
+                    Image foodImage = new Image("C:\\Users\\rhlin\\gitStuffs\\cornellEnterprise" +
+                            "\\axz5-bbl35-rl659-critterworld\\src\\main\\java\\model\\sprites\\razzBerry.png",
+                            23, 23, true, false);
+                    ImageView food = new ImageView(foodImage);
+                    food.setLayoutX(centerX);
+                    food.setLayoutY(centerY);
+                    activePane.getChildren().add(food);
                 }
                 centerY += HEIGHT;
             }

@@ -25,8 +25,8 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         this.numColumns = Constants.WIDTH;
 
         // TODO: delete commented out section below
-        this.numRows = 9;
-        this.numColumns = 7;
+        this.numRows = 10;
+        this.numColumns = 10;
 
         this.tiles = new Tile[numRows][numColumns];
         this.critters = new ArrayList<>();
