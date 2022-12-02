@@ -25,8 +25,8 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         this.numColumns = Constants.WIDTH;
 
         // TODO: delete commented out section below
-//        this.numRows = 10;
-//        this.numColumns = 100;
+        this.numRows = 9;
+        this.numColumns = 7;
 
         this.tiles = new Tile[numRows][numColumns];
         this.critters = new ArrayList<>();
@@ -153,6 +153,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     public boolean addFood(int row, int column, int amount)
     {
         row = tiles.length - 1 - row;
+        if(row > numRows - 1|| row < 0 || column > numColumns - 1|| column < 0) return false;
         if(tiles[row][column] != null)
         {
             Tile curr = tiles[row][column];
@@ -186,7 +187,8 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         for(Critter critter: critters)
         {
             if(critter.isMating()){
-                critter.setMem(4, critter.getMemValue(4) + critter.complexity() * Constants.MATE_COST - critter.getMemValue(3));
+                critter.setMem(4, critter.getMemValue(3));
+                System.out.println("failed mate: " + critter.getMemValue(4));
             }
             critter.setMating(false);
         }

@@ -74,14 +74,20 @@ public class ControllerImpl implements Controller
                 {
                     int column = sc.nextInt();
                     int row = sc.nextInt();
-                    controlWorld.addRock(row, column);
+                    if ((column + row) % 2 == 0)
+                    {
+                        controlWorld.addRock(row, column);
+                    }
                 }
                 else if (object.equals("food"))
                 {
                     int column = sc.nextInt();
                     int row = sc.nextInt();
                     int amount = sc.nextInt();
-                    controlWorld.addFood(row, column, amount);
+                    if ((column + row) % 2 == 0)
+                    {
+                        controlWorld.addFood(row, column, amount);
+                    }
                 }
                 else if (object.equals("critter"))
                 {

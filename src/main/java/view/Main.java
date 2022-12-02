@@ -11,8 +11,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
@@ -28,7 +30,7 @@ public class Main extends Application
 {
     private Controller controller = ControllerFactory.getConsoleController();
     private StackPane world;
-    private Hashtable<String, Color> speciesColor;
+    private Hashtable<String, Color> speciesColor = new Hashtable<>();
     private int numRows;
     private int numColumns;
 
@@ -64,8 +66,8 @@ public class Main extends Application
         // -numRows and numColumns
         // -Tile[][] representation of world
 
-        ZoomableScrollPane zoomWorldPane = loadWorld();
-
+//        ZoomableScrollPane zoomWorldPane = loadWorld();
+        ZoomableScrollPane zoomWorldPane = loadWorld("src\\test\\resources\\A5files\\view_world.txt");
         Scene scene = new Scene(zoomWorldPane, 960, 540);
 
         primaryStage.setScene(scene);
@@ -87,8 +89,9 @@ public class Main extends Application
         return new ZoomableScrollPane(world, Math.max(numRows, numColumns));
     }
 
-    public ZoomableScrollPane loadWorld(String filename) throws NoMaybeValue {
-        controller.loadWorld(filename, false, false); // TODO change booleans maybe?
+    public ZoomableScrollPane loadWorld(String filename) throws NoMaybeValue
+    {
+        controller.loadWorld(filename, false,false); // TODO change booleans maybe?
 
         numRows = controller.getNumRows();
         numColumns = controller.getNumColumns();
@@ -186,20 +189,38 @@ public class Main extends Application
         Group activePane = new Group();
 
         double centerX = HEX_CENTER_X;
-        double centerY = HEX_CENTER_Y;
 
         for (int c = 0; c < numColumns; c++)
         {
             centerX = c > 0 ? centerX + 37.5 : 37.5;
-
-            for (int r = numRows - 1; r >= 0; r--)
+            double centerY;
+            if (numRows % 2 == 0)
             {
+                centerY = c % 2 == 0 ? HEX_CENTER_Y : HEX_CENTER_Y - HEIGHT / 2;
+            }
+            else
+            {
+                centerY = c % 2 == 0 ? HEX_CENTER_Y : HEX_CENTER_Y + HEIGHT / 2;
+            }
+
+            int start;
+            if (numRows % 2 == 0)
+            {
+                start = c % 2 == 1 ? 0 : 1;
+            }
+            else
+            {
+                start = c % 2 == 0 ? 0 : 1;
+            }
+            for (int r = start; r < numRows; r += 2)
+            {
+                System.out.println(c + " " + (numRows - 1 - r));
                 ReadOnlyWorld readWorld = controller.getReadOnlyWorld();
-                int info = readWorld.getTerrainInfo(c, r);
+                int info = readWorld.getTerrainInfo(c, numRows - 1 - r);
                 // is critter
                 if (info > 0)
                 {
-                    ReadOnlyCritter critter = readWorld.getReadOnlyCritter(c, r).get();
+                    ReadOnlyCritter critter = readWorld.getReadOnlyCritter(c, numRows - 1 - r).get();
                     int dir = critter.getDirection();
                     String species = critter.getSpecies();
                     Color color = speciesColor.get(species);
@@ -209,23 +230,48 @@ public class Main extends Application
                         speciesColor.put(species, color);
                     }
                     // TODO draw critter with species color and rotate to correct direction
+                    Circle body = new Circle(10, color);
+                    body.setLayoutX(centerX);
+                    body.setLayoutY(centerY);
+                    Circle head = new Circle(4, Color.BLACK);
+                    head.setLayoutX(centerX);
+                    head.setLayoutY(centerY - 14);
+                    activePane.getChildren().add(body);
+                    activePane.getChildren().add(head);
                 }
                 // is rock
                 else if (info == -1)
                 {
-                    // TODO insert image of rock at correct coordinates
-//                    Image rock = new Image(newClass().getResourceAsStream("rock.png"));
+                    Image rockImage = new Image("C:\\Users\\rhlin\\gitStuffs\\cornellEnterprise" +
+                            "\\axz5-bbl35-rl659-critterworld\\src\\main\\java\\model\\sprites\\rock.png",
+                            30, 30, true, false);
+                    ImageView rock = new ImageView(rockImage);
+                    rock.setLayoutX(centerX);
+                    rock.setLayoutY(centerY);
+                    activePane.getChildren().add(rock);
                 }
                 // is food
                 else if (info < -1)
                 {
-                    // TODO insert image of food at correct coordinates
+                    Image foodImage = new Image("C:\\Users\\rhlin\\gitStuffs\\cornellEnterprise" +
+                            "\\axz5-bbl35-rl659-critterworld\\src\\main\\java\\model\\sprites\\razzBerry.png",
+                            23, 23, true, false);
+                    ImageView food = new ImageView(foodImage);
+                    food.setLayoutX(centerX);
+                    food.setLayoutY(centerY);
+                    activePane.getChildren().add(food);
                 }
                 // TODO REMOVE AFTER TESTING
                 // FOR TESTING
                 else
                 {
-
+//                    Image foodImage = new Image("C:\\Users\\rhlin\\gitStuffs\\cornellEnterprise" +
+//                            "\\axz5-bbl35-rl659-critterworld\\src\\main\\java\\model\\sprites\\razzBerry.png",
+//                            23, 23, true, false);
+//                    ImageView food = new ImageView(foodImage);
+//                    food.setLayoutX(centerX);
+//                    food.setLayoutY(centerY);
+//                    activePane.getChildren().add(food);
                 }
                 centerY += HEIGHT;
             }

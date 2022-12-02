@@ -54,7 +54,7 @@ public class CritterAction
         Tile[][] tiles = world.getTiles();
         int r = critter.getRow();
         int c = critter.getColumn();
-        System.out.println("before: " + critter.getMemValue(4));
+
         int energySpent = critter.getMemValue(3) * Constants.MOVE_COST;
         critter.setMem(4, critter.getMemValue(4) - energySpent);
 
@@ -197,6 +197,15 @@ public class CritterAction
     public boolean eat()
     {
         int energyBefore = critter.getMemValue(4);
+        int cost = critter.getMemValue(3);
+
+        if(critter.getMemValue(4) <= cost){
+            world.deadCritter(critter);
+            return false;
+        }
+
+        else critter.setMem(4, energyBefore - cost);
+
         if(energyBefore >= critter.energyCapacity()) return false;
 
 
@@ -432,12 +441,13 @@ public class CritterAction
     public boolean mate ()
     {
         int cost = critter.complexity() * Constants.MATE_COST;
+        int failedCost = critter.getMemValue(3);
         int newEnergy = critter.getMemValue(4) - cost;
+        System.out.println(newEnergy);
         if(newEnergy < 0){
             world.deadCritter(critter);
             return false;
         }
-        critter.setMem(4, newEnergy);
 
         Tile[][] tiles = world.getTiles();
         int r = tiles.length - 1 - critter.getRow();
@@ -473,6 +483,11 @@ public class CritterAction
         if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length && ( tiles[r][c] != null
                 && tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || !tiles[r][c].getIsCritter())){
             if(newEnergy == 0) world.deadCritter(critter);
+            return false;
+        }
+
+        if(tiles[tiles.length - 1 - r][c] == null){
+            critter.setMem(4, critter.getMemValue(4) - failedCost);
             return false;
         }
 
@@ -606,7 +621,11 @@ public class CritterAction
 
             critter.setMating(false);
             mate.setMating(false);
+
+            critter.setMem(4, newEnergy);
+            mate.setMem(4, mate.complexity() * Constants.MATE_COST);
         }
+
 
         if(critter.getMemValue(4) == 0) world.deadCritter(critter);
 

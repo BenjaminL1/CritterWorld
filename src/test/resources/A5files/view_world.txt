@@ -1,0 +1,9 @@
+name big world
+size 10 10
+
+critter space_critter.txt 0 0 0
+critter test_critter.txt 2 4 1
+critter test_critter.txt 3 5 4
+critter kyle_critter.txt 5 5 3
+rock 8 8
+food 4 2 5
