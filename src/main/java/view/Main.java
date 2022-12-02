@@ -217,11 +217,16 @@ public class Main extends Application
 //                    Image rock = new Image(newClass().getResourceAsStream("rock.png"));
                 }
                 // is food
-                else
+                else if (info < -1)
                 {
                     // TODO insert image of food at correct coordinates
                 }
+                // TODO REMOVE AFTER TESTING
+                // FOR TESTING
+                else
+                {
 
+                }
                 centerY += HEIGHT;
             }
         }
