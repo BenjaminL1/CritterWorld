@@ -189,7 +189,7 @@ public class Interpreter
                 case("*"):
                     return left * right;
                 case("/"):
-                    return (left / right);
+                    return right != 0 ? (left / right) : 0;
                 case("mod"):
                     return (left % right);
                 default:

@@ -286,7 +286,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     public void setCritterPosition(Critter critter, int r, int c)
     {
         tiles[critter.getRow()][critter.getColumn()] = null;
-        tiles[r][c] = new Tile(critter);
+        tiles[r][c] = new Tile(critter); // TODO invert r
         critter.setPosition(r, c);
     }
 
@@ -301,7 +301,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
 
         int numTiles = numRows * numColumns;
 
-        for(int i=0; i < ( Constants.MANNA_COUNT * numTiles / 1000); i++){
+        for(int i=0; i < (Constants.MANNA_COUNT * numTiles / 1000); i++){
 
             int r = (int)(Math.random() * numRows);
             int c = (tiles.length - 1 - r) % 2 == 0 ? (int) (Math.random() * ((numColumns + 1) / 2)) * 2:
