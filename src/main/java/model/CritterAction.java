@@ -49,7 +49,7 @@ public class CritterAction
         critter.setMem(4, critter.getMemValue(4 ) + critter.getMemValue(3) * Constants.SOLAR_FLUX);
         return true;
     }
-    public boolean move (boolean direction){ //direction here refers to forwards (true) or backwards (false)
+    public boolean move(boolean direction){ //direction here refers to forwards (true) or backwards (false)
 
         Tile[][] tiles = world.getTiles();
         int r = critter.getRow();
@@ -149,7 +149,7 @@ public class CritterAction
 
         return false;
     }
-    public boolean turn (boolean orientation){ //true is left, false is right
+    public boolean turn(boolean orientation){ //true is left, false is right
 
         int newDir = critter.getDirection();
 
@@ -385,6 +385,7 @@ public class CritterAction
                 break;
         }
 
+        // TODO ask ben
         if( c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length && ( tiles[r][c] != null
                 && tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || tiles[r][c].getIsCritter())){
             if(newEnergy == 0) world.deadCritter(critter);
@@ -438,12 +439,12 @@ public class CritterAction
         return true;
 
     }
-    public boolean mate ()
+    public boolean mate()
     {
         int cost = critter.complexity() * Constants.MATE_COST;
         int failedCost = critter.getMemValue(3);
         int newEnergy = critter.getMemValue(4) - cost;
-        System.out.println(newEnergy);
+//        System.out.println(newEnergy);
         if(newEnergy < 0){
             world.deadCritter(critter);
             return false;
@@ -499,7 +500,8 @@ public class CritterAction
         int c2 = c;
 
         direction = mate.getDirection();
-        switch( direction){
+        switch(direction)
+        {
             case 0:
                 c2 = c2;
                 r2 = r2 - 2;

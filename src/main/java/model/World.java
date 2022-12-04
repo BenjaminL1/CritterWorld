@@ -166,6 +166,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public void advanceTimeStep()
     {
+        System.out.println();
         if(critters.size() == 0) System.out.println("all critters dead at timestep: " + numSteps);
 
         for (int i = 0; i < critters.size(); i++)

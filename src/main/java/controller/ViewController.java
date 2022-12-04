@@ -1,11 +1,14 @@
 package controller;
 
 import ast.Program;
+import cms.util.maybe.NoMaybeValue;
 import exceptions.SyntaxError;
 import javafx.fxml.FXML;
+import javafx.scene.layout.HBox;
 import model.*;
 import parse.Parser;
 import parse.ParserFactory;
+import view.WorldGenerator;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -19,6 +22,7 @@ public class ViewController implements Controller
 {
     private ControlOnlyWorld controlWorld;
     private ReadOnlyWorld readOnlyWorld;
+    private WorldGenerator viewWorld = new WorldGenerator();
     private boolean enableManna;
     private boolean enableForcedMutation;
 
@@ -233,11 +237,5 @@ public class ViewController implements Controller
             System.out.println("a valid program should not have syntax errors");;
         }
         return null;
-    }
-
-    @FXML
-    public void test()
-    {
-        System.out.println("button clicked");
     }
 }

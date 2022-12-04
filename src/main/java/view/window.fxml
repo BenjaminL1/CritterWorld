@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox minHeight="400.0" minWidth="210.0" prefHeight="400.0" prefWidth="210.0">
          <children>
@@ -25,7 +25,7 @@
             </HBox>
             <HBox prefHeight="86.0" prefWidth="210.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#test" prefHeight="37.0" prefWidth="39.0" text="Button">
+                  <Button fx:id="step" mnemonicParsing="false" prefHeight="37.0" prefWidth="39.0" text="Button">
                      <HBox.margin>
                         <Insets left="45.0" right="30.0" top="5.0" />
                      </HBox.margin>

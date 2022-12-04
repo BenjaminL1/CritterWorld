@@ -243,7 +243,9 @@ public class Interpreter
     public int interpretNearbySensor(int dir)
     {
         Tile[][] tiles = world.getTiles();
-        dir = dir + critter.getDirection() % 6;
+        System.out.print(dir + " ");
+        dir = (dir + critter.getDirection()) % 6;
+        System.out.println(critter.getDirection() + " " + dir);
         int row = critter.getRow();
         int column = critter.getColumn();
         int info;

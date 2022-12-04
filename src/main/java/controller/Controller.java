@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.PrintStream;
+
+import javafx.scene.layout.HBox;
 import model.ReadOnlyWorld;
 
 /**
