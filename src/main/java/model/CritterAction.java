@@ -394,6 +394,7 @@ public class CritterAction
 
         Program clonedAST = (Program) critter.getProgram().clone();
 
+        // TODO ask ben
         while(Math.random() < 1/4){
             int selecter = (int) Math.random() * clonedAST.size();
             Node mutatedNode = clonedAST.nodeAt(selecter);
@@ -481,6 +482,7 @@ public class CritterAction
                 break;
         }
 
+        // TODO ask ben
         if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length && ( tiles[r][c] != null
                 && tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || !tiles[r][c].getIsCritter())){
             if(newEnergy == 0) world.deadCritter(critter);
@@ -528,6 +530,7 @@ public class CritterAction
                 break;
         }
 
+        // TODO ask ben
         if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length && (tiles[tiles.length - 1 - r][c] != null &&
                  tiles[tiles.length - 1 - r][c].getIsRock() || tiles[tiles.length - 1 - r][c].getIsFood() || tiles[tiles.length - 1 - r][c].getIsCritter())){
             behindMate = false;
@@ -566,14 +569,15 @@ public class CritterAction
 
 
 
+        // TODO ask ben
         if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length && (tiles[tiles.length - 1 - r][c] != null
                 && tiles[tiles.length - 1 - r][c].getIsRock() || tiles[tiles.length - 1 - r][c].getIsFood() || tiles[tiles.length - 1 - r][c].getIsCritter())){
             behindSelf = false;
         }
 
-        if( !behindMate && !behindSelf) return false;
+        if(!behindMate && !behindSelf) return false;
 
-        if(mate.isMating() == false) {
+        if(!mate.isMating()) {
             critter.setMating(true);
             return false;
         }
