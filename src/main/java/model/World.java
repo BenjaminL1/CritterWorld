@@ -287,7 +287,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     public void setCritterPosition(Critter critter, int r, int c)
     {
         tiles[critter.getRow()][critter.getColumn()] = null;
-        tiles[r][c] = new Tile(critter); // TODO invert r
+        tiles[r][c] = new Tile(critter); // TODO invert r?
         critter.setPosition(r, c);
     }
 
