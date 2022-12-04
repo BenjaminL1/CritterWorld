@@ -93,6 +93,17 @@ public class ControllerTest
     }
 
     @Test
+    public void testViewWorld(){
+        Controller controller = ControllerFactory.getConsoleController();
+        controller.loadWorld("src\\test\\resources\\A5files\\view_world.txt", true, false);
+        controller.printWorld(System.out);
+        System.out.println();
+        controller.advanceTime(20);
+        System.out.println();
+        controller.printWorld(System.out);
+    }
+
+    @Test
     public void testSmeller()
     {
         Controller controller = ControllerFactory.getConsoleController();

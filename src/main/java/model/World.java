@@ -166,8 +166,8 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public void advanceTimeStep()
     {
-        System.out.println();
-        if(critters.size() == 0) System.out.println("all critters dead at timestep: " + numSteps);
+//        System.out.println();
+        //if(critters.size() == 0) System.out.println("all critters dead at timestep: " + numSteps);
 
         for (int i = 0; i < critters.size(); i++)
         {
@@ -188,8 +188,8 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         for(Critter critter: critters)
         {
             if(critter.isMating()){
-                critter.setMem(4, critter.getMemValue(3));
-                System.out.println("failed mate: " + critter.getMemValue(4));
+                critter.setMem(4, critter.getMemValue(4) - critter.getMemValue(3));
+                System.out.println("failed mate: " + critter.getMemValue(4) + ", row = " + critter.getRow() + ", column = " + critter.getColumn());
             }
             critter.setMating(false);
         }

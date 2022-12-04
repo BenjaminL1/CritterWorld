@@ -56,6 +56,31 @@ public class ZoomableScrollPane extends ScrollPane
 //        System.out.println(minScaleValue);
     }
 
+    public double getMinScaleValue()
+    {
+        return minScaleValue;
+    }
+
+    public double getScaleValue()
+    {
+        return scaleValue;
+    }
+
+    public void changeTarget(Node newTarget)
+    {
+        target = newTarget;
+        ((Group) zoomNode).getChildren().remove(0);
+        ((Group) zoomNode).getChildren().add(target);
+        setContent(outerNode(zoomNode));
+
+        setPannable(true);
+        setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        setFitToHeight(true); //center
+        setFitToWidth(true); //center
+        updateScale();
+    }
+
     private Node outerNode(Node node)
     {
         Node outerNode = centeredNode(node);

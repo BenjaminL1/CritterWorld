@@ -55,7 +55,7 @@ public class Main extends Application implements Initializable
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        System.out.println(this);
+//        System.out.println(this);
         //        parent = controller.loadGUI("src\\test\\resources\\A5files\\view_world.txt");
         primaryStage.setTitle("Critter World");
 
@@ -65,7 +65,8 @@ public class Main extends Application implements Initializable
         loader.setController(this);
         parent = loader.load();
 
-        controller.loadWorld("src\\test\\resources\\A5files\\view_world.txt", false, false);
+//        controller.loadWorld("src\\test\\resources\\A5files\\view_world.txt", false, false);
+        controller.loadWorld("src\\test\\resources\\A5files\\big_world.txt", false, false);
 
         zoomWorld = worldGenerator.loadWorld(controller.getNumRows(), controller.getNumColumns(), controller.getReadOnlyWorld());
 
@@ -85,8 +86,11 @@ public class Main extends Application implements Initializable
             public void handle(ActionEvent e)
             {
                 controller.advanceTime(1);
-                try {
-                    zoomWorld = worldGenerator.step(controller.getReadOnlyWorld());
+                try
+                {
+//                    zoomWorld = worldGenerator.step(controller.getReadOnlyWorld());
+                    StackPane world = worldGenerator.step(controller.getReadOnlyWorld());
+                    zoomWorld.changeTarget(world);
                 } catch (NoMaybeValue ex) {
                     throw new RuntimeException(ex);
                 }

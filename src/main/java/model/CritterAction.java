@@ -394,9 +394,9 @@ public class CritterAction
 
         Program clonedAST = (Program) critter.getProgram().clone();
 
-        // TODO ask ben
-        while(Math.random() < 1/4){
-            int selecter = (int) Math.random() * clonedAST.size();
+        while(Math.random() < (0.25))
+        {
+            int selecter = (int) (Math.random() * clonedAST.size());
             Node mutatedNode = clonedAST.nodeAt(selecter);
 
             int mutation = (int) (Math.random() * 6);
@@ -446,10 +446,6 @@ public class CritterAction
         int failedCost = critter.getMemValue(3);
         int newEnergy = critter.getMemValue(4) - cost;
 //        System.out.println(newEnergy);
-        if(newEnergy < 0){
-            world.deadCritter(critter);
-            return false;
-        }
 
         Tile[][] tiles = world.getTiles();
         int r = tiles.length - 1 - critter.getRow();
@@ -483,16 +479,18 @@ public class CritterAction
         }
 
         // TODO ask ben
-        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length && ( tiles[r][c] != null
-                && tiles[r][c].getIsRock() || tiles[r][c].getIsFood() || !tiles[r][c].getIsCritter())){
-            if(newEnergy == 0) world.deadCritter(critter);
+        if(world.getTerrainInfo(c, r) < 1){
+            critter.setMem(4, critter.getMemValue(4) - failedCost);
+            if(critter.getMemValue(4) <= 0) {
+                world.deadCritter(critter);
+            }
             return false;
         }
 
-        if(tiles[tiles.length - 1 - r][c] == null){
-            critter.setMem(4, critter.getMemValue(4) - failedCost);
-            return false;
-        }
+//        if(tiles[tiles.length - 1 - r][c] == null){
+//            critter.setMem(4, critter.getMemValue(4) - failedCost);
+//            return false;
+//        }
 
         Critter mate = tiles[tiles.length - 1 - r][c].getCritter();
 
@@ -531,8 +529,7 @@ public class CritterAction
         }
 
         // TODO ask ben
-        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length && (tiles[tiles.length - 1 - r][c] != null &&
-                 tiles[tiles.length - 1 - r][c].getIsRock() || tiles[tiles.length - 1 - r][c].getIsFood() || tiles[tiles.length - 1 - r][c].getIsCritter())){
+        if(world.getTerrainInfo(c2, r2) != 0){
             behindMate = false;
         }
 
@@ -570,18 +567,26 @@ public class CritterAction
 
 
         // TODO ask ben
-        if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length && (tiles[tiles.length - 1 - r][c] != null
-                && tiles[tiles.length - 1 - r][c].getIsRock() || tiles[tiles.length - 1 - r][c].getIsFood() || tiles[tiles.length - 1 - r][c].getIsCritter())){
+        if(world.getTerrainInfo(c, r) != 0){
             behindSelf = false;
         }
 
-        if(!behindMate && !behindSelf) return false;
+        if(!behindMate && !behindSelf) {
+            critter.setMem(4, critter.getMemValue(4) - failedCost);
+            if(critter.getMemValue(4) <= 0) {
+                world.deadCritter(critter);
+            }
+            return false;
+        }
 
-        if(!mate.isMating()) {
+        if(!mate.isMating())
+        {
             critter.setMating(true);
             return false;
         }
-        else{
+
+        else
+        {
             int matedRow;
             int matedColumn;
             int matedDirection;
@@ -629,11 +634,12 @@ public class CritterAction
             mate.setMating(false);
 
             critter.setMem(4, newEnergy);
-            mate.setMem(4, mate.complexity() * Constants.MATE_COST);
+            mate.setMem(4, mate.getMemValue(4) - mate.complexity() * Constants.MATE_COST);
         }
 
 
-        if(critter.getMemValue(4) == 0) world.deadCritter(critter);
+        if(critter.getMemValue(4) <= 0) world.deadCritter(critter);
+        if(mate.getMemValue(4) <= 0) world.deadCritter(mate);
 
         return true;
 

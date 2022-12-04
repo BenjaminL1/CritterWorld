@@ -199,7 +199,6 @@ public class WorldGenerator
                         color = Color.color(Math.random(), Math.random(), Math.random());
                         speciesColor.put(species, color);
                     }
-                    // TODO draw critter with species color and rotate to correct direction
                     Circle body = new Circle(10, color);
 //                    body.setLayoutX(centerX);
 //                    body.setLayoutY(centerY);
@@ -337,12 +336,13 @@ public class WorldGenerator
         return activePane;
     }
 
-    public ZoomableScrollPane step(ReadOnlyWorld newReadWorld) throws NoMaybeValue
+    public StackPane step(ReadOnlyWorld newReadWorld) throws NoMaybeValue
     {
         readWorld = newReadWorld;
         BorderPane activePane = getActivePane();
         world.getChildren().remove(1);
         world.getChildren().add(activePane);
-        return new ZoomableScrollPane(world, Math.max(numRows, numColumns));
+        return world;
+//        return new ZoomableScrollPane(world, Math.max(numRows, numColumns));
     }
 }
