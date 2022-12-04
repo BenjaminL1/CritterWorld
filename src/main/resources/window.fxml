@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="206.0">
+         <children>
+            <Region prefHeight="57.0" prefWidth="206.0" />
+            <HBox prefHeight="37.0" prefWidth="206.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="0.0" text="Button" />
+                  <TextField prefHeight="26.0" prefWidth="103.0" />
+                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="21.0" text="Button" />
+               </children>
+               <padding>
+                  <Insets left="28.0" />
+               </padding>
+            </HBox>
+            <Region prefHeight="200.0" prefWidth="206.0" VBox.vgrow="ALWAYS" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Region prefHeight="100.0" prefWidth="50.0" />
+                  <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="47.0" text="World">
+                     <HBox.margin>
+                        <Insets right="15.0" top="35.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="47.0" text="Critter">
+                     <HBox.margin>
+                        <Insets top="35.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Region prefHeight="100.0" prefWidth="55.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>

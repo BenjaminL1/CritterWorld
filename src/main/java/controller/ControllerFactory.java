@@ -18,4 +18,9 @@ public final class ControllerFactory
     {
         return new ControllerImpl();
     }
+
+    public static Controller getViewController()
+    {
+        return new ViewController();
+    }
 }

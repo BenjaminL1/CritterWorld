@@ -5,16 +5,16 @@ import cms.util.maybe.NoMaybeValue;
 import controller.Controller;
 import controller.ControllerFactory;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -28,17 +28,29 @@ import model.ReadOnlyWorld;
 import model.Tile;
 
 import java.awt.*;
+import java.io.File;
+import java.net.URL;
 import java.util.Hashtable;
 import java.util.List;
 
 public class Main extends Application
 {
-    private Controller controller = ControllerFactory.getConsoleController();
+//    private Controller controller = ControllerFactory.getConsoleController();
+    private Controller controller = ControllerFactory.getViewController();
+
+    private Parent window;
     private StackPane world;
-//    private Group world = new Group();
     private Hashtable<String, Color> speciesColor = new Hashtable<>();
     private int numRows;
     private int numColumns;
+
+    private String workingDir = System.getProperty("user.dir");
+
+    private final Image foodImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\razzBerry.png",
+            23, 23, true, false);
+
+    private final Image rockImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\rock.png",
+            30, 30, true, false);
 
     private final double HEIGHT = 43.3013;
 
@@ -66,7 +78,7 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        primaryStage.setTitle("CritterWorld");
+        primaryStage.setTitle("Critter World");
 
         // use view controller to get info on world
         // -numRows and numColumns
@@ -74,8 +86,26 @@ public class Main extends Application
 
 //        ZoomableScrollPane zoomWorldPane = loadWorld();
         ZoomableScrollPane zoomWorldPane = loadWorld("src\\test\\resources\\A5files\\view_world.txt");
-        Scene scene = new Scene(zoomWorldPane, 960, 540);
+//        zoomWorldPane.setMinWidth(78);
+//        zoomWorldPane.setMinHeight(100);
 
+
+//         URL r = getClass().getResource("window.fxml");
+        URL r = new File(workingDir + "\\src\\main\\java\\view\\window.fxml").toURI().toURL();
+        HBox parent = FXMLLoader.load(r);
+//        GridPane parent = FXMLLoader.load(r);
+
+//        AnchorPane rightChild = (AnchorPane) parent.getChildren().get(1);
+//        rightChild.getChildren().add(zoomWorldPane);
+
+//        parent.add(zoomWorldPane, 1, 0);
+
+        parent.getChildren().add(zoomWorldPane);
+        HBox.setHgrow(zoomWorldPane, Priority.ALWAYS);
+
+//        Scene scene = new Scene(zoomWorldPane, 960, 540);
+        Scene scene = new Scene(parent, 960, 540);
+//        Scene scene = new Scene(parent, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -324,8 +354,8 @@ public class Main extends Application
                     rotate.setPivotX(centerX);
                     rotate.setPivotY(centerY);
 
-                    System.out.println(centerX + " " + centerY);
-                    System.out.println();
+//                    System.out.println(centerX + " " + centerY);
+//                    System.out.println();
 
 
                     if (dir == 1)
@@ -372,9 +402,7 @@ public class Main extends Application
                 // is rock
                 else if (info == -1)
                 {
-                    Image rockImage = new Image("C:\\Users\\rhlin\\gitStuffs\\cornellEnterprise" +
-                            "\\axz5-bbl35-rl659-critterworld\\src\\main\\java\\model\\sprites\\rock.png",
-                            30, 30, true, false);
+//                    Image rockImage = new Image(getClass().getResourceAsStream("rock.png"), 30, 30, true, false);
                     ImageView rock = new ImageView(rockImage);
                     double imageWidth = rockImage.getWidth();
                     double imageHeight = rockImage.getHeight();
@@ -385,9 +413,6 @@ public class Main extends Application
                 // is food
                 else if (info < -1)
                 {
-                    Image foodImage = new Image("C:\\Users\\rhlin\\gitStuffs\\cornellEnterprise" +
-                            "\\axz5-bbl35-rl659-critterworld\\src\\main\\java\\model\\sprites\\razzBerry.png",
-                            23, 23, true, false);
                     ImageView food = new ImageView(foodImage);
                     double imageWidth = foodImage.getWidth();
                     double imageHeight = foodImage.getHeight();
@@ -400,7 +425,7 @@ public class Main extends Application
                 else
                 {
 //                    Image foodImage = new Image("C:\\Users\\rhlin\\gitStuffs\\cornellEnterprise" +
-//                            "\\axz5-bbl35-rl659-critterworld\\src\\main\\java\\model\\sprites\\razzBerry.png",
+//                            "\\axz5-bbl35-rl659-critterworld\\src\\main\\java\\view\\sprites\\razzBerry.png",
 //                            23, 23, true, false);
 //                    ImageView food = new ImageView(foodImage);
 //                    double imageWidth = foodImage.getWidth();
