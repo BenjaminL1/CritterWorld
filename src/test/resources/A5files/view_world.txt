@@ -1,4 +1,4 @@
-name big world
+name view world
 size 10 10
 
 // critter space_critter.txt 0 0 0

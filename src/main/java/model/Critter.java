@@ -71,7 +71,8 @@ public class Critter implements ReadOnlyCritter
         return column;
     }
 
-    public void setPosition(int r, int c){
+    public void setPosition(int r, int c)
+    {
         row = r;
         column = c;
     }

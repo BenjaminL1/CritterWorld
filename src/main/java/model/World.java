@@ -90,7 +90,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
             column = row % 2 == 0 ? (int) (Math.random() * ((numColumns + 1) / 2)) * 2:
                     (int) (Math.random() * (numColumns / 2)) * 2 + 1;
             flag = addCritter(species, mem, ast, row, column, (int) (Math.random() * 6));
-            System.out.println(column + " " + row);
+//            System.out.println(column + " " + row);
 
             count++;
         }
@@ -136,7 +136,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         tiles[row][column] = new Tile(new Critter(species, ast, mem, row, column, dir));
         critters.add(tiles[row][column].getCritter());
         Critter critter = tiles[row][column].getCritter();
-        critter.setJustCreated( !loaded );
+        critter.setJustCreated(!loaded);
 
         if(critter.getMemValue(4) > critter.getMemValue(3) * Constants.ENERGY_PER_SIZE)
             critter.setMem(4, critter.getMemValue(3) * Constants.ENERGY_PER_SIZE);
@@ -186,8 +186,12 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
                 continue;
             }
 
+//            System.out.println(critters.size());;
+
+//            System.out.println(critter.getMemValue(4));
+
             Interpreter interpreter = new Interpreter(this, critter);
-            interpreter.interpretProgram(critter.getProgram());
+            interpreter.interpret();
             if (!critters.contains(critter))
             {
                 i--;

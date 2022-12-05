@@ -114,4 +114,16 @@ public class ControllerTest
         System.out.println();
         controller.printWorld(System.out);
     }
+    @Test
+    public void testBigRun()
+    {
+        Controller controller = ControllerFactory.getConsoleController();
+        controller.newWorld();
+        controller.loadCritters("src\\test\\resources\\A5files\\run_critter.txt", 200);
+        controller.printWorld(System.out);
+        System.out.println();
+        controller.advanceTime(10);
+        System.out.println();
+        controller.printWorld(System.out);
+    }
 }

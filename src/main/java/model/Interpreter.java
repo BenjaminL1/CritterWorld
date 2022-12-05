@@ -25,9 +25,10 @@ public class Interpreter
         {
             if (interpretProgram(critter.getProgram()) == 0){
                 //System.out.println(critter.getLastRuleString());
+                critter.setMem(5, critter.getMemValue(5) + 1);
                 return true;
             }
-            critter.setMem(5, critter.getMemValue(5) + 1);
+            numRulesRun++;
         }
 
         CritterAction critterAction = new CritterAction(world, critter);
@@ -173,9 +174,11 @@ public class Interpreter
         }
     }
 
-    public int interpretExpression(Node node){
+    public int interpretExpression(Node node)
+    {
         Expr expr = (Expr) node;
-        if(expr.getClass() == BinaryOp.class){
+        if(expr.getClass() == BinaryOp.class)
+        {
             BinaryOp binOp = (BinaryOp) expr;
             int left = interpretExpression((binOp.getLeft()));
             int right = interpretExpression(binOp.getRight());
@@ -198,17 +201,20 @@ public class Interpreter
             }
         }
 
-        else if(expr.getClass() == NegativeExpr.class){
+        else if(expr.getClass() == NegativeExpr.class)
+        {
             NegativeExpr negged = (NegativeExpr) expr;
             return -1 * interpretExpression(negged.getRight());
         }
 
-        else if(expr.getClass() == Number.class){
+        else if(expr.getClass() == Number.class)
+        {
             Number num = (Number) expr;
             return num.getNum();
         }
 
-        else if(expr.getClass() == Mem.class){
+        else if(expr.getClass() == Mem.class)
+        {
             Mem mem = (Mem) expr;
             return critter.getMemValue(interpretExpression(mem.getExpr()));
         }

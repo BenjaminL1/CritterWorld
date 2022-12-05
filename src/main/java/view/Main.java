@@ -45,7 +45,7 @@ public class Main extends Application implements Initializable
     @FXML
     Button step;
     @FXML
-    Button advance;
+    ToggleButton advance;
     @FXML
     Button chooseWorld;
     @FXML
@@ -188,8 +188,15 @@ public class Main extends Application implements Initializable
             }
             if (rate != 0.0)
             {
-                svc.setPeriod(Duration.seconds(1.0 / rate));
-                svc.restart();
+                if (advance.isSelected())
+                {
+                    svc.setPeriod(Duration.seconds(1.0 / rate));
+                    svc.restart();
+                }
+                else
+                {
+                    svc.cancel();
+                }
             }
         });
 

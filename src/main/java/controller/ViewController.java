@@ -128,7 +128,10 @@ public class ViewController implements Controller
         {
             for (int i = 0; i < n; i++)
             {
-                controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2]);
+                String species = String.valueOf(critterInfo[0]);
+                int[] mem = ((int[]) critterInfo[1]).clone();
+                Program ast = (Program) ((Program) critterInfo[2]).clone();
+                controlWorld.addCritter(species, mem, ast);
             }
             return true;
         }

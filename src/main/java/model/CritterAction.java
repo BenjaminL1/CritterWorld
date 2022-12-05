@@ -49,21 +49,25 @@ public class CritterAction
         critter.setMem(4, critter.getMemValue(4 ) + critter.getMemValue(3) * Constants.SOLAR_FLUX);
         return true;
     }
-    public boolean move(boolean direction){ //direction here refers to forwards (true) or backwards (false)
 
+    //direction here refers to forwards (true) or backwards (false)
+    public boolean move(boolean direction)
+    {
         Tile[][] tiles = world.getTiles();
         int r = critter.getRow();
         int c = critter.getColumn();
 
         int energySpent = critter.getMemValue(3) * Constants.MOVE_COST;
-        critter.setMem(4, critter.getMemValue(4) - energySpent);
 
-        if(critter.getMemValue(4) < energySpent) {
+
+        if(critter.getMemValue(4) < energySpent)
+        {
             world.deadCritter(critter);
             return false;
         }
 
-        if(direction){
+        if(direction)
+        {
             switch(critter.getDirection())
             {
                 case 0:
@@ -125,32 +129,29 @@ public class CritterAction
         }
         if(c < 0 || r < 0 || c >= tiles[0].length || r >= tiles.length)
         {
+            critter.setMem(4, critter.getMemValue(4) - energySpent);
             if (critter.getMemValue(4) < energySpent) world.deadCritter(critter);
             return false;
         }
 
-        if( tiles[tiles.length - 1 - r][c] != null)
+        if(world.getTerrainInfo(c, tiles.length - 1 - r) != 0)
         {
-            if (tiles[tiles.length - 1 - r][c].getIsRock()
-                        || tiles[tiles.length - 1 - r][c].getIsFood() || tiles[tiles.length - 1 - r][c].getIsCritter())
-            {
-                if (critter.getMemValue(4) < energySpent) world.deadCritter(critter);
-                return false;
-            }
+            critter.setMem(4, critter.getMemValue(4) - energySpent);
+            if (critter.getMemValue(4) < energySpent) world.deadCritter(critter);
+            return false;
         }
 
-        else
-        {
-            world.setCritterPosition(critter, r, c);
-            if(critter.getMemValue(4) < energySpent) world.deadCritter(critter);
+        world.setCritterPosition(critter, r, c);
+        critter.setMem(4, critter.getMemValue(4) - energySpent);
+        if(critter.getMemValue(4) < energySpent) world.deadCritter(critter);
 
-            return true;
-        }
-
-        return false;
+        return true;
     }
-    public boolean turn(boolean orientation){ //true is left, false is right
 
+    // true is left, false is right
+    public boolean turn(boolean orientation)
+    {
+        System.out.println("turn");
         int newDir = critter.getDirection();
 
         if(critter.getMemValue(4) < critter.getMemValue(3)){
@@ -196,6 +197,7 @@ public class CritterAction
 
     public boolean eat()
     {
+        System.out.println("eat");
         int energyBefore = critter.getMemValue(4);
         int cost = critter.getMemValue(3);
 
