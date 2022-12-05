@@ -28,12 +28,12 @@
                <children>
                   <Button fx:id="step" mnemonicParsing="false" prefHeight="38.0" prefWidth="38.0">
                      <HBox.margin>
-                        <Insets left="50.0" right="30.0" top="5.0" />
+                        <Insets left="49.0" right="30.0" />
                      </HBox.margin>
                   </Button>
                   <ToggleButton fx:id="advance" mnemonicParsing="false" prefHeight="38.0" prefWidth="38.0">
                      <HBox.margin>
-                        <Insets top="5.0" />
+                        <Insets />
                      </HBox.margin>
                   </ToggleButton>
                </children>

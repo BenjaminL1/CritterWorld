@@ -214,7 +214,6 @@ public class Main extends Application implements Initializable
                     if (response == ButtonType.OK)
                     {
                         controller.newWorld();
-                        // TODO Platform.runLater?
                         updateWorldGUI();
                     }
                 });

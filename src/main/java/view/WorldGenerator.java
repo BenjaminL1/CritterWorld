@@ -318,17 +318,6 @@ public class WorldGenerator
                     food.setLayoutY(centerY - imageHeight / 2);
                     activePane.getChildren().add(food);
                 }
-                // TODO REMOVE AFTER TESTING
-                // FOR TESTING
-                else
-                {
-//                    ImageView food = new ImageView(foodImage);
-//                    double imageWidth = foodImage.getWidth();
-//                    double imageHeight = foodImage.getHeight();
-//                    food.setLayoutX(centerX - imageWidth / 2);
-//                    food.setLayoutY(centerY - imageHeight / 2);
-//                    activePane.getChildren().add(food);
-                }
                 centerY += HEIGHT;
             }
         }

@@ -151,7 +151,6 @@ public class CritterAction
     // true is left, false is right
     public boolean turn(boolean orientation)
     {
-        System.out.println("turn");
         int newDir = critter.getDirection();
 
         if(critter.getMemValue(4) < critter.getMemValue(3)){
@@ -197,7 +196,6 @@ public class CritterAction
 
     public boolean eat()
     {
-        System.out.println("eat");
         int energyBefore = critter.getMemValue(4);
         int cost = critter.getMemValue(3);
 
