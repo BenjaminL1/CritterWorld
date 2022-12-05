@@ -14,9 +14,9 @@
             <Region prefHeight="57.0" prefWidth="206.0" />
             <HBox prefHeight="37.0" prefWidth="206.0">
                <children>
-                  <TextField prefHeight="26.0" prefWidth="141.0" promptText="Rate">
+                  <TextField fx:id="rateText" prefHeight="26.0" prefWidth="141.0" promptText="Rate (max steps / sec)">
                      <HBox.margin>
-                        <Insets />
+                        <Insets left="5.0" />
                      </HBox.margin></TextField>
                </children>
                <padding>
@@ -25,12 +25,12 @@
             </HBox>
             <HBox prefHeight="86.0" prefWidth="210.0">
                <children>
-                  <Button fx:id="step" mnemonicParsing="false" prefHeight="37.0" prefWidth="39.0" text="Button">
+                  <Button fx:id="step" mnemonicParsing="false" prefHeight="37.0" prefWidth="39.0">
                      <HBox.margin>
-                        <Insets left="45.0" right="30.0" top="5.0" />
+                        <Insets left="50.0" right="30.0" top="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="39.0" text="Button">
+                  <Button fx:id="advance" mnemonicParsing="false" prefHeight="37.0" prefWidth="39.0">
                      <HBox.margin>
                         <Insets top="5.0" />
                      </HBox.margin>
@@ -40,12 +40,12 @@
             <Region prefHeight="200.0" prefWidth="206.0" VBox.vgrow="ALWAYS" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="47.0" text="World">
+                  <Button fx:id="chooseWorld" mnemonicParsing="false" prefHeight="38.0" prefWidth="47.0">
                      <HBox.margin>
-                        <Insets left="35.0" right="35.0" top="20.0" />
+                        <Insets left="37.0" right="35.0" top="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="47.0" text="Critter">
+                  <Button fx:id="chooseCritter" mnemonicParsing="false" prefHeight="38.0" prefWidth="47.0">
                      <HBox.margin>
                         <Insets top="20.0" />
                      </HBox.margin>

@@ -191,11 +191,10 @@ public class Interpreter
                 case("/"):
                     return right != 0 ? (left / right) : 0;
                 case("mod"):
-                    return (left % right);
+                    return right != 0 ? (left % right) : 0;
                 default:
                     System.out.println(op + " is not a valid binary operator stoopid");
                     return -1;
-
             }
         }
 
@@ -243,9 +242,9 @@ public class Interpreter
     public int interpretNearbySensor(int dir)
     {
         Tile[][] tiles = world.getTiles();
-        System.out.print(dir + " ");
+//        System.out.print(dir + " ");
         dir = (dir + critter.getDirection()) % 6;
-        System.out.println(critter.getDirection() + " " + dir);
+//        System.out.println(critter.getDirection() + " " + dir);
         int row = critter.getRow();
         int column = critter.getColumn();
         int info;

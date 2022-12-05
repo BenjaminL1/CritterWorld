@@ -82,20 +82,27 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
 //        System.out.println(numRows + " " + numColumns);
         boolean flag = false;
         int count = 0;
+        int row = 0;
+        int column = 0;
         while (!flag && count < numRows * numColumns)
         {
-            int row = (int)(Math.random() * numRows);
-            int column = (tiles.length - 1 - row) % 2 == 0 ? (int) (Math.random() * ((numColumns + 1) / 2)) * 2:
+            row = (int)(Math.random() * numRows);
+            column = row % 2 == 0 ? (int) (Math.random() * ((numColumns + 1) / 2)) * 2:
                     (int) (Math.random() * (numColumns / 2)) * 2 + 1;
             flag = addCritter(species, mem, ast, row, column, (int) (Math.random() * 6));
-
-            Critter critter = tiles[row][column].getCritter();
-            critter.setJustCreated(false);
-            if(critter.getMemValue(4) > critter.getMemValue(3) * Constants.ENERGY_PER_SIZE)
-                critter.setMem(4, critter.getMemValue(3) * Constants.ENERGY_PER_SIZE);
+            System.out.println(column + " " + row);
 
             count++;
         }
+        if (flag)
+        {
+            Critter critter = tiles[tiles.length - 1 - row][column].getCritter();
+            critter.setJustCreated(false);
+            if (critter.getMemValue(4) > critter.getMemValue(3) * Constants.ENERGY_PER_SIZE) {
+                critter.setMem(4, critter.getMemValue(3) * Constants.ENERGY_PER_SIZE);
+            }
+        }
+
         return flag;
     }
 
@@ -103,6 +110,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     public boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir)
     {
         row = tiles.length - 1 - row;
+//        System.out.println(column + " " + row);
         if(tiles[row][column] != null)
         {
             Tile curr = tiles[row][column];
@@ -189,7 +197,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         {
             if(critter.isMating()){
                 critter.setMem(4, critter.getMemValue(4) - critter.getMemValue(3));
-                System.out.println("failed mate: " + critter.getMemValue(4) + ", row = " + critter.getRow() + ", column = " + critter.getColumn());
+//                System.out.println("failed mate: " + critter.getMemValue(4) + ", row = " + critter.getRow() + ", column = " + critter.getColumn());
             }
             critter.setMating(false);
         }
@@ -275,9 +283,9 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     {
         int row = critter.getRow();
         int column = critter.getColumn();
-        if( !tiles[row][column].getCritter().equals(critter) ) return false;
+        if(!tiles[row][column].getCritter().equals(critter)) return false;
 
-        System.out.println(critter.getSpecies() + " died at time step: " + numSteps);
+//        System.out.println(critter.getSpecies() + " died at time step: " + numSteps);
         tiles[row][column] = new Tile(critter.getMemValue(3) * Constants.FOOD_PER_SIZE);
         critters.remove(critter);
 

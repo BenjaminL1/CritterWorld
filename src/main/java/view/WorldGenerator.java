@@ -274,7 +274,6 @@ public class WorldGenerator
 //                    System.out.println(centerX + " " + centerY);
 //                    System.out.println();
 
-
                     if (dir == 1)
                     {
                         rotate.setAngle(60);
@@ -336,7 +335,7 @@ public class WorldGenerator
         return activePane;
     }
 
-    public StackPane step(ReadOnlyWorld newReadWorld) throws NoMaybeValue
+    public StackPane updateActivePane(ReadOnlyWorld newReadWorld) throws NoMaybeValue
     {
         readWorld = newReadWorld;
         BorderPane activePane = getActivePane();

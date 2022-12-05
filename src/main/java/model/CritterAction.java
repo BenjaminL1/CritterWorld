@@ -344,7 +344,7 @@ public class CritterAction
         critter.setMem(3, critter.getMemValue(3) + 1);
         return true;
     }
-    public boolean bud ()
+    public boolean bud()
     {
         int newEnergy = critter.getMemValue(4) - critter.complexity() * Constants.BUD_COST;
         if(newEnergy < 0){
@@ -377,11 +377,11 @@ public class CritterAction
                 break;
             case 4:
                 c = c + 1;
-                r = r + 1;
+                r = r - 1;
                 break;
             case 5:
                 c = c + 1;
-                r = r - 1;
+                r = r + 1;
                 break;
         }
 

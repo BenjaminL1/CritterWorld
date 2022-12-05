@@ -16,13 +16,13 @@ import java.io.File;
 import java.io.Reader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ViewController implements Controller
 {
     private ControlOnlyWorld controlWorld;
     private ReadOnlyWorld readOnlyWorld;
-    private WorldGenerator viewWorld = new WorldGenerator();
     private boolean enableManna;
     private boolean enableForcedMutation;
 
@@ -65,8 +65,7 @@ public class ViewController implements Controller
             int width = sc.nextInt();
             int height = sc.nextInt();
             World world = new World(width, height, enableManna, enableForcedMutation);
-            controlWorld = world;
-            readOnlyWorld = world;
+            ControlOnlyWorld tempControlWorld = world;
             while (sc.hasNext())
             {
                 String object = sc.next();
@@ -80,7 +79,7 @@ public class ViewController implements Controller
                     int row = sc.nextInt();
                     if ((column + row) % 2 == 0)
                     {
-                        controlWorld.addRock(row, column);
+                        tempControlWorld.addRock(row, column);
                     }
                 }
                 else if (object.equals("food"))
@@ -90,7 +89,7 @@ public class ViewController implements Controller
                     int amount = sc.nextInt();
                     if ((column + row) % 2 == 0)
                     {
-                        controlWorld.addFood(row, column, amount);
+                        tempControlWorld.addFood(row, column, amount);
                     }
                 }
                 else if (object.equals("critter"))
@@ -104,15 +103,17 @@ public class ViewController implements Controller
                         Object[] critterInfo = parseCritterFile(worldFile.getParent() + "\\" + critterFile);
                         if (critterInfo != null)
                         {
-                            controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2],
+                            tempControlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2],
                                     row, column, direction, true);
                         }
                     }
                 }
             }
+            controlWorld = world;
+            readOnlyWorld = world;
             return true;
         }
-        catch (FileNotFoundException e)
+        catch (FileNotFoundException | InputMismatchException e)
         {
             System.out.println("please input a valid world file");
         }
