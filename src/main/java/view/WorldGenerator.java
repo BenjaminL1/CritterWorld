@@ -295,6 +295,8 @@ public class WorldGenerator
                         rotate.setAngle(300);
                     }
 
+                    // TODO make critterGroup clickable or double clickable (use Node.setOnMouseClicked)
+
                     critterGroup.getTransforms().add(rotate);
                     activePane.getChildren().add(critterGroup);
                 }
