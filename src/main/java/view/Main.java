@@ -51,6 +51,10 @@ public class Main extends Application implements Initializable
     @FXML
     Text numCritters;
     @FXML
+    CheckBox enableManna;
+    @FXML
+    CheckBox enableForcedMutation;
+    @FXML
     Button chooseWorld;
     @FXML
     Button chooseCritter;
@@ -297,6 +301,32 @@ public class Main extends Application implements Initializable
                 });
             }
         });
+
+        enableManna.setOnMouseClicked(e ->
+        {
+            if (enableManna.isSelected())
+            {
+                controller.setManna(true);
+            }
+            else
+            {
+                controller.setManna(false);
+            }
+        });
+
+        enableForcedMutation.setOnMouseClicked(e ->
+        {
+            if (enableForcedMutation.isSelected())
+            {
+                controller.setForcedMutation(true);
+            }
+            else
+            {
+                controller.setForcedMutation(false);
+            }
+        });
+
+
 
 //        critterOK.setOnAction(event ->
 //        {

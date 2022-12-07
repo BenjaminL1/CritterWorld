@@ -46,6 +46,20 @@ public class ControllerImpl implements Controller
     }
 
     @Override
+    public void setManna(boolean enableManna)
+    {
+        this.enableManna = enableManna;
+        controlWorld.setManna(enableManna);
+    }
+
+    @Override
+    public void setForcedMutation(boolean enableForcedMutation)
+    {
+        this.enableForcedMutation = enableForcedMutation;
+        controlWorld.setManna(enableForcedMutation);
+    }
+
+    @Override
     public ReadOnlyWorld getReadOnlyWorld()
     {
         return readOnlyWorld;

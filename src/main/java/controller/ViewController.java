@@ -47,6 +47,20 @@ public class ViewController implements Controller
     }
 
     @Override
+    public void setManna(boolean enableManna)
+    {
+        this.enableManna = enableManna;
+        controlWorld.setManna(enableManna);
+    }
+
+    @Override
+    public void setForcedMutation(boolean enableForcedMutation)
+    {
+        this.enableForcedMutation = enableForcedMutation;
+        controlWorld.setForcedMutation(enableForcedMutation);
+    }
+
+    @Override
     public ReadOnlyWorld getReadOnlyWorld()
     {
         return readOnlyWorld;

@@ -68,4 +68,8 @@ public interface Controller
     int getNumberOfAliveCritters();
 
     boolean addCritter(String filename, int row, int column, int dir);
+
+    void setManna(boolean enableManna);
+
+    void setForcedMutation(boolean enableForcedMutation);
 }

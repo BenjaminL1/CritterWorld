@@ -361,6 +361,20 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     }
 
     @Override
+    public void setManna(boolean enableManna)
+    {
+        System.out.println("manna: " + enableManna);
+        this.enableManna = enableManna;
+    }
+
+    @Override
+    public void setForcedMutation(boolean enableForcedMutation)
+    {
+        System.out.println("forced mutation: " + enableForcedMutation);
+        this.enableForcedMutation = enableForcedMutation;
+    }
+
+    @Override
     public void forcedMutate()
     {
         for(Critter critter : critters)
