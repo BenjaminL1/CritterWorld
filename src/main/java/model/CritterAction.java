@@ -478,7 +478,6 @@ public class CritterAction
                 break;
         }
 
-        // TODO ask ben
         if(world.getTerrainInfo(c, r) < 1){
             critter.setMem(4, critter.getMemValue(4) - failedCost);
             if(critter.getMemValue(4) <= 0) {
@@ -528,7 +527,6 @@ public class CritterAction
                 break;
         }
 
-        // TODO ask ben
         if(world.getTerrainInfo(c2, r2) != 0){
             behindMate = false;
         }
@@ -564,9 +562,6 @@ public class CritterAction
                 break;
         }
 
-
-
-        // TODO ask ben
         if(world.getTerrainInfo(c, r) != 0){
             behindSelf = false;
         }

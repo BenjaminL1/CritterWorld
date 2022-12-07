@@ -55,26 +55,6 @@ public class Main extends Application implements Initializable
     @FXML
     Button chooseCritter;
 
-
-    ScheduledService<Integer> svc = new ScheduledService<Integer>()
-    {
-        protected Task<Integer> createTask()
-        {
-            return new Task<>()
-            {
-                protected Integer call()
-                {
-                    controller.advanceTime(1);
-                    Platform.runLater(() ->
-                    {
-                        updateActivePaneGUI();
-                    });
-                    return 0;
-                }
-            };
-        }
-    };
-
     ScheduledService<Integer> controllerSVC = new ScheduledService<Integer>()
     {
         protected Task<Integer> createTask()
@@ -146,7 +126,6 @@ public class Main extends Application implements Initializable
         chooseCritter.setGraphic(dragonite);
         chooseWorld.setGraphic(paldea);
 
-        // TODO
         // load world
 //        controller.loadWorld("src\\test\\resources\\A5files\\view_world.txt", false, false);
         controller.newWorld();
@@ -186,7 +165,7 @@ public class Main extends Application implements Initializable
         {
 //            StackPane world = worldGenerator.updateActivePane(controller.getReadOnlyWorld());
 //            zoomWorld.changeTarget(world);
-//
+
             BorderPane activePane = worldGenerator.updateActivePane(controller.getReadOnlyWorld());
             zoomWorld.changeTarget(activePane);
         }
@@ -229,18 +208,14 @@ public class Main extends Application implements Initializable
             {
                 if (advance.isSelected())
                 {
-//                    svc.setPeriod(Duration.seconds(1.0 / rate));
-//                    svc.restart();
-
                     controllerSVC.setPeriod(Duration.seconds(1.0 / rate));
+
                     if (rate <= 30)
                     {
-                        System.out.println("rate <= 30");
                         guiSVC.setPeriod(Duration.seconds(1.0 / rate));
                     }
                     else
                     {
-                        System.out.println("rate > 30");
                         guiSVC.setPeriod(Duration.seconds(1.0 / 30.0));
                     }
                     controllerSVC.restart();
@@ -248,8 +223,6 @@ public class Main extends Application implements Initializable
                 }
                 else
                 {
-//                    svc.cancel();
-
                     controllerSVC.cancel();
                     guiSVC.cancel();
                 }

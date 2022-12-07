@@ -180,10 +180,6 @@ public class WorldGenerator
             }
             for (int r = start; r < numRows; r += 2)
             {
-//                System.out.print(c + " " + (numRows - 1 - r));
-//                System.out.print("     ");
-//                System.out.println(centerX + " " + centerY);
-//                System.out.println();
                 int info = readWorld.getTerrainInfo(c, numRows - 1 - r);
                 // is critter
                 if (info > 0)
@@ -286,9 +282,6 @@ public class WorldGenerator
 
                     rotate.setPivotX(centerX);
                     rotate.setPivotY(centerY);
-
-//                    System.out.println(centerX + " " + centerY);
-//                    System.out.println();
 
                     if (dir == 1)
                     {

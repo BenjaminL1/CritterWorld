@@ -18,8 +18,6 @@ public class ZoomPane extends ScrollPane
     private double minScaleValue;
     private double maxScaleValue = 9.8; // value determined thru testing
 
-    // TODO change from type Node to type StackPane
-    // Use StackPane.getScaleX() to check if scrolled too far out
     public ZoomPane(Node target)
     {
         super();
@@ -31,18 +29,15 @@ public class ZoomPane extends ScrollPane
         setPannable(true);
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        setFitToHeight(true); //center
-        setFitToWidth(true); //center
+        setFitToHeight(true);
+        setFitToWidth(true);
         updateScale();
-//        System.out.println(minScaleValue);
     }
 
     public ZoomPane(Node target, int length)
     {
         super();
-//        this.scaleValue = 20.0 / length;
-//        this.scaleValue = 1 / Math.pow(Math.E, length * 0.017);
-        this.scaleValue = 16.2 * Math.pow(length, -0.976);
+        this.scaleValue = 16.2 * Math.pow(length, -0.976); // determined by graphing scale vs length and fitting power regression
         this.minScaleValue = scaleValue;
         this.target = target;
         this.zoomNode = new Group(target);
@@ -51,10 +46,10 @@ public class ZoomPane extends ScrollPane
         setPannable(true);
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        setFitToHeight(true); //center
-        setFitToWidth(true); //center
+        setFitToHeight(true);
+        setFitToWidth(true);
         updateScale();
-//        System.out.println(minScaleValue);
+        System.out.println(minScaleValue);
     }
 
     public double getMinScaleValue()
@@ -130,10 +125,6 @@ public class ZoomPane extends ScrollPane
     {
         double zoomFactor = Math.exp(wheelDelta * zoomIntensity);
 
-//        System.out.println(scaleValue * zoomFactor);
-
-//        scaleValue = scaleValue * zoomFactor;
-
         if (scaleValue * zoomFactor > minScaleValue && scaleValue * zoomFactor < maxScaleValue)
         {
             scaleValue = scaleValue * zoomFactor;
@@ -141,22 +132,15 @@ public class ZoomPane extends ScrollPane
             Bounds innerBounds = zoomNode.getLayoutBounds();
             Bounds viewportBounds = getViewportBounds();
 
-            // calculate pixel offsets from [0, 1] range
             double valX = this.getHvalue() * (innerBounds.getWidth() - viewportBounds.getWidth());
             double valY = this.getVvalue() * (innerBounds.getHeight() - viewportBounds.getHeight());
 
-//            scaleValue = scaleValue * zoomFactor;
             updateScale();
-            this.layout(); // refresh ScrollPane scroll positions & target bounds
+            this.layout();
 
-            // convert target coordinates to zoomTarget coordinates
             Point2D posInZoomTarget = target.parentToLocal(zoomNode.parentToLocal(mousePoint));
-
-            // calculate adjustment of scroll position (pixels)
             Point2D adjustment = target.getLocalToParentTransform().deltaTransform(posInZoomTarget.multiply(zoomFactor - 1));
 
-            // convert back to [0, 1] range
-            // (too large/small values are automatically corrected by ScrollPane)
             Bounds updatedInnerBounds = zoomNode.getBoundsInLocal();
             this.setHvalue((valX + adjustment.getX()) / (updatedInnerBounds.getWidth() - viewportBounds.getWidth()));
             this.setVvalue((valY + adjustment.getY()) / (updatedInnerBounds.getHeight() - viewportBounds.getHeight()));

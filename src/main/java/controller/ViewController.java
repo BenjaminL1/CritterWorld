@@ -1,14 +1,10 @@
 package controller;
 
 import ast.Program;
-import cms.util.maybe.NoMaybeValue;
 import exceptions.SyntaxError;
-import javafx.fxml.FXML;
-import javafx.scene.layout.HBox;
 import model.*;
 import parse.Parser;
 import parse.ParserFactory;
-import view.WorldGenerator;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -129,7 +125,7 @@ public class ViewController implements Controller
         }
         catch (FileNotFoundException | InputMismatchException e)
         {
-            System.out.println("please input a valid world file");
+//            System.out.println("please input a valid world file");
         }
         return false;
     }
@@ -257,11 +253,11 @@ public class ViewController implements Controller
         }
         catch (IOException e)
         {
-            System.out.println("please input a valid critter file");
+//            System.out.println("please input a valid critter file");
         }
         catch (SyntaxError e)
         {
-            System.out.println("a valid program should not have syntax errors");;
+//            System.out.println("a valid program should not have syntax errors");
         }
         return null;
     }
