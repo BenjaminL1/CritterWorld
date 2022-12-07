@@ -62,4 +62,10 @@ public interface Controller
     int getNumRows();
 
     int getNumColumns();
+
+    int getSteps();
+
+    int getNumberOfAliveCritters();
+
+    boolean addCritter(String filename, int row, int column, int dir);
 }

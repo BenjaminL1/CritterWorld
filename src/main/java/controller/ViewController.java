@@ -26,14 +26,28 @@ public class ViewController implements Controller
     private boolean enableManna;
     private boolean enableForcedMutation;
 
+    @Override
     public int getNumRows()
     {
         return controlWorld.getNumRows();
     }
 
+    @Override
     public int getNumColumns()
     {
         return controlWorld.getNumColumns();
+    }
+
+    @Override
+    public int getSteps()
+    {
+        return readOnlyWorld.getSteps();
+    }
+
+    @Override
+    public int getNumberOfAliveCritters()
+    {
+        return readOnlyWorld.getNumberOfAliveCritters();
     }
 
     @Override
@@ -121,6 +135,18 @@ public class ViewController implements Controller
     }
 
     @Override
+    public boolean addCritter(String filename, int row, int column, int dir)
+    {
+        Object[] critterInfo = parseCritterFile(filename);
+        if (critterInfo != null)
+        {
+            return controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2],
+                    row, column, dir);
+        }
+        return false;
+    }
+
+    @Override
     public boolean loadCritters(String filename, int n)
     {
         Object[] critterInfo = parseCritterFile(filename);
@@ -128,10 +154,7 @@ public class ViewController implements Controller
         {
             for (int i = 0; i < n; i++)
             {
-                String species = String.valueOf(critterInfo[0]);
-                int[] mem = ((int[]) critterInfo[1]).clone();
-                Program ast = (Program) ((Program) critterInfo[2]).clone();
-                controlWorld.addCritter(species, mem, ast);
+                controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2]);
             }
             return true;
         }

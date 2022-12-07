@@ -6,9 +6,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class ZoomableScrollPane extends ScrollPane
+public class ZoomPane extends ScrollPane
 {
     private double scaleValue = 0.7;
     private double zoomIntensity = 0.02;
@@ -19,7 +20,7 @@ public class ZoomableScrollPane extends ScrollPane
 
     // TODO change from type Node to type StackPane
     // Use StackPane.getScaleX() to check if scrolled too far out
-    public ZoomableScrollPane(Node target)
+    public ZoomPane(Node target)
     {
         super();
         this.target = target;
@@ -36,7 +37,7 @@ public class ZoomableScrollPane extends ScrollPane
 //        System.out.println(minScaleValue);
     }
 
-    public ZoomableScrollPane(Node target, int length)
+    public ZoomPane(Node target, int length)
     {
         super();
 //        this.scaleValue = 20.0 / length;
@@ -66,19 +67,39 @@ public class ZoomableScrollPane extends ScrollPane
         return scaleValue;
     }
 
+//    public void changeTarget(Node newTarget)
+//    {
+//        try
+//        {
+//            target = newTarget;
+//            ((Group) zoomNode).getChildren().remove(0);
+//            ((Group) zoomNode).getChildren().add(target);
+//            setContent(outerNode(zoomNode));
+//
+//            setPannable(true);
+//            setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//            setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//            setFitToHeight(true); //center
+//            setFitToWidth(true); //center
+//            updateScale();
+//        }
+//        catch (Exception e)
+//        {
+//
+//        }
+//    }
+
     public void changeTarget(Node newTarget)
     {
-        target = newTarget;
-        ((Group) zoomNode).getChildren().remove(0);
-        ((Group) zoomNode).getChildren().add(target);
-        setContent(outerNode(zoomNode));
+        try
+        {
+            ((StackPane) target).getChildren().remove(1);
+            ((StackPane) target).getChildren().add(newTarget);
+        }
+        catch (Exception e)
+        {
 
-        setPannable(true);
-        setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        setFitToHeight(true); //center
-        setFitToWidth(true); //center
-        updateScale();
+        }
     }
 
     private Node outerNode(Node node)

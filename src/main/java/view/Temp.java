@@ -25,8 +25,6 @@ import model.ReadOnlyCritter;
 import model.ReadOnlyWorld;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.ResourceBundle;
@@ -100,8 +98,8 @@ public class Temp extends Application implements Initializable
         loader.setController(this);
         parent = loader.load();
 
-        //        ZoomableScrollPane zoomWorldPane = loadWorld();
-        ZoomableScrollPane zoomWorldPane = loadWorld("src\\test\\resources\\A5files\\view_world.txt");
+        //        ZoomPane zoomWorldPane = loadWorld();
+        ZoomPane zoomWorldPane = loadWorld("src\\test\\resources\\A5files\\view_world.txt");
 //        zoomWorldPane.setMinWidth(78);
 //        zoomWorldPane.setMinHeight(100);
 
@@ -115,7 +113,7 @@ public class Temp extends Application implements Initializable
         primaryStage.show();
     }
 
-    public ZoomableScrollPane loadWorld() throws NoMaybeValue
+    public ZoomPane loadWorld() throws NoMaybeValue
     {
         controller.newWorld();
 
@@ -127,10 +125,10 @@ public class Temp extends Application implements Initializable
 
         world = new StackPane(hexes, activePane);
 
-        return new ZoomableScrollPane(world, Math.max(numRows, numColumns));
+        return new ZoomPane(world, Math.max(numRows, numColumns));
     }
 
-    public ZoomableScrollPane loadWorld(String filename) throws NoMaybeValue
+    public ZoomPane loadWorld(String filename) throws NoMaybeValue
     {
         controller.loadWorld(filename, false,false); // TODO change booleans maybe?
 
@@ -142,7 +140,7 @@ public class Temp extends Application implements Initializable
 
         world = new StackPane(hexes, activePane);
 
-        return new ZoomableScrollPane(world, Math.max(numRows, numColumns));
+        return new ZoomPane(world, Math.max(numRows, numColumns));
     }
 
     public BorderPane getHexGroup()

@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -24,7 +25,7 @@
                   <Insets left="28.0" />
                </padding>
             </HBox>
-            <HBox prefHeight="86.0" prefWidth="210.0">
+            <HBox prefHeight="67.0" prefWidth="210.0">
                <children>
                   <Button fx:id="step" mnemonicParsing="false" prefHeight="38.0" prefWidth="38.0">
                      <HBox.margin>
@@ -38,6 +39,16 @@
                   </ToggleButton>
                </children>
             </HBox>
+            <Text fx:id="steps" strokeType="OUTSIDE" strokeWidth="0.0" text="Steps: 0" wrappingWidth="72.53671264648438">
+               <VBox.margin>
+                  <Insets left="49.0" />
+               </VBox.margin>
+            </Text>
+            <Text fx:id="numCritters" strokeType="OUTSIDE" strokeWidth="0.0" text="Alive Critters: 0">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+            </Text>
             <Region prefHeight="200.0" prefWidth="206.0" VBox.vgrow="ALWAYS" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>

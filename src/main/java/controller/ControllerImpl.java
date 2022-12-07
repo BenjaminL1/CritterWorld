@@ -21,14 +21,28 @@ public class ControllerImpl implements Controller
     private boolean enableManna;
     private boolean enableForcedMutation;
 
+    @Override
     public int getNumRows()
     {
         return controlWorld.getNumRows();
     }
 
+    @Override
     public int getNumColumns()
     {
         return controlWorld.getNumColumns();
+    }
+
+    @Override
+    public int getSteps()
+    {
+        return readOnlyWorld.getSteps();
+    }
+
+    @Override
+    public int getNumberOfAliveCritters()
+    {
+        return readOnlyWorld.getNumberOfAliveCritters();
     }
 
     @Override
@@ -115,6 +129,18 @@ public class ControllerImpl implements Controller
         catch (FileNotFoundException e)
         {
             System.out.println("please input a valid world file");
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addCritter(String filename, int row, int column, int dir)
+    {
+        Object[] critterInfo = parseCritterFile(filename);
+        if (critterInfo != null)
+        {
+            return controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2],
+                    row, column, dir);
         }
         return false;
     }

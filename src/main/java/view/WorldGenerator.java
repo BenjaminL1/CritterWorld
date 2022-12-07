@@ -1,8 +1,8 @@
 package view;
 
 import cms.util.maybe.NoMaybeValue;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -14,9 +14,7 @@ import javafx.scene.transform.Rotate;
 import model.ReadOnlyCritter;
 import model.ReadOnlyWorld;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+import java.util.Arrays;
 import java.util.Hashtable;
 
 public class WorldGenerator
@@ -54,7 +52,7 @@ public class WorldGenerator
     private final double HEX_CENTER_Y = (CENTER_LEFT_Y_START + CENTER_RIGHT_Y_START) / 2;
 
 
-    public ZoomableScrollPane loadWorld(int numRows, int numColumns, ReadOnlyWorld readWorld) throws NoMaybeValue
+    public ZoomPane loadWorld(int numRows, int numColumns, ReadOnlyWorld readWorld) throws NoMaybeValue
     {
         this.numRows = numRows;
         this.numColumns = numColumns;
@@ -65,7 +63,7 @@ public class WorldGenerator
 
         world = new StackPane(hexes, activePane);
 
-        return new ZoomableScrollPane(world, Math.max(this.numRows, this.numColumns));
+        return new ZoomPane(world, Math.max(this.numRows, this.numColumns));
     }
 
     public BorderPane getHexGroup()
@@ -199,23 +197,41 @@ public class WorldGenerator
                         color = Color.color(Math.random(), Math.random(), Math.random());
                         speciesColor.put(species, color);
                     }
-                    Circle body = new Circle(10, color);
-//                    body.setLayoutX(centerX);
-//                    body.setLayoutY(centerY);
+
+                    int size = critter.getMemory()[3];
+                    size = Math.min(size, 5);
+                    double bodyRadius = Math.sqrt(size * 40);
+                    double headRadius = bodyRadius * (2.0 / 5.0);
+
+                    Circle body = new Circle(bodyRadius, color);
                     body.setLayoutX(centerX);
                     body.setLayoutY(centerY + 3);
 
-
-                    Circle head = new Circle(4, Color.BLACK);
+                    Circle head = new Circle(headRadius, Color.BLACK);
 //                    head.setLayoutX(centerX);
-//                    head.setLayoutY(centerY - 13);
+//                    head.setLayoutY(centerY - bodyRadius - headRadius + 1);
                     head.setLayoutX(centerX);
-                    head.setLayoutY(centerY - 8);
+                    head.setLayoutY(centerY - bodyRadius - headRadius + 6);
+
+
+//                    Circle body = new Circle(10, color);
+////                    body.setLayoutX(centerX);
+////                    body.setLayoutY(centerY);
+//                    body.setLayoutX(centerX);
+//                    body.setLayoutY(centerY + 3);
+//
+//                    Circle head = new Circle(4, Color.BLACK);
+////                    head.setLayoutX(centerX);
+////                    head.setLayoutY(centerY - 13);
+////                    head.setLayoutY(centerY - bodyRadius - headRadius + 1);
+//                    head.setLayoutX(centerX);
+//                    head.setLayoutY(centerY - 8);
+
 
                     Line leg1 = new Line();
                     leg1.setStrokeWidth(1.5);
-                    double startX1 = Math.cos((3 * Math.PI) / 4) * 10;
-                    double startY1 = Math.sin((3 * Math.PI) / 4) * 10;
+                    double startX1 = Math.cos((3 * Math.PI) / 4) * bodyRadius;
+                    double startY1 = Math.sin((3 * Math.PI) / 4) * bodyRadius;
                     leg1.setStartX(centerX + startX1);
                     leg1.setEndX(centerX + startX1 * 1.2);
                     leg1.setStartY(centerY + 3 - startY1);
@@ -223,15 +239,15 @@ public class WorldGenerator
 
                     Line leg2 = new Line();
                     leg2.setStrokeWidth(1.5);
-                    leg2.setStartX(centerX - 10);
-                    leg2.setEndX(centerX - 10 - 2);
+                    leg2.setStartX(centerX - bodyRadius);
+                    leg2.setEndX(centerX - bodyRadius * 1.2);
                     leg2.setStartY(centerY + 3);
                     leg2.setEndY(centerY + 3);
 
                     Line leg3 = new Line();
                     leg3.setStrokeWidth(1.5);
-                    double startX3 = Math.cos((5 * Math.PI) / 4) * 10;
-                    double startY3 = Math.sin((5 * Math.PI) / 4) * 10;
+                    double startX3 = Math.cos((5 * Math.PI) / 4) * bodyRadius;
+                    double startY3 = Math.sin((5 * Math.PI) / 4) * bodyRadius;
                     leg3.setStartX(centerX + startX3);
                     leg3.setEndX(centerX + startX3 * 1.2);
                     leg3.setStartY(centerY + 3 - startY3);
@@ -239,8 +255,8 @@ public class WorldGenerator
 
                     Line leg4 = new Line();
                     leg4.setStrokeWidth(1.5);
-                    double startX4 = Math.cos(Math.PI / 4) * 10;
-                    double startY4 = Math.sin(Math.PI / 4) * 10;
+                    double startX4 = Math.cos(Math.PI / 4) * bodyRadius;
+                    double startY4 = Math.sin(Math.PI / 4) * bodyRadius;
                     leg4.setStartX(centerX + startX4);
                     leg4.setEndX(centerX + startX4 * 1.2);
                     leg4.setStartY(centerY + 3 - startY4);
@@ -248,15 +264,15 @@ public class WorldGenerator
 
                     Line leg5 = new Line();
                     leg5.setStrokeWidth(1.5);
-                    leg5.setStartX(centerX + 10);
-                    leg5.setEndX(centerX + 10 + 2);
+                    leg5.setStartX(centerX + bodyRadius);
+                    leg5.setEndX(centerX + bodyRadius * 1.2);
                     leg5.setStartY(centerY + 3);
                     leg5.setEndY(centerY + 3);
 
                     Line leg6 = new Line();
                     leg6.setStrokeWidth(1.5);
-                    double startX6 = Math.cos((7 * Math.PI) / 4) * 10;
-                    double startY6 = Math.sin((7 * Math.PI) / 4) * 10;
+                    double startX6 = Math.cos((7 * Math.PI) / 4) * bodyRadius;
+                    double startY6 = Math.sin((7 * Math.PI) / 4) * bodyRadius;
                     leg6.setStartX(centerX + startX6);
                     leg6.setEndX(centerX + startX6 * 1.2);
                     leg6.setStartY(centerY + 3 - startY6);
@@ -294,10 +310,34 @@ public class WorldGenerator
                     {
                         rotate.setAngle(300);
                     }
-
-                    // TODO make critterGroup clickable or double clickable (use Node.setOnMouseClicked)
-
                     critterGroup.getTransforms().add(rotate);
+
+                    critterGroup.setOnMouseClicked(e ->
+                    {
+                        int[] mem = critter.getMemory();
+                        String speciesStr = "Species: " + species + "\n\n";
+                        String memStr = "Mem Array: " + Arrays.toString(critter.getMemory()) + "\n";
+                        String memInfoStr = "memsize: " + mem[0] + "\ndefense: " + mem[1] + "\noffense: " +
+                                mem[2] + "\nsize: " + mem[3] + "\nenergy: " + mem[4] + "\npass number: " +
+                                mem[5] + "\nposture: " + mem[6] + "\n\n";
+                        String programStr = "Program String: \n" + critter.getProgramString() + "\n\n";
+                        String lastRuleStr;
+                        try
+                        {
+                            lastRuleStr = "Last Executed Rule: \n" + critter.getLastRuleString().get();
+                        }
+                        catch (NoMaybeValue ex)
+                        {
+                            lastRuleStr = "";
+                        }
+                        Alert critterInfo = new Alert(Alert.AlertType.INFORMATION);
+                        critterInfo.setContentText(speciesStr + memStr + memInfoStr + programStr + lastRuleStr);
+                        critterInfo.show();
+                    });
+
+
+//                    critterGroups.add(critterGroup);
+
                     activePane.getChildren().add(critterGroup);
                 }
                 // is rock
@@ -326,13 +366,21 @@ public class WorldGenerator
         return activePane;
     }
 
-    public StackPane updateActivePane(ReadOnlyWorld newReadWorld) throws NoMaybeValue
+//    public StackPane updateActivePane(ReadOnlyWorld newReadWorld) throws NoMaybeValue
+//    {
+//        readWorld = newReadWorld;
+//        BorderPane activePane = getActivePane();
+//        world.getChildren().remove(1);
+//        world.getChildren().add(activePane);
+//        return world;
+//    }
+//
+    public BorderPane updateActivePane(ReadOnlyWorld newReadWorld) throws NoMaybeValue
     {
         readWorld = newReadWorld;
         BorderPane activePane = getActivePane();
         world.getChildren().remove(1);
         world.getChildren().add(activePane);
-        return world;
-//        return new ZoomableScrollPane(world, Math.max(numRows, numColumns));
+        return activePane;
     }
 }

@@ -24,12 +24,19 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         this.numRows = Constants.HEIGHT;
         this.numColumns = Constants.WIDTH;
 
-        // TODO: delete commented out section below
-//        this.numRows = 10;
-//        this.numColumns = 10;
-
         this.tiles = new Tile[numRows][numColumns];
         this.critters = new ArrayList<>();
+
+        for (int i = 0; i < numRows; i++)
+        {
+            for (int j = 0; j < numColumns; j++)
+            {
+                if ((int) (Math.random() * 6) == 0)
+                {
+                    addRock(i, j);
+                }
+            }
+        }
     }
 
     public World(int width, int height, boolean enableManna, boolean enableForcedMutation)
@@ -109,6 +116,9 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir)
     {
+        species = String.valueOf(species);
+        mem = mem.clone();
+        ast = (Program) ast.clone();
         row = tiles.length - 1 - row;
 //        System.out.println(column + " " + row);
         if(tiles[row][column] != null)
@@ -127,6 +137,9 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir, boolean loaded)
     {
+        species = String.valueOf(species);
+        mem = mem.clone();
+        ast = (Program) ast.clone();
         row = tiles.length - 1 - row;
         if(tiles[row][column] != null)
         {
