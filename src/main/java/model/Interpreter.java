@@ -4,7 +4,10 @@ import ast.*;
 import ast.Number;
 import parse.TokenType;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class Interpreter
 {
@@ -356,123 +359,300 @@ public class Interpreter
 
     public int interpretSmellSensor()
     {
-        Tile[][] tiles = world.getTiles();
-        int row = critter.getRow();
-        int column = critter.getColumn();
-        int dir = critter.getDirection();
-        LinkedList<int[]> tileSearch = new LinkedList<int[]>();
-        if (row - 2 > 0) tileSearch.add(new int[]{row - 2, column});
-        if (row - 1 > 0 && column + 1 < tiles[0].length) tileSearch.add(new int[]{row - 1, column + 1});
-        if (row + 1 < tiles.length && column + 1 < tiles[0].length) tileSearch.add(new int[]{row + 1, column + 1});
-        if (row + 2 < tiles.length) tileSearch.add(new int[]{row + 2, column});
-        if (row + 1 < tiles.length && column - 1 > 0)tileSearch.add(new int[]{row + 1, column - 1});
-        if (row - 1 > 0 && column - 1 > 0) tileSearch.add(new int[]{row - 1, column - 1});
-        int[] foodCoordinates = findNearestFood(tiles, tileSearch);
-        int cx = column;
-        int cy = tiles.length - 1 - row;
-        int fx = foodCoordinates[1];
-        int fy = tiles.length - 1 - foodCoordinates[0];
-
-
-
-        int dist = Math.max(Math.abs(fx - cx), Math.abs(fx - cx + fy - cy) / 2);
-        dist = Math.max(dist, Math.abs(fx - cx - fy + cy) / 2);
-        if (foodCoordinates[0] == -1 || dist > Constants.MAX_SMELL_DISTANCE)
+        class Node implements Comparable<Node>
         {
+
+            // row and column are based off the actual coordinates now array coordinates
+            int row, column, distance, weight;
+            ArrayList<Integer> previousDirections = new ArrayList<>();
+            ArrayList<Node> previousTiles = new ArrayList<>();
+            public Node(int row, int column){
+                this.row = row;
+                this.column = column;
+            }
+
+            public int getDirection()
+            {
+                return previousDirections.get(previousDirections.size() - 1);
+            }
+
+            public int determineDirection(Node from, Node to){
+                int direction;
+                if(from.row - to.row > 0){
+                    if(from.column - to.column == 1) direction = 1;
+                    else if(from.column - to.column == -1) direction = 5;
+                    else direction = 0;
+                }
+
+                else {
+                    if(from.column - to.column == 1) direction = 2;
+                    else if(from.column - to.column == -1) direction = 4;
+                    else direction = 3;
+                }
+                return direction;
+            }
+
+            @Override
+            public int compareTo(Node node) {
+                return (this.distance - node.distance);
+            }
+        }
+
+        // TODO row and column stuff
+        ArrayList<Node> nodes = new ArrayList<>();
+        PriorityQueue<Node> frontier = new PriorityQueue(); //queue for dijkstras
+
+        Queue<int[]> queue = new LinkedList<>(); //bfs
+        queue.add(new int[]{critter.getRow(), critter.getColumn()});
+        while (!queue.isEmpty()) {
+            //get next tile in queue and its coordinates
+            int[] current = queue.poll();
+            int r = current[0];
+            int c = current[1];
+            if(world.getTerrainInfo(c, world.getTiles().length - 1 - r) == -1) continue;
+
+            //If tile is out of bounds, continue to next tile in queue
+            if( Math.max(Math.abs((c - critter.getColumn() - r + critter.getRow()) / 2),
+                    Math.max(Math.abs(c - critter.getColumn()),
+                            Math.abs((c - critter.getColumn() + r - critter.getRow()) / 2))) > 10
+            ){
+                continue;
+            }
+
+            //check if its already in the arraylist of nodes
+            boolean exists = false;
+            for(Node node : nodes){
+                if(r == node.row && c == node.column){
+                    exists = true;
+                    break;
+                }
+            }
+            if(exists) continue;
+                //add it to arraylist of nodes if it doesnt exist
+            else{
+                Node node = new Node(r, c);
+                node.distance = (Integer.MAX_VALUE);
+                nodes.add(node);
+
+            }
+
+            //add the surrounding nodes
+            queue.add(new int[]{r + 2, c});
+            queue.add(new int[]{r + 1, c + 1});
+            queue.add(new int[]{r - 1, c + 1});
+            queue.add(new int[]{r - 2, c});
+            queue.add(new int[]{r - 1, c - 1});
+            queue.add(new int[]{r + 1, c - 1});
+
+        }
+
+        Node root = null;
+        for(Node node : nodes){
+            if(critter.getRow() == node.row && critter.getColumn() == node.column){
+                root = node;
+                break;
+            }
+        }
+        // assert root != null;
+        root.distance = 0;
+        root.previousDirections.add(critter.getDirection());
+        frontier.add(root);
+
+        ArrayList<Node> finished = new ArrayList<>();
+        int length = world.getTiles().length;
+
+        while(frontier.size() != 0){
+            Node g = frontier.poll();
+
+            for(int i=0; i<6; i++){
+                if(i == 0){
+                    if(world.getTerrainInfo(g.column, length - 1 - (g.row - 2)) < -1 || world.getTerrainInfo(g.column, length - 1 - (g.row - 2)) == 0){
+                        //find node of target tile
+                        Node current = null;
+                        for(Node node : nodes){
+                            if(g.row - 2 == node.row && g.column == node.column){
+                                current = node;
+                                break;
+                            }
+                        }
+
+                        if(current == null) break;
+                        if(finished.contains(current)) continue;
+                        //determine weight to get to target
+                        current.weight = (i - g.getDirection()) % 6;
+                        if(current.weight < 0) current.weight = 6 + current.weight;
+                        if(current.weight > 3) current.weight = 6 - current.weight;
+                        current.weight ++;
+                        //if the distance from root through g to target is less than the distance stored within the target, update its info
+                        if( current.weight + g.distance < current.distance){
+                            current.distance = current.weight + g.distance;
+                            current.previousTiles = (ArrayList<Node>) g.previousTiles.clone();
+                            current.previousTiles.add(g);
+                            current.previousDirections = (ArrayList<Integer>) g.previousDirections.clone();
+                            current.previousDirections.add(0);
+
+                            frontier.add(current);
+                        }
+                    }
+
+                }
+
+                else if(i == 1){
+                    if(world.getTerrainInfo(g.column + 1, length - 1 -  (g.row - 1)) < -1 || world.getTerrainInfo(g.column + 1, length - 1 - (g.row - 1)) == 0){
+                        Node current = null;
+                        for(Node node : nodes){
+                            if(g.row - 1 == node.row && g.column + 1 == node.column){
+                                current = node;
+                                break;
+                            }
+                        }
+                        if(current == null) break;
+                        if(finished.contains(current)) continue;
+                        current.weight = (i - g.getDirection()) % 6;
+                        if(current.weight < 0) current.weight = 6 + current.weight;
+                        if(current.weight > 3) current.weight = 6 - current.weight;
+                        current.weight ++;
+                        if( current.weight + g.distance < current.distance){
+                            current.distance = current.weight + g.distance;
+                            current.previousTiles = (ArrayList<Node>) g.previousTiles.clone();
+                            current.previousTiles.add(g);
+                            current.previousDirections = (ArrayList<Integer>) g.previousDirections.clone();
+                            current.previousDirections.add(1);
+                            frontier.add(current);
+                        }
+                    }
+                }
+
+                else if(i == 2){
+                    if(world.getTerrainInfo(g.column + 1, length - 1 -  (g.row + 1)) < -1 || world.getTerrainInfo(g.column + 1, length - 1 - (g.row + 1)) == 0){
+                        Node current = null;
+                        for(Node node : nodes){
+                            if(g.row + 1 == node.row && g.column + 1 == node.column){
+                                current = node;
+                                break;
+                            }
+                        }
+                        if(current == null) break;
+                        if(finished.contains(current)) continue;
+                        current.weight = (i - g.getDirection()) % 6;
+                        if(current.weight < 0) current.weight = 6 + current.weight;
+                        if(current.weight > 3) current.weight = 6 - current.weight;
+                        current.weight ++;
+                        if( current.weight + g.distance < current.distance){
+                            current.distance = current.weight + g.distance;
+                            current.previousTiles = (ArrayList<Node>) g.previousTiles.clone();
+                            current.previousTiles.add(g);
+                            current.previousDirections = (ArrayList<Integer>) g.previousDirections.clone();
+                            current.previousDirections.add(2);
+                            frontier.add(current);
+                        }
+                    }
+                }
+
+                else if(i == 3) {
+                    if (world.getTerrainInfo(g.column, length - 1 - (g.row + 2)) < -1 || world.getTerrainInfo(g.column, length - 1 - (g.row + 2)) == 0) {
+                        Node current = null;
+                        for (Node node : nodes) {
+                            if (g.row + 2 == node.row && g.column == node.column) {
+                                current = node;
+                                break;
+                            }
+                        }
+                        if(current == null) break;
+                        if(finished.contains(current)) continue;
+                        current.weight = (i - g.getDirection()) % 6;
+                        if(current.weight < 0) current.weight = 6 + current.weight;
+                        if(current.weight > 3) current.weight = 6 - current.weight;
+                        current.weight ++;
+                        if (current.weight + g.distance < current.distance) {
+                            current.distance = current.weight + g.distance;
+                            current.previousTiles = (ArrayList<Node>) g.previousTiles.clone();
+                            current.previousTiles.add(g);
+                            current.previousDirections = (ArrayList<Integer>) g.previousDirections.clone();
+                            current.previousDirections.add(3);
+                            frontier.add(current);
+                        }
+                    }
+                }
+
+                else if(i == 4){
+                    if(world.getTerrainInfo(g.column - 1, length - 1 - (g.row + 1)) < -1 || world.getTerrainInfo(g.column - 1, length - 1 - (g.row + 1)) == 0){
+                        Node current = null;
+                        for(Node node : nodes){
+                            if(g.row + 1 == node.row && g.column - 1 == node.column){
+                                current = node;
+                                break;
+                            }
+                        }
+                        if(current == null) break;
+                        if(finished.contains(current)) continue;
+                        current.weight = (i - g.getDirection()) % 6;
+                        if(current.weight < 0) current.weight = 6 + current.weight;
+                        if(current.weight > 3) current.weight = 6 - current.weight;
+                        current.weight ++;
+                        if( current.weight + g.distance < current.distance){
+                            current.distance = current.weight + g.distance;
+                            current.previousTiles = (ArrayList<Node>) g.previousTiles.clone();
+                            current.previousTiles.add(g);
+                            current.previousDirections = (ArrayList<Integer>) g.previousDirections.clone();
+                            current.previousDirections.add(4);
+                            frontier.add(current);
+                        }
+                    }
+                }
+
+                else if(i == 5){
+                    if(world.getTerrainInfo(g.column - 1, g.row - 1) < -1 || world.getTerrainInfo(g.column - 1, g.row - 1) == 0){
+                        Node current = null;
+                        for(Node node : nodes){
+                            if(g.row - 1 == node.row && g.column - 1 == node.column){
+                                current = node;
+                                break;
+                            }
+                        }
+                        if(current == null) break;
+                        if(finished.contains(current)) continue;
+                        current.weight = (i - g.getDirection()) % 6;
+                        if(current.weight < 0) current.weight = 6 + current.weight;
+                        if(current.weight > 3) current.weight = 6 - current.weight;
+                        current.weight ++;
+                        if( current.weight + g.distance < current.distance){
+                            current.distance = current.weight + g.distance;
+                            current.previousTiles = (ArrayList<Node>) g.previousTiles.clone();
+                            current.previousTiles.add(g);
+                            current.previousDirections = (ArrayList<Integer>) g.previousDirections.clone();
+                            current.previousDirections.add(5);
+                            frontier.add(current);
+                        }
+                    }
+                }
+
+            }
+
+            finished.add(g);
+
+        }
+
+        Node food = new Node(-1, -1);
+        food.distance = Integer.MAX_VALUE;
+        for(Node node : finished){
+            int r = node.row;
+            int c = node.column;
+            if(world.getTerrainInfo(c, world.getTiles().length - 1 - r) < -1 && node.distance < food.distance) {
+                food = node;
+            }
+        }
+
+        if(food.row == -1 || food.distance - 1 > 10) {
             return 1000000;
         }
-
-        // based off assumption row is first
-
-        int deltax = fx - cx;
-        int deltay = fy - cy;
-
-        double tanned;
-        double angle;
-        if(deltax == 0 )
-        {
-            angle = 90;
-        }
         else {
-            tanned = deltay/deltax;
-            angle = Math.atan(tanned);
+            int relativeDirection = food.previousDirections.get(1) - food.previousDirections.get(0);
+            if(relativeDirection < 0) relativeDirection += 6;
+            relativeDirection %= 6;
+            //subtract one because the first move takes one less timestep than normal
+            return ((food.distance - 1) * 100 + relativeDirection);
         }
-
-        if( (deltay) < 0)
-        {
-            angle += 180;
-        }
-
-        int dirOfFood = critter.getDirection();
-        if(angle >= 0 && angle < 60)
-        {
-            dirOfFood = 1 - dirOfFood + 6;
-        }
-        else if(angle >= 60 && angle < 120)
-        {
-            dirOfFood = 0 - dirOfFood + 6;
-        }
-        else if(angle >= 120 && angle < 180)
-        {
-            dirOfFood = 5 - dirOfFood + 6;
-        }
-        else if(angle >= 180 && angle < 240)
-        {
-            dirOfFood = 4 - dirOfFood + 6;
-        }
-        else if(angle >= 240 && angle < 300)
-        {
-            dirOfFood = 3 - dirOfFood + 6;
-        }
-        else if(angle >= 300 && angle < 360)
-        {
-            dirOfFood = 2 - dirOfFood + 6;
-        }
-        dirOfFood %= 6;
-//        System.out.println("direction: " + dirOfFood);
-//        System.out.println("return: " + 1000 * dist + dirOfFood);
-        return 1000 * dist + dirOfFood;
-    }
-
-    public int[] findNearestFood(Tile[][] tiles, LinkedList<int[]> tileSearch)
-    {
-        while (tileSearch.peek() != null)
-        {
-            int[] coordinates = tileSearch.poll();
-            if (tiles[coordinates[0]][coordinates[1]] != null && tiles[coordinates[0]][coordinates[1]].getIsFood())
-            {
-                return coordinates;
-            }
-            int rowSize = tiles.length;
-            int columnSize = tiles[0].length;
-            int row = coordinates[0];
-            int column = coordinates[1];
-            if (row - 2 >= 0)
-            {
-                tileSearch.add(new int[]{row - 2, column});
-            }
-            if (row - 1 >= 0 && column + 1 < columnSize)
-            {
-                tileSearch.add(new int[]{row - 1, column + 1});
-            }
-            if (row + 1 < rowSize && column + 1 < columnSize)
-            {
-                tileSearch.add(new int[]{row + 1, column + 1});
-            }
-            if (row + 1 < rowSize)
-            {
-                tileSearch.add(new int[]{row + 2, column});
-            }
-            if (row + 1 < rowSize && column - 1 >= 0)
-            {
-                tileSearch.add(new int[]{row + 1, column - 1});
-            }
-            if (row - 1 >= 0 && column - 1 >= 0)
-            {
-                tileSearch.add(new int[]{row - 1, column - 1});
-            }
-        }
-        return new int[]{-1, -1};
     }
 
     public int interpretRandomSensor(RandomSensor rs, int n)

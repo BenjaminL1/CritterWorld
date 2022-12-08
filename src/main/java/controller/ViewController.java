@@ -151,7 +151,7 @@ public class ViewController implements Controller
         if (critterInfo != null)
         {
             return controlWorld.addCritter((String) critterInfo[0], (int[]) critterInfo[1], (Program) critterInfo[2],
-                    row, column, dir);
+                    row, column, dir, true);
         }
         return false;
     }

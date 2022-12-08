@@ -24,4 +24,7 @@ public interface ReadOnlyWorld
      *         in direction X. Treat out-of-bound or invalid hex as rock.
      */
     int getTerrainInfo(int c, int r);
+
+    int getNumRows();
+    int getNumColumns();
 }

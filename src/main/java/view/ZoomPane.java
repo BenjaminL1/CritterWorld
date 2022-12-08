@@ -49,7 +49,6 @@ public class ZoomPane extends ScrollPane
         setFitToHeight(true);
         setFitToWidth(true);
         updateScale();
-        System.out.println(minScaleValue);
     }
 
     public double getMinScaleValue()

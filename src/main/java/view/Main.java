@@ -14,31 +14,30 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Main extends Application implements Initializable
 {
-    private WorldGenerator worldGenerator = new WorldGenerator();
-    private Controller controller = ControllerFactory.getViewController();
-    private String workingDir = System.getProperty("user.dir");
+    private final WorldGenerator worldGenerator = new WorldGenerator();
+    private final Controller controller = ControllerFactory.getViewController();
+//    private final String workingDir = System.getProperty("user.dir");
     private HBox parent;
     private ZoomPane zoomWorld;
     private FileChooser fileChooser = new FileChooser();
     private File critterFile;
-    private String stepsText = "Steps: ";
-    private String numCrittersText = "Alive Critters: ";
-    private Stage critterLoadStage = new Stage();
+    private final String stepsText = "Steps: ";
+    private final String numCrittersText = "Alive Critters: ";
+    private TileSelecter tileSelecter = new TileSelecter(this, this.controller);
 
     @FXML
     TextField rateText;
@@ -104,22 +103,30 @@ public class Main extends Application implements Initializable
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
 
         primaryStage.setTitle("Critter World");
-        critterLoadStage.setTitle("Tile Selection");
 
         // load FXML file
-        URL r = new File(workingDir + "\\src\\main\\java\\view\\window.fxml").toURI().toURL();
+//        URL r = new File(workingDir + "\\src\\main\\java\\view\\mainWindow.fxml").toURI().toURL();
+        URL r = getClass().getResource("mainWindow.fxml");
         FXMLLoader loader = new FXMLLoader(r);
         loader.setController(this);
         parent = loader.load();
 
         // put images on buttons
-        Image playButtonImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\playButton.png",
+//        Image playButtonImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\playButton.png",
+//                23, 23, true, false);
+//        Image fastForwardImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\fastForward.png",
+//                23, 23, true, false);
+//        Image dragoniteCritterImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\dragonite.png",
+//            30, 30, true, false);
+//        Image paldeaImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\paldeaMap.jpg",
+//                35, 35, true, false);
+        Image playButtonImage = new Image(Objects.requireNonNull(getClass().getResource("playButton.png")).toString(),
                 23, 23, true, false);
-        Image fastForwardImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\fastForward.png",
+        Image fastForwardImage = new Image(Objects.requireNonNull(getClass().getResource("fastForward.png")).toString(),
                 23, 23, true, false);
-        Image dragoniteCritterImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\dragonite.png",
-            30, 30, true, false);
-        Image paldeaImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\paldeaMap.jpg",
+        Image dragoniteCritterImage = new Image(Objects.requireNonNull(getClass().getResource("dragonite.png")).toString(),
+                30, 30, true, false);
+        Image paldeaImage = new Image(getClass().getResource("paldeaMap.jpg").toString(),
                 35, 35, true, false);
         ImageView playButton = new ImageView(playButtonImage);
         ImageView fastForward = new ImageView(fastForwardImage);
@@ -264,29 +271,25 @@ public class Main extends Application implements Initializable
             critterFile = fileChooser.showOpenDialog(new Stage());
             if (critterFile != null)
             {
-                TextInputDialog td = new TextInputDialog("0");
-                td.setHeaderText("How many critters would you like to place randomly into the world?");
+                TextInputDialog td = new TextInputDialog("1");
+                td.setHeaderText("How many critters would you like to place randomly into the world?\n " +
+                        "Enter 1 to select a specific coordinate for the critter to be placed.");
                 td.showAndWait().ifPresent(response ->
                 {
                     try
                     {
                         int n = Integer.parseInt(response);
-                        controller.loadCritters(critterFile.getAbsolutePath(), n);
-//                        if (n == 1)
-//                        {
-//                            URL s = new File(workingDir + "\\src\\main\\java\\view\\addCritter.fxml").toURI().toURL();
-//                            FXMLLoader addCritterLoader = new FXMLLoader(s);
-//                            addCritterLoader.setController(this);
-//                            VBox node = addCritterLoader.load();
-//
-//                            Scene scene = new Scene(node, 220, 186);
-//                            critterLoadStage.setScene(scene);
-//                            critterLoadStage.show();
-//                        }
-//                        else
-//                        {
-//                            controller.loadCritters(critterFile.getAbsolutePath(), n);
-//                        }
+//                        controller.loadCritters(critterFile.getAbsolutePath(), n);
+                        if (n == 1)
+                        {
+//                            TileSelecter tileSelecter = new TileSelecter(controller, critterFile, this);
+                            tileSelecter.setCritterFile(critterFile);
+                            tileSelecter.start();
+                        }
+                        else
+                        {
+                            controller.loadCritters(critterFile.getAbsolutePath(), n);
+                        }
                         updateActivePaneGUI();
                     }
                     catch (NumberFormatException exception)
@@ -294,10 +297,11 @@ public class Main extends Application implements Initializable
                         // TODO change
                         System.out.println("please enter a valid integer");
                     }
-//                    catch (IOException ex)
-//                    {
-//                        throw new RuntimeException(ex);
-//                    }
+                    catch (IOException ex)
+                    {
+                        // TODO change
+                        System.out.println("please select a valid file");
+                    }
                 });
             }
         });
@@ -325,7 +329,6 @@ public class Main extends Application implements Initializable
                 controller.setForcedMutation(false);
             }
         });
-
 
 
 //        critterOK.setOnAction(event ->

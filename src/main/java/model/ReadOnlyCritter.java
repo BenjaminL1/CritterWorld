@@ -24,4 +24,8 @@ public interface ReadOnlyCritter
     Maybe<String> getLastRuleString();
 
     int getDirection();
+
+    int getRow();
+
+    int getColumn();
 }

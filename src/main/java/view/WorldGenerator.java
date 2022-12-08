@@ -16,6 +16,7 @@ import model.ReadOnlyWorld;
 
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.Objects;
 
 public class WorldGenerator
 {
@@ -25,14 +26,19 @@ public class WorldGenerator
     private int numRows;
     private int numColumns;
 
-    private String workingDir = System.getProperty("user.dir");
+//    private String workingDir = System.getProperty("user.dir");
 
-    private final Image foodImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\razzBerry.png",
+//    private final Image foodImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\razzBerry.png",
+//            23, 23, true, false);
+//
+//    private final Image rockImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\rock.png",
+//            30, 30, true, false);
+
+    private final Image foodImage = new Image(Objects.requireNonNull(getClass().getResource("razzBerry.png")).toString(),
             23, 23, true, false);
 
-    private final Image rockImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\rock.png",
+    private final Image rockImage = new Image(Objects.requireNonNull(getClass().getResource("rock.png")).toString(),
             30, 30, true, false);
-
     private final double HEIGHT = 43.3013;
 
     private final double BOTTOM_LEFT_X_START = 17.5;
@@ -309,6 +315,8 @@ public class WorldGenerator
                     {
                         int[] mem = critter.getMemory();
                         String speciesStr = "Species: " + species + "\n\n";
+                        String columnStr = "Column: " + critter.getColumn() + "\n";
+                        String rowStr = "Row: " + (readWorld.getNumRows() - 1 - critter.getRow()) + "\n\n";
                         String memStr = "Mem Array: " + Arrays.toString(critter.getMemory()) + "\n";
                         String memInfoStr = "memsize: " + mem[0] + "\ndefense: " + mem[1] + "\noffense: " +
                                 mem[2] + "\nsize: " + mem[3] + "\nenergy: " + mem[4] + "\npass number: " +
@@ -324,7 +332,7 @@ public class WorldGenerator
                             lastRuleStr = "";
                         }
                         Alert critterInfo = new Alert(Alert.AlertType.INFORMATION);
-                        critterInfo.setContentText(speciesStr + memStr + memInfoStr + programStr + lastRuleStr);
+                        critterInfo.setContentText(speciesStr + columnStr + rowStr + memStr + memInfoStr + programStr + lastRuleStr);
                         critterInfo.show();
                     });
 
