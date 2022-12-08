@@ -76,6 +76,7 @@ public class TileSelecter implements Initializable
                 row = Integer.parseInt(rowText.getText());
                 column = Integer.parseInt(colText.getText());
                 dir = Integer.parseInt(dirText.getText());
+                if (row < 0 || row > controller.getNumRows() || column < 0 || column > controller.getNumColumns()) throw new NumberFormatException();
                 controller.addCritter(critterFile.getAbsolutePath(), row, column, dir);
             }
             catch (NumberFormatException exception)

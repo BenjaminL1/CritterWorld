@@ -114,6 +114,10 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir)
     {
+        if (row < 0 || row > tiles.length || column < 0 || column > tiles[0].length)
+        {
+            return false;
+        }
         species = String.valueOf(species);
         mem = mem.clone();
         ast = (Program) ast.clone();
@@ -140,6 +144,10 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir, boolean loaded)
     {
+        if (row < 0 || row > tiles.length || column < 0 || column > tiles[0].length)
+        {
+            return false;
+        }
         species = String.valueOf(species);
         mem = mem.clone();
         ast = (Program) ast.clone();

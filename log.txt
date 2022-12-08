@@ -1,3 +1,9 @@
+commit 5a973a2bdb9d43f4aa544201149e7dd1ce3d3d8c
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Wed Dec 7 22:36:17 2022 -0500
+
+    deleted HelloWorldApplication
+
 commit 7434387364e57e5c71898ad21413605547a1e1c6
 Author: Richard Lin <rl659@cornell.edu>
 Date:   Wed Dec 7 22:34:34 2022 -0500
