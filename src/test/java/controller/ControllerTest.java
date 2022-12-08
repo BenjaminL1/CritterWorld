@@ -10,7 +10,7 @@ public class ControllerTest
     public void testLoadWorld()
     {
         Controller controller = ControllerFactory.getConsoleController();
-        controller.loadWorld("src\\test\\resources\\A5files\\test_world.txt", true, false);
+        controller.loadWorld("src\\test\\resources\\A5_A6_files\\test_world.txt", true, false);
         controller.printWorld(System.out);
     }
 
@@ -19,7 +19,7 @@ public class ControllerTest
     {
         Controller controller = ControllerFactory.getConsoleController();
         controller.newWorld();
-        controller.loadCritters("src\\test\\resources\\A5files\\test_critter.txt", 10);
+        controller.loadCritters("src\\test\\resources\\A5_A6_files\\test_critter.txt", 10);
         controller.printWorld(System.out);
     }
 
@@ -27,7 +27,7 @@ public class ControllerTest
     public void testAdvanceTimeStep()
     {
         Controller controller = ControllerFactory.getConsoleController();
-        controller.loadWorld("src\\test\\resources\\A5files\\test_world.txt", true, false);
+        controller.loadWorld("src\\test\\resources\\A5_A6_files\\test_world.txt", true, false);
 //        controller.printWorld(System.out);
 //        System.out.println();
         controller.advanceTime(5);
@@ -40,7 +40,7 @@ public class ControllerTest
         Controller controller = ControllerFactory.getConsoleController();
 //        controller.newWorld();
 //        controller.loadCritters("src\\test\\resources\\A5files\\spiral_critter.txt", 1);
-        controller.loadWorld("src\\test\\resources\\A5files\\spiral_world.txt", false, false);
+        controller.loadWorld("src\\test\\resources\\A5_A6_files\\spiral_world.txt", false, false);
         controller.printWorld(System.out);
         System.out.println();
         controller.advanceTime(300);
@@ -51,7 +51,7 @@ public class ControllerTest
     @Test
     public void testEatCritter(){
         Controller controller = ControllerFactory.getConsoleController();
-        controller.loadWorld("src\\test\\resources\\A5files\\eat_world.txt", true, false);
+        controller.loadWorld("src\\test\\resources\\A5_A6_files\\eat_world.txt", true, false);
         controller.printWorld(System.out);
         System.out.println();
         controller.advanceTime(100);
@@ -62,7 +62,7 @@ public class ControllerTest
     @Test
     public void testBudCritter(){
         Controller controller = ControllerFactory.getConsoleController();
-        controller.loadWorld("src\\test\\resources\\A5files\\bud_world.txt", false, false);
+        controller.loadWorld("src\\test\\resources\\A5_A6_files\\bud_world.txt", false, false);
         controller.printWorld(System.out);
         System.out.println();
         controller.advanceTime(10);
@@ -73,7 +73,7 @@ public class ControllerTest
     @Test
     public void testRunCritter(){
         Controller controller = ControllerFactory.getConsoleController();
-        controller.loadWorld("src\\test\\resources\\A5files\\big_world.txt", false, false);
+        controller.loadWorld("src\\test\\resources\\A5_A6_files\\big_world.txt", false, false);
         controller.printWorld(System.out);
         System.out.println();
         controller.advanceTime(10);
@@ -84,7 +84,7 @@ public class ControllerTest
     @Test
     public void testMateCritter(){
         Controller controller = ControllerFactory.getConsoleController();
-        controller.loadWorld("src\\test\\resources\\A5files\\big_world.txt", false, false);
+        controller.loadWorld("src\\test\\resources\\A5_A6_files\\big_world.txt", false, false);
         controller.printWorld(System.out);
         System.out.println();
         controller.advanceTime(10);
@@ -95,7 +95,7 @@ public class ControllerTest
     @Test
     public void testViewWorld(){
         Controller controller = ControllerFactory.getConsoleController();
-        controller.loadWorld("src\\test\\resources\\A5files\\view_world.txt", true, false);
+        controller.loadWorld("src\\test\\resources\\A5_A6_files\\view_world.txt", true, false);
         controller.printWorld(System.out);
         System.out.println();
         controller.advanceTime(20);
@@ -107,7 +107,7 @@ public class ControllerTest
     public void testSmeller()
     {
         Controller controller = ControllerFactory.getConsoleController();
-        controller.loadWorld("src\\test\\resources\\A5files\\smell_world.txt", false, false);
+        controller.loadWorld("src\\test\\resources\\A5_A6_files\\smell_world.txt", false, false);
         controller.printWorld(System.out);
         System.out.println();
         controller.advanceTime(10);
@@ -119,7 +119,7 @@ public class ControllerTest
     {
         Controller controller = ControllerFactory.getConsoleController();
         controller.newWorld();
-        controller.loadCritters("src\\test\\resources\\A5files\\run_critter.txt", 200);
+        controller.loadCritters("src\\test\\resources\\A5_A6_files\\run_critter.txt", 200);
         controller.printWorld(System.out);
         System.out.println();
         controller.advanceTime(10);

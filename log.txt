@@ -1,3 +1,135 @@
+commit 363a000ee90bb0be609183520971482396c95805
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Wed Dec 7 22:26:33 2022 -0500
+
+    hopefully final commit
+
+commit e5ea7561fc6136b314a6dc99603110ea35ba9509
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Wed Dec 7 21:59:05 2022 -0500
+
+    pre-final commit
+
+commit b0c74e01479945a0e080b808f73c960b68c4a0b3
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Wed Dec 7 05:31:37 2022 -0500
+
+    added enableManna and enableForcedMutation to GUI
+
+commit bd15062aee43fa819f6d70166f3120dd70506177
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Wed Dec 7 04:53:15 2022 -0500
+
+    removed most comments
+
+commit c3f30f9dec91dcaad1b706d2fc8ebbec807283cf
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Wed Dec 7 04:16:10 2022 -0500
+
+    almost done
+
+commit 9b9a042af9f4718f0c7bb71aa6feb3c1b35b5968
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Mon Dec 5 03:23:57 2022 -0500
+
+    added TODO
+
+commit ffa7eb2ce8859a417940f075407048a0bddcb325
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Mon Dec 5 03:20:05 2022 -0500
+
+    added new image for fastforward/advance button
+
+commit 625249bd6bea7fd85203750bc8689d767f67bcd4
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Mon Dec 5 03:03:57 2022 -0500
+
+    yay
+
+commit 7c6f04b40c869ed2be0451a56de974934c766fd8
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Mon Dec 5 00:06:59 2022 -0500
+
+    shiii
+
+commit 2d4f15348f549b3eed729d3acc5a68bc6afd29c2
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Sun Dec 4 15:57:45 2022 -0500
+
+    fixed button/ZoomableScrollPane and mate i think
+
+commit 30b314e243047a02c39a27641fa46a2ecaf2c5a0
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Sun Dec 4 03:58:32 2022 -0500
+
+    edited comment
+
+commit 7115ce8ed987c0c7c91d093b90b7544f4e0350ce
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Sun Dec 4 03:57:58 2022 -0500
+
+    added TODOs
+
+commit a6af123038a3c15fb771e20245e99fd7a031522a
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Sun Dec 4 03:46:09 2022 -0500
+
+    bedyes
+
+commit b2f194610becd710cf5ee738fde6f5c6c267db26
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Sat Dec 3 22:38:19 2022 -0500
+
+    ion even know
+
+commit 6ef97735c656f96d88b740182cf2fa1878417740
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Fri Dec 2 22:36:39 2022 -0500
+
+    FINISHED WORLDgit add -A!
+
+commit 205dc9f287b57f2d8f7436847b92b290434d3b69
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Fri Dec 2 17:08:41 2022 -0500
+
+    i hate javafx
+
+commit 853752d3dd8e7a883b0466aeaf1af14dfc94aa94
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Fri Dec 2 05:19:47 2022 -0500
+
+    added sprites
+
+commit 5366488b1d8734ddc5d67629d49618b08e862624
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Fri Dec 2 02:37:47 2022 -0500
+
+    so bedyes
+
+commit 7ae5c124554e454a80d5b5d0c8e5fbb156532a6a
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Thu Dec 1 00:44:02 2022 -0500
+
+    idk
+
+commit 9e6252e7237e313b9794c3665f4b77b8f9d5b38c
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Tue Nov 29 21:52:34 2022 -0500
+
+    fixed zoom scale
+
+commit f0bbc25be49ebdf243b2b8ca0ba91164a1f02e18
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Sat Nov 26 16:49:24 2022 -0500
+
+    started GUI
+
+commit 8f489c4119301d5b630e1e86c17dc91047b64525
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Thu Nov 24 14:29:30 2022 -0500
+
+    some fixes
+
 commit 2b2368baeff4ae23b23f2ddc68f0d0f5ef958c19
 Author: Richard Lin <rl659@cornell.edu>
 Date:   Thu Nov 17 23:51:30 2022 -0500

@@ -6,4 +6,4 @@ size: 5
 energy: 2500
 posture: 0
 
-smell > 1000 --> wait;
+smell > 100 --> wait;
