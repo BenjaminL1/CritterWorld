@@ -187,7 +187,7 @@ public class WorldGenerator
 
                     int size = critter.getMemory()[3];
                     size = Math.min(size, 5);
-                    double bodyRadius = Math.sqrt(size * 40); // TODO change
+                    double bodyRadius = Math.sqrt(size * 40);
                     double headRadius = bodyRadius * (2.0 / 5.0);
 
                     Circle body = new Circle(bodyRadius, color);

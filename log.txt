@@ -1,3 +1,9 @@
+commit 3b60c0176219194193738dad2547eecf92ada6d0
+Author: Richard Lin <rl659@cornell.edu>
+Date:   Wed Dec 7 22:59:39 2022 -0500
+
+    fixed index out of bounds
+
 commit 5a973a2bdb9d43f4aa544201149e7dd1ce3d3d8c
 Author: Richard Lin <rl659@cornell.edu>
 Date:   Wed Dec 7 22:36:17 2022 -0500
