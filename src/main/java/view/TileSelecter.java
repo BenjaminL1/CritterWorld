@@ -21,7 +21,6 @@ public class TileSelecter implements Initializable
     private Controller controller;
     private File critterFile;
     private Main main;
-//    private String workingDir = System.getProperty("user.dir");
 
     @FXML
     Button critterOK;
@@ -39,15 +38,6 @@ public class TileSelecter implements Initializable
         this.controller = controller;
         this.critterFile = critterFile;
         this.main = main;
-//        URL r = new File(workingDir + "\\src\\main\\java\\view\\addCritter.fxml").toURI().toURL();
-        URL r = getClass().getResource("addCritter.fxml");
-        FXMLLoader loader = new FXMLLoader(r);
-        loader.setController(this);
-        VBox parent = loader.load();
-        Scene scene = new Scene(parent, 220, 226);
-        stage.setTitle("Tile Selecter");
-        stage.setScene(scene);
-        stage.show();
     }
 
     public TileSelecter(Main main, Controller controller)
@@ -63,7 +53,6 @@ public class TileSelecter implements Initializable
 
     public void start() throws IOException
     {
-//        URL r = new File(workingDir + "\\src\\main\\java\\view\\addCritter.fxml").toURI().toURL();
         URL r = getClass().getResource("addCritter.fxml");
         FXMLLoader loader = new FXMLLoader(r);
         loader.setController(this);

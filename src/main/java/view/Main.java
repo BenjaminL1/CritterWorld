@@ -30,7 +30,6 @@ public class Main extends Application implements Initializable
 {
     private final WorldGenerator worldGenerator = new WorldGenerator();
     private final Controller controller = ControllerFactory.getViewController();
-//    private final String workingDir = System.getProperty("user.dir");
     private HBox parent;
     private ZoomPane zoomWorld;
     private FileChooser fileChooser = new FileChooser();
@@ -105,21 +104,12 @@ public class Main extends Application implements Initializable
         primaryStage.setTitle("Critter World");
 
         // load FXML file
-//        URL r = new File(workingDir + "\\src\\main\\java\\view\\mainWindow.fxml").toURI().toURL();
         URL r = getClass().getResource("mainWindow.fxml");
         FXMLLoader loader = new FXMLLoader(r);
         loader.setController(this);
         parent = loader.load();
 
         // put images on buttons
-//        Image playButtonImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\playButton.png",
-//                23, 23, true, false);
-//        Image fastForwardImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\fastForward.png",
-//                23, 23, true, false);
-//        Image dragoniteCritterImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\dragonite.png",
-//            30, 30, true, false);
-//        Image paldeaImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\paldeaMap.jpg",
-//                35, 35, true, false);
         Image playButtonImage = new Image(Objects.requireNonNull(getClass().getResource("playButton.png")).toString(),
                 23, 23, true, false);
         Image fastForwardImage = new Image(Objects.requireNonNull(getClass().getResource("fastForward.png")).toString(),
@@ -138,7 +128,6 @@ public class Main extends Application implements Initializable
         chooseWorld.setGraphic(paldea);
 
         // load world
-//        controller.loadWorld("src\\test\\resources\\A5files\\view_world.txt", false, false);
         controller.newWorld();
         zoomWorld = worldGenerator.loadWorld(controller.getNumRows(), controller.getNumColumns(), controller.getReadOnlyWorld());
         parent.getChildren().add(zoomWorld);
@@ -174,9 +163,6 @@ public class Main extends Application implements Initializable
     {
         try
         {
-//            StackPane world = worldGenerator.updateActivePane(controller.getReadOnlyWorld());
-//            zoomWorld.changeTarget(world);
-
             BorderPane activePane = worldGenerator.updateActivePane(controller.getReadOnlyWorld());
             zoomWorld.changeTarget(activePane);
         }
@@ -279,10 +265,8 @@ public class Main extends Application implements Initializable
                     try
                     {
                         int n = Integer.parseInt(response);
-//                        controller.loadCritters(critterFile.getAbsolutePath(), n);
                         if (n == 1)
                         {
-//                            TileSelecter tileSelecter = new TileSelecter(controller, critterFile, this);
                             tileSelecter.setCritterFile(critterFile);
                             tileSelecter.start();
                         }
@@ -294,13 +278,11 @@ public class Main extends Application implements Initializable
                     }
                     catch (NumberFormatException exception)
                     {
-                        // TODO change
-                        System.out.println("please enter a valid integer");
+//                        System.out.println("please enter a valid integer");
                     }
                     catch (IOException ex)
                     {
-                        // TODO change
-                        System.out.println("please select a valid file");
+//                        System.out.println("please select a valid file");
                     }
                 });
             }
@@ -329,23 +311,5 @@ public class Main extends Application implements Initializable
                 controller.setForcedMutation(false);
             }
         });
-
-
-//        critterOK.setOnAction(event ->
-//        {
-//            int column = !colText.getText().equals("") ? Integer.parseInt(colText.getText()) :
-//                    (int)(Math.random() * controller.getNumColumns());
-//            int row = !rowText.getText().equals("") ? Integer.parseInt(rowText.getText()) :
-//                    (int)(Math.random() * controller.getNumRows());
-//            int dir = !dirText.getText().equals("") ? Integer.parseInt(dirText.getText()) :
-//                    (int)(Math.random() * 6);
-//            controller.addCritter(critterFile.getAbsolutePath(), row, column, dir);
-//            critterLoadStage.hide();
-//        });
-//
-//        critterCancel.setOnAction(event ->
-//        {
-//            critterLoadStage.hide();
-//        });
     }
 }

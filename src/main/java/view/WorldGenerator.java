@@ -26,14 +26,6 @@ public class WorldGenerator
     private int numRows;
     private int numColumns;
 
-//    private String workingDir = System.getProperty("user.dir");
-
-//    private final Image foodImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\razzBerry.png",
-//            23, 23, true, false);
-//
-//    private final Image rockImage = new Image(workingDir + "\\src\\main\\java\\view\\sprites\\rock.png",
-//            30, 30, true, false);
-
     private final Image foodImage = new Image(Objects.requireNonNull(getClass().getResource("razzBerry.png")).toString(),
             23, 23, true, false);
 
@@ -77,18 +69,11 @@ public class WorldGenerator
         BorderPane hexes = new BorderPane();
 
         double blX = BOTTOM_LEFT_X_START;
-//        double blY = 43.3013;
         double brX = BOTTOM_RIGHT_X_START;
-//        double brY = 43.3013;
         double crX = CENTER_RIGHT_X_START;
-//        double crY = 21.65065;
         double trX = TOP_RIGHT_X_START;
-//        double trY = 0;
         double tlX = TOP_LEFT_X_START;
-//        double tlY = 0;
         double clX = CENTER_LEFT_X_START;
-//        double clY = 21.65065;
-//        final double width = 50;
 
         for (int i = 0; i < numColumns; i++) {
             if (i > 0) {
@@ -131,12 +116,12 @@ public class WorldGenerator
             for (int j = 0; j < limit; j++)
             {
                 Polygon polygon = new Polygon(
-                        blX, blY,  // bottom left
-                        brX, brY,         // bottom right
-                        crX, crY,          // center right
-                        trX, trY,               // top right
-                        tlX, tlY,               // top left
-                        clX, clY);          // center left
+                        blX, blY,              // bottom left
+                        brX, brY,              // bottom right
+                        crX, crY,              // center right
+                        trX, trY,              // top right
+                        tlX, tlY,              // top left
+                        clX, clY);             // center left
 
                 polygon.setStroke(Color.BLACK);
                 polygon.setStrokeWidth(2);
@@ -202,7 +187,7 @@ public class WorldGenerator
 
                     int size = critter.getMemory()[3];
                     size = Math.min(size, 5);
-                    double bodyRadius = Math.sqrt(size * 40);
+                    double bodyRadius = Math.sqrt(size * 40); // TODO change
                     double headRadius = bodyRadius * (2.0 / 5.0);
 
                     Circle body = new Circle(bodyRadius, color);
@@ -210,25 +195,8 @@ public class WorldGenerator
                     body.setLayoutY(centerY + 3);
 
                     Circle head = new Circle(headRadius, Color.BLACK);
-//                    head.setLayoutX(centerX);
-//                    head.setLayoutY(centerY - bodyRadius - headRadius + 1);
                     head.setLayoutX(centerX);
                     head.setLayoutY(centerY - bodyRadius - headRadius + 6);
-
-
-//                    Circle body = new Circle(10, color);
-////                    body.setLayoutX(centerX);
-////                    body.setLayoutY(centerY);
-//                    body.setLayoutX(centerX);
-//                    body.setLayoutY(centerY + 3);
-//
-//                    Circle head = new Circle(4, Color.BLACK);
-////                    head.setLayoutX(centerX);
-////                    head.setLayoutY(centerY - 13);
-////                    head.setLayoutY(centerY - bodyRadius - headRadius + 1);
-//                    head.setLayoutX(centerX);
-//                    head.setLayoutY(centerY - 8);
-
 
                     Line leg1 = new Line();
                     leg1.setStrokeWidth(1.5);
@@ -336,9 +304,6 @@ public class WorldGenerator
                         critterInfo.show();
                     });
 
-
-//                    critterGroups.add(critterGroup);
-
                     activePane.getChildren().add(critterGroup);
                 }
                 // is rock
@@ -367,15 +332,6 @@ public class WorldGenerator
         return activePane;
     }
 
-//    public StackPane updateActivePane(ReadOnlyWorld newReadWorld) throws NoMaybeValue
-//    {
-//        readWorld = newReadWorld;
-//        BorderPane activePane = getActivePane();
-//        world.getChildren().remove(1);
-//        world.getChildren().add(activePane);
-//        return world;
-//    }
-//
     public BorderPane updateActivePane(ReadOnlyWorld newReadWorld) throws NoMaybeValue
     {
         readWorld = newReadWorld;

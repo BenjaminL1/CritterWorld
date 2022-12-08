@@ -366,7 +366,8 @@ public class Interpreter
             int row, column, distance, weight;
             ArrayList<Integer> previousDirections = new ArrayList<>();
             ArrayList<Node> previousTiles = new ArrayList<>();
-            public Node(int row, int column){
+            public Node(int row, int column)
+            {
                 this.row = row;
                 this.column = column;
             }
@@ -376,7 +377,8 @@ public class Interpreter
                 return previousDirections.get(previousDirections.size() - 1);
             }
 
-            public int determineDirection(Node from, Node to){
+            public int determineDirection(Node from, Node to)
+            {
                 int direction;
                 if(from.row - to.row > 0){
                     if(from.column - to.column == 1) direction = 1;
@@ -398,20 +400,19 @@ public class Interpreter
             }
         }
 
-        // TODO row and column stuff
         ArrayList<Node> nodes = new ArrayList<>();
-        PriorityQueue<Node> frontier = new PriorityQueue(); //queue for dijkstras
+        PriorityQueue<Node> frontier = new PriorityQueue(); // queue for dijkstras
 
         Queue<int[]> queue = new LinkedList<>(); //bfs
         queue.add(new int[]{critter.getRow(), critter.getColumn()});
         while (!queue.isEmpty()) {
-            //get next tile in queue and its coordinates
+            // get next tile in queue and its coordinates
             int[] current = queue.poll();
             int r = current[0];
             int c = current[1];
             if(world.getTerrainInfo(c, world.getTiles().length - 1 - r) == -1) continue;
 
-            //If tile is out of bounds, continue to next tile in queue
+            // if tile is out of bounds, continue to next tile in queue
             if( Math.max(Math.abs((c - critter.getColumn() - r + critter.getRow()) / 2),
                     Math.max(Math.abs(c - critter.getColumn()),
                             Math.abs((c - critter.getColumn() + r - critter.getRow()) / 2))) > 10
@@ -419,7 +420,7 @@ public class Interpreter
                 continue;
             }
 
-            //check if its already in the arraylist of nodes
+            // check if its already in the arraylist of nodes
             boolean exists = false;
             for(Node node : nodes){
                 if(r == node.row && c == node.column){
@@ -428,7 +429,7 @@ public class Interpreter
                 }
             }
             if(exists) continue;
-                //add it to arraylist of nodes if it doesnt exist
+                // add it to arraylist of nodes if it doesn't exist
             else{
                 Node node = new Node(r, c);
                 node.distance = (Integer.MAX_VALUE);
@@ -478,12 +479,12 @@ public class Interpreter
 
                         if(current == null) break;
                         if(finished.contains(current)) continue;
-                        //determine weight to get to target
+                        // determine weight to get to target
                         current.weight = (i - g.getDirection()) % 6;
                         if(current.weight < 0) current.weight = 6 + current.weight;
                         if(current.weight > 3) current.weight = 6 - current.weight;
                         current.weight ++;
-                        //if the distance from root through g to target is less than the distance stored within the target, update its info
+                        // if the distance from root through g to target is less than the distance stored within the target, update its info
                         if( current.weight + g.distance < current.distance){
                             current.distance = current.weight + g.distance;
                             current.previousTiles = (ArrayList<Node>) g.previousTiles.clone();
@@ -511,7 +512,7 @@ public class Interpreter
                         current.weight = (i - g.getDirection()) % 6;
                         if(current.weight < 0) current.weight = 6 + current.weight;
                         if(current.weight > 3) current.weight = 6 - current.weight;
-                        current.weight ++;
+                        current.weight++;
                         if( current.weight + g.distance < current.distance){
                             current.distance = current.weight + g.distance;
                             current.previousTiles = (ArrayList<Node>) g.previousTiles.clone();

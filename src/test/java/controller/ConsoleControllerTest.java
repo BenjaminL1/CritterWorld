@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class ConsoleControllerTest {
-    private static final String COMMON_TEST_PATH = Paths.get("src", "test", "resources", "A5files").toString();
+    private static final String COMMON_TEST_PATH = Paths.get("src", "test", "resources", "A5_A6_files").toString();
 
     @Test
     public void testRandomWorld()

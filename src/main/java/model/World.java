@@ -72,17 +72,6 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         return numColumns;
     }
 
-
-//    public int getNumRows()
-//    {
-//        return numRows;
-//    }
-//
-//    public int getNumColumns()
-//    {
-//        return numColumns;
-//    }
-
     @Override
     public boolean addCritter(String species, int[] mem, Program ast)
     {
@@ -107,47 +96,18 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
             return false;
         }
         Integer[] selectedTile = tileList.get((int) (Math.random() * tileList.size()));
-        flag = addCritter(species, mem, ast, tiles.length - 1 - selectedTile[0], selectedTile[1], (int) (Math.random() * 6)); // TODO change row?
+        flag = addCritter(species, mem, ast, tiles.length - 1 - selectedTile[0], selectedTile[1], (int) (Math.random() * 6));
 
         if (flag)
         {
-//            System.out.println("1: " + selectedTile[1] + " " + (selectedTile[0]));
             Critter critter = tiles[selectedTile[0]][selectedTile[1]].getCritter();
-            critter.setJustCreated(false); // True?
+            critter.setJustCreated(false);
 
-            // TODO maybe put in other method?
             if (critter.getMemValue(4) > critter.getMemValue(3) * Constants.ENERGY_PER_SIZE)
             {
                 critter.setMem(4, critter.getMemValue(3) * Constants.ENERGY_PER_SIZE);
             }
         }
-
-//        boolean flag = false;
-//        int count = 0;
-//        int row = 0;
-//        int column = 0;
-//        while (!flag && count < numRows * numColumns)
-//        {
-//            row = (int)(Math.random() * numRows);
-//            column = row % 2 == 0 ? (int) (Math.random() * ((numColumns + 1) / 2)) * 2:
-//                    (int) (Math.random() * (numColumns / 2)) * 2 + 1;
-//            flag = addCritter(species, mem, ast, row, column, (int) (Math.random() * 6));
-//
-//            count++;
-//        }
-//
-//        if (flag)
-//        {
-//            Critter critter = tiles[tiles.length - 1 - row][column].getCritter();
-//            critter.setJustCreated(false); // True?
-//
-//            // TODO maybe put in other method?
-//            if (critter.getMemValue(4) > critter.getMemValue(3) * Constants.ENERGY_PER_SIZE)
-//            {
-//                critter.setMem(4, critter.getMemValue(3) * Constants.ENERGY_PER_SIZE);
-//            }
-//        }
-
         return flag;
     }
 
@@ -158,12 +118,12 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         mem = mem.clone();
         ast = (Program) ast.clone();
         row = tiles.length - 1 - row;
-//        System.out.println("2: " + column + " " + row);
         if(tiles[row][column] != null)
         {
             Tile curr = tiles[row][column];
             if(curr.getIsCritter() || curr.getIsFood() || curr.getIsRock()) return false;
         }
+
         Critter critter = new Critter(species, ast, mem, row, column, dir);
         tiles[row][column] = new Tile(critter);
         critters.add(critter);
@@ -176,9 +136,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         return true;
     }
 
-    /*
-        add a loaded critter, justCreated should be false
-     */
+    // add a loaded critter, justCreated should be false
     @Override
     public boolean addCritter(String species, int[] mem, Program ast, int row, int column, int dir, boolean loaded)
     {
@@ -234,22 +192,14 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     @Override
     public void advanceTimeStep()
     {
-//        System.out.println();
-        //if(critters.size() == 0) System.out.println("all critters dead at timestep: " + numSteps);
-
         for (int i = 0; i < critters.size(); i++)
         {
             Critter critter = critters.get(i);
             if(critter.isJustCreated())
             {
-                System.out.println(critter.getColumn() + " " + critter.getRow());
                 critter.setJustCreated(false);
                 continue;
             }
-
-//            System.out.println(critters.size());;
-
-//            System.out.println(critter.getMemValue(4));
 
             Interpreter interpreter = new Interpreter(this, critter);
             interpreter.interpret();
@@ -260,17 +210,13 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         }
         for(Critter critter: critters)
         {
-            if(critter.isMating()){
+            if(critter.isMating())
+            {
                 critter.setMem(4, critter.getMemValue(4) - critter.getMemValue(3));
-//                System.out.println("failed mate: " + critter.getMemValue(4) + ", row = " + critter.getRow() + ", column = " + critter.getColumn());
             }
             critter.setMating(false);
         }
 
-//        for(Critter critter : critters){
-//            System.out.println(critter.toString());
-//
-//        }
         numSteps++;
     }
 
@@ -350,7 +296,6 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
         int column = critter.getColumn();
         if(!tiles[row][column].getCritter().equals(critter)) return false;
 
-//        System.out.println(critter.getSpecies() + " died at time step: " + numSteps);
         tiles[row][column] = new Tile(critter.getMemValue(3) * Constants.FOOD_PER_SIZE);
         critters.remove(critter);
 
@@ -360,7 +305,7 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
     public void setCritterPosition(Critter critter, int r, int c)
     {
         tiles[critter.getRow()][critter.getColumn()] = null;
-        tiles[r][c] = new Tile(critter); // TODO invert r?
+        tiles[r][c] = new Tile(critter);
         critter.setPosition(r, c);
     }
 
@@ -431,11 +376,6 @@ public class World extends ControlOnlyWorld implements ReadOnlyWorld
             Node mutatedNode = ast.nodeAt(selector);
 
             int mutation = (int) (Math.random() * 6);
-
-//            if(critter.getSpecies().equals("space critter"))
-//            {
-//                System.out.println(mutation);
-//            }
 
             switch(mutation)
             {
